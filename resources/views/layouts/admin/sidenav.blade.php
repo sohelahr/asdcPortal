@@ -7,7 +7,7 @@
                 </div>
                 <div class="profile-name">
                     <p class="name">
-                        Welcome Jane
+                        Welcome {{Auth::user()->name}}
                     </p>
                     <p class="designation">
                         Super Admin
@@ -28,12 +28,12 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#page-layouts" aria-expanded="false" aria-controls="page-layouts">
+            <a class="nav-link" data-toggle="collapse" href="#config-entities" aria-expanded="false" aria-controls="page-layouts">
                 <i class="fab fa-trello menu-icon"></i>
-                <span class="menu-title">Page Layouts</span>
+                <span class="menu-title">Config Entities</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="page-layouts">
+            <div class="collapse" id="config-entities">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="pages/layout/boxed-layout.html">Boxed</a></li>
                     <li class="nav-item"> <a class="nav-link" href="pages/layout/rtl-layout.html">RTL</a></li>

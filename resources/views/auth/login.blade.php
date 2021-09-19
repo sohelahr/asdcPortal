@@ -14,16 +14,17 @@
                             </div>--}}
                             <h4>Hello! let's get started</h4>
                             <h6 class="font-weight-light">Sign in to continue.</h6>
-                            <form class="pt-3">
+                            <form class="pt-3"  action="{{route('login')}}" method="POST">
+                                @csrf
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="Email">
+                                    <input type="email" class="form-control form-control-sm" id="email" placeholder="Email" name="email">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
+                                    <input type="password" class="form-control form-control-sm" id="password" placeholder="Password" name="password">
                                 </div>
                                 <div class="mt-3">
-                                    <a href="{{url('/admin/dashboard')}}" class="btn btn-block btn-primary btn-lg font-weight-medium">Login</a>
-                                </div>
+                                    <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium" value="Login">
+                                </div> 
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
                                         {{--<label class="form-check-label text-muted">

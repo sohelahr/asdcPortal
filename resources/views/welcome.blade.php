@@ -19,7 +19,8 @@
                 font-family: 'Nunito', sans-serif;
             }
             .landing_page_logo {
-                width: 60%;
+                width: 100%;
+                height: 100vh;
             }
         </style>
     </head>
@@ -38,7 +39,7 @@
                     @endauth
                 </div>
             @endif
-            <img class="landing_page_logo" src="{{url('/public/images/ASDC_Final_Logo-01.png')}}" />
+            <img class="landing_page_logo" src="{{url('/public/images/Asdc_Cover_Image.png')}}" />
         </div>
     </body>
 </html>
