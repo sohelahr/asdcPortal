@@ -1,4 +1,9 @@
 {
     "Test": true,
-    "Admin": true
+    "Admin": true,
+    "Course": true,
+    "CourseSlot": true,
+    "Qualification": true,
+    "Occupation": true,
+    "DocumentList": true
 }

@@ -1,0 +1,13 @@
+{
+    "name": "CourseSlot",
+    "alias": "courseslot",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CourseSlot\\Providers\\CourseSlotServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

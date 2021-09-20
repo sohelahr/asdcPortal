@@ -1,0 +1,13 @@
+{
+    "name": "Occupation",
+    "alias": "occupation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Occupation\\Providers\\OccupationServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

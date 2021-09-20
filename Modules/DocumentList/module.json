@@ -1,0 +1,13 @@
+{
+    "name": "DocumentList",
+    "alias": "documentlist",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\DocumentList\\Providers\\DocumentListServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
