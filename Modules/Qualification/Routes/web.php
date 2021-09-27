@@ -12,5 +12,10 @@
 */
 
 Route::prefix('qualification')->group(function() {
-    Route::get('/', 'QualificationController@index');
+    Route::get('/', 'QualificationController@index')->name('qualifications');
+    Route::get('/create','QualificationController@create');
+    Route::post('/create','QualificationController@store');
+    Route::get('/edit/{id}','QualificationController@edit');
+    Route::post('/edit/{id}','QualificationController@update');
+    Route::post('/delete/{id}','QualificationController@destroy');
 });

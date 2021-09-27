@@ -5,6 +5,7 @@ namespace Modules\Qualification\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Qualification\Entities\Qualification;
 
 class QualificationController extends Controller
 {
@@ -14,7 +15,8 @@ class QualificationController extends Controller
      */
     public function index()
     {
-        return view('qualification::index');
+        $qualifications = Qualification::all();
+        return view('qualification::index',compact(['qualifications']));
     }
 
     /**
@@ -23,6 +25,7 @@ class QualificationController extends Controller
      */
     public function create()
     {
+        
         return view('qualification::create');
     }
 
@@ -34,6 +37,10 @@ class QualificationController extends Controller
     public function store(Request $request)
     {
         //
+        $qualification = new Qualification();
+        $qualification->name =  $request->name;
+        $qualification->save();
+        return redirect()->route('qualifications')->with('created','Created Successfully');
     }
 
     /**
@@ -53,7 +60,8 @@ class QualificationController extends Controller
      */
     public function edit($id)
     {
-        return view('qualification::edit');
+        $qualification = Qualification::find($id);
+        return json_encode($qualification);
     }
 
     /**
@@ -65,6 +73,10 @@ class QualificationController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $qualification = Qualification::find($id);
+        $qualification->name =  $request->name;
+        $qualification->save();
+        return redirect()->route('qualifications')->with('updated','Updated Successfully');
     }
 
     /**
@@ -75,5 +87,10 @@ class QualificationController extends Controller
     public function destroy($id)
     {
         //
+        $qualification = Qualification::find($id);
+        if($qualification->delete())
+        return redirect()->route('qualifications')->with('created','Created Successfully');
+        else
+        return redirect()->route('qualifications')->with('error','Something went wrong');
     }
 }

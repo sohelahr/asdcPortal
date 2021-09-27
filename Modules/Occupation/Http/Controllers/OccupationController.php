@@ -5,6 +5,7 @@ namespace Modules\Occupation\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Occupation\Entities\Occupation;
 
 class OccupationController extends Controller
 {
@@ -14,7 +15,8 @@ class OccupationController extends Controller
      */
     public function index()
     {
-        return view('occupation::index');
+        $occupations = Occupation::all();
+        return view('occupation::index',compact(['occupations']));
     }
 
     /**
@@ -34,6 +36,10 @@ class OccupationController extends Controller
     public function store(Request $request)
     {
         //
+        $occupation = new Occupation();
+        $occupation->name = $request->name;
+        $occupation->save();
+        return redirect()->route('occupations')->with('created','created successfully');
     }
 
     /**
@@ -53,7 +59,8 @@ class OccupationController extends Controller
      */
     public function edit($id)
     {
-        return view('occupation::edit');
+        $occupation = Occupation::find($id);
+        return json_encode($occupation);
     }
 
     /**
@@ -65,6 +72,10 @@ class OccupationController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $occupation = Occupation::find($id);
+        $occupation->name = $request->name;
+        $occupation->save();
+        return redirect()->route('occupations')->with('updated','created successfully');
     }
 
     /**
@@ -75,5 +86,11 @@ class OccupationController extends Controller
     public function destroy($id)
     {
         //
+        $occupation = Occupation::find($id);
+        if($occupation->delete())
+            return redirect()->route('occupations')->with('updated','created successfully');
+        else
+            return redirect()->route('occupations')->with('error','Error something went wrong');
+        
     }
 }

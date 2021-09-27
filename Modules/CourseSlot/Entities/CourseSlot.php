@@ -15,4 +15,7 @@ class CourseSlot extends Model
     {
         return \Modules\CourseSlot\Database\factories\CourseSlotFactory::new();
     }
+    public function Course(){
+        return $this->belongsTo(Course::class);
+    }
 }

@@ -5,16 +5,19 @@ namespace Modules\CourseSlot\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Modules\CourseSlot\Entities\CourseSlot;
+use Modules\Course\Entities\Course;
 class CourseSlotController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index($id)
     {
-        return view('courseslot::index');
+        $course = Course::find($id);
+        $courseslot = $course->courseSlots;
+        return view('courseslot::index',compact(['courseslot','course']));
     }
 
     /**
@@ -34,6 +37,13 @@ class CourseSlotController extends Controller
     public function store(Request $request)
     {
         //
+        $courseslot = new CourseSlot();
+        $courseslot->course_id = $request->course_id;
+        $courseslot->name = $request->name;
+        $courseslot->TotalCapacity = $request->TotalCapacity;
+        $courseslot->CurrentCapacity = $request->CurrentCapacity;
+        $courseslot->save();
+        return redirect()->route('courseslot',$courseslot->course_id)->with('created','courseSlot created successfully');
     }
 
     /**
@@ -53,7 +63,8 @@ class CourseSlotController extends Controller
      */
     public function edit($id)
     {
-        return view('courseslot::edit');
+        $courseslot = CourseSlot::find($id);
+        return json_encode($courseslot);
     }
 
     /**
@@ -65,6 +76,13 @@ class CourseSlotController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $courseslot = CourseSlot::find($id);
+        $courseslot->course_id = $request->id;
+        $courseslot->name = $request->name;
+        $courseslot->TotalCapacity = $request->TotalCapacity;
+        $courseslot->CurrentCapacity = $request->CurrentCapacity;
+        $courseslot->save();
+        return redirect()->route('courseslot',$courseslot->course_id)->with('updated','course_Slot updated successfully');
     }
 
     /**
@@ -75,5 +93,10 @@ class CourseSlotController extends Controller
     public function destroy($id)
     {
         //
+        $courseslot = CourseSlot::find($id);
+        if($courseslot->delete())
+            return redirect()->route('course_list')->with('deleted','courseSlot deleted successfully');
+        else
+            return redirect()->route('course_list')->with('error','Something went Wrong');
     }
 }

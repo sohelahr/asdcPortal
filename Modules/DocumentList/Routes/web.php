@@ -12,5 +12,10 @@
 */
 
 Route::prefix('documentlist')->group(function() {
-    Route::get('/', 'DocumentListController@index');
+    Route::get('/', 'DocumentListController@index')->name('document_list');
+    Route::get('/create','DocumentListController@create');
+    Route::post('/create','DocumentListController@store');
+    Route::get('/edit/{id}','DocumentListController@edit');
+    Route::post('/edit/{id}','DocumentListController@update');
+    Route::post('/delete/{id}','DocumentListController@destroy');
 });

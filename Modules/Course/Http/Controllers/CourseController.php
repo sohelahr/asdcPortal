@@ -3,6 +3,7 @@
 namespace Modules\Course\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Course\Entities\Course;
@@ -26,7 +27,7 @@ class CourseController extends Controller
     public function create()
     {
         return view('course::create');
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.
@@ -36,6 +37,12 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
+        $course = new Course();
+        $course->name = $request->name;
+        $course->duration = $request->duration;
+        $course->slug = $request->slug;
+        $course->save();
+        return redirect()->route('course_list')->with('created','course created successfully');
     }
 
     /**
@@ -54,8 +61,9 @@ class CourseController extends Controller
      * @return Renderable
      */
     public function edit($id)
-    {
-        return view('course::edit');
+    {       
+        $course = Course::find($id);
+        return json_encode($course);
     }
 
     /**
@@ -67,6 +75,12 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $course = Course::find($id);
+        $course->name = $request->name;
+        $course->duration = $request->duration;
+        $course->slug = $request->slug;
+        $course->save();
+        return redirect()->route('course_list')->with('updated','course Updated successfully');
     }
 
     /**
@@ -77,5 +91,10 @@ class CourseController extends Controller
     public function destroy($id)
     {
         //
+        $course = Course::find($id);
+        if($course->delete())
+            return redirect()->route('course_list')->with('updated','course Updated successfully');
+        else
+            return redirect()->route('course_list')->with('error','Something went Wrong');
     }
 }

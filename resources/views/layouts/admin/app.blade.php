@@ -34,13 +34,15 @@
             @include('layouts.admin.sidenav')
             <div class="main-panel">
                 {{--main content here--}}
-                @yield('content')
+                <div class="content-wrapper">
+                    @yield('content')
+                </div>
                 {{--footer include here--}}
                 @include('layouts.admin.footer')
             </div>
         </div>
     </div>
-    <script src="{{env('BACKEND_CDN_URL')}}/vendors/js/vendor.bundle.base.js"></script>
+    <script src="{{env('BACKEND_CDN_URL')}}/vendors/js/vendor.bundle.base.js"></script> 
     <script src="{{env('BACKEND_CDN_URL')}}/vendors/js/vendor.bundle.addons.js"></script>
     <script src="{{env('BACKEND_CDN_URL')}}/js/off-canvas.js"></script>
     <script src="{{env('BACKEND_CDN_URL')}}/js/hoverable-collapse.js"></script>

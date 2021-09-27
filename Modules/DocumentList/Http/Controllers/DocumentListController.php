@@ -5,6 +5,7 @@ namespace Modules\DocumentList\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\DocumentList\Entities\DocumentList;
 
 class DocumentListController extends Controller
 {
@@ -14,7 +15,8 @@ class DocumentListController extends Controller
      */
     public function index()
     {
-        return view('documentlist::index');
+        $documents = DocumentList::all();
+        return view('documentlist::index',compact(['documents']));
     }
 
     /**
@@ -34,6 +36,10 @@ class DocumentListController extends Controller
     public function store(Request $request)
     {
         //
+        $document_list = new DocumentList();
+        $document_list->name = $request->name;
+        $document_list->save();
+        return redirect()->route('document_list')->with('created','created successfully');
     }
 
     /**
@@ -53,7 +59,8 @@ class DocumentListController extends Controller
      */
     public function edit($id)
     {
-        return view('documentlist::edit');
+        $document_list = DocumentList::find($id);
+        return json_encode($document_list);
     }
 
     /**
@@ -65,8 +72,12 @@ class DocumentListController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $document_list = DocumentList::find($id);
+        $document_list->name = $request->name;
+        $document_list->save();
+        return redirect()->route('document_list')->with('updated','updated successfully');
     }
-
+ 
     /**
      * Remove the specified resource from storage.
      * @param int $id
@@ -75,5 +86,10 @@ class DocumentListController extends Controller
     public function destroy($id)
     {
         //
+        $document_list = DocumentList::find($id);
+        if($document_list->delete())
+            return redirect()->route('document_list')->with('updated','updated successfully');
+        else
+            return redirect()->route('document_list')->with('error','something went wrong');
     }
 }

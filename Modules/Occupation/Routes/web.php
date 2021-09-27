@@ -12,5 +12,10 @@
 */
 
 Route::prefix('occupation')->group(function() {
-    Route::get('/', 'OccupationController@index');
+    Route::get('/', 'OccupationController@index')->name('occupations');
+    Route::get('/create','OccupationController@create');
+    Route::post('/create','OccupationController@store');
+    Route::get('/edit/{id}','OccupationController@edit');
+    Route::post('/edit/{id}','OccupationController@update');
+    Route::post('/delete/{id}','OccupationController@destroy');
 });

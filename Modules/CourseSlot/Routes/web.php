@@ -12,5 +12,10 @@
 */
 
 Route::prefix('courseslot')->group(function() {
-    Route::get('/', 'CourseSlotController@index');
+    Route::get('/{id}', 'CourseSlotController@index')->name('courseslot');
+    Route::get('/create','CourseSlotController@create');
+    Route::post('/create','CourseSlotController@store');
+    Route::get('/edit/{id}','CourseSlotController@edit');
+    Route::post('/edit/{id}','CourseSlotController@update');
+    Route::post('/delete/{id}','CourseSlotController@destroy');
 });
