@@ -5,5 +5,7 @@
     "CourseSlot": true,
     "Qualification": true,
     "Occupation": true,
-    "DocumentList": true
+    "DocumentList": true,
+    "Register": true,
+    "UserProfile": true
 }

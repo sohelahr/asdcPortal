@@ -14698,14 +14698,14 @@ button.close {
 .modal-body {
   position: relative;
   flex: 1 1 auto;
-  padding: 15px;
+  padding: 0.9375rem;
 }
 
 .modal-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 0.9375rem;
   border-top: 1px solid #e0e0ef;
 }
 
@@ -18374,7 +18374,7 @@ input:focus {
 @font-face {
   font-family: 'PTsans';
   src: url("../fonts/PT_Sans/PTSans-Regular.eot");
-  src: url("../fonts/PT_Sans/PTSans-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/PT_Sans/PTSans-Regular.woff2") format("woff2"), url("../fonts/PT_Sans/PTSans-Regular.woff") format("woff"), url("../fonts/PT_Sans/PTSans-Regular.ttf") format("truetype");
+  src: url("../fonts/PT_Sans/PTSans-Regulard41d.eot?#iefix") format("embedded-opentype"), url("../fonts/PT_Sans/PTSans-Regular.woff2") format("woff2"), url("../fonts/PT_Sans/PTSans-Regular.woff") format("woff"), url("../fonts/PT_Sans/PTSans-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -18382,7 +18382,7 @@ input:focus {
 @font-face {
   font-family: 'PTsans';
   src: url("../fonts/PT_Sans/PTSans-Bold.eot");
-  src: url("../fonts/PT_Sans/PTSans-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/PT_Sans/PTSans-Bold.woff2") format("woff2"), url("../fonts/PT_Sans/PTSans-Bold.woff") format("woff"), url("../fonts/PT_Sans/PTSans-Bold.ttf") format("truetype");
+  src: url("../fonts/PT_Sans/PTSans-Boldd41d.eot?#iefix") format("embedded-opentype"), url("../fonts/PT_Sans/PTSans-Bold.html") format("woff2"), url("../fonts/PT_Sans/PTSans-Bold.woff") format("woff"), url("../fonts/PT_Sans/PTSans-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
@@ -20629,6 +20629,125 @@ code {
 
 .doc-credits ul li a {
   margin-left: .25rem;
+}
+
+.landing-page .content-wrapper {
+  width: calc(100% - 40px);
+  margin: auto;
+  padding: 0;
+  background-color: inherit;
+}
+
+.landing-page .banner-image {
+  width: 100%;
+}
+
+.landing-page .bootstrapdash-demo-footer {
+  padding: 5rem;
+}
+
+.landing-page .navbar {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .landing-page .navbar {
+    padding: 1.5rem 5rem;
+  }
+  .landing-page .navbar .navbar-collapse {
+    margin-left: 13rem;
+  }
+}
+
+.landing-page .bootstrapdash-demo-variations {
+  padding: 2rem 3.75rem;
+}
+
+.landing-page .product-variation-item {
+  background: #f6f6f7;
+  text-align: center;
+  padding: 2rem;
+}
+
+.landing-page .product-variation-item a {
+  text-decoration: none;
+}
+
+.landing-page .product-variation-item a img {
+  width: 100%;
+}
+
+.landing-page .product-variation-item a h6 {
+  text-align: left;
+  color: #000;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+.landing-page .grid-margin {
+  margin-bottom: 30px;
+}
+
+.landing-page .btn, .landing-page .fc button, .fc .landing-page button, .landing-page .ajax-upload-dragdrop .ajax-file-upload, .ajax-upload-dragdrop .landing-page .ajax-file-upload, .landing-page .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .landing-page .swal2-styled, .landing-page .wizard > .actions a, .wizard > .actions .landing-page a {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.landing-page .bootstrapdash-features .bootstrapdash-feature-item {
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .landing-page .bootstrapdash-features .bootstrapdash-feature-item {
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  }
+  .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(1), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(2), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(3), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(4) {
+    padding-top: 0;
+  }
+  .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(9), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(10), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(11), .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(12) {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(4n+1) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .landing-page .bootstrapdash-features .bootstrapdash-feature-item:nth-child(4n) {
+    padding-right: 0;
+  }
+}
+
+.landing-page .bootstrapdash-features .bootstrapdash-feature-item h6 i {
+  font-size: 30px;
+  margin-right: 2px;
+}
+
+.landing-page .bootstrapdash-features .bootstrapdash-feature-item p {
+  margin-bottom: 0;
+}
+
+.landing-page .navbar-nav .nav-link {
+  font-size: 1rem;
+}
+
+.landing-page .font-weight-medium {
+  font-weight: 500;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.landing-page #main-demo-image {
+  /* This section calls the slideInFromLeft animation we defined above */
+  animation: .5s ease-out 0s 1 slideInFromBottom;
 }
 
 /*-------------------------------------------------------------------*/
@@ -28990,17 +29109,17 @@ div.tagsinput span.tag a {
 /* === Landing screens === */
 /* Auth */
 .auth .login-half-bg {
-  background: url("http://via.placeholder.com/710x570");
+  background: url("../images/auth/login-bg.jpg");
   background-size: cover;
 }
 
 .auth .register-half-bg {
-  background: url("http://via.placeholder.com/710x570");
+  background: url("../images/auth/register-bg.jpg");
   background-size: cover;
 }
 
 .auth.lock-full-bg {
-  background: url("http://via.placeholder.com/710x570");
+  background: url("../images/auth/lockscreen-bg.jpg");
   background-size: cover;
 }
 
@@ -29154,7 +29273,7 @@ div.tagsinput span.tag a {
 
 .profile-page .profile-header {
   width: 100%;
-  background: url("../images/samples/profile_page/profile_header_banner.jpg") no-repeat center center;
+  background: url("../images/samples/profile_page/profile_header_banner.html") no-repeat center center;
   background-size: cover;
   padding: 60px 0;
   border-radius: 5px;
