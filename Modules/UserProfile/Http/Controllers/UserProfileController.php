@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Modules\Occupation\Entities\Occupation;
 use Modules\Qualification\Entities\Qualification;
+use Modules\UserProfile\Entities\UserProfile;
+use Yajra\Datatables\Datatables;
 
 class UserProfileController extends Controller
 {
@@ -18,9 +20,28 @@ class UserProfileController extends Controller
      */
     public function index()
     {
-        return view('userprofile::index');
+        //     $userprofiles = UserProfile::where('is_profile_completed',"1")->get();
+        return view('userprofile::admin_profile_list'/*, compact('userprofiles') */);
     }
 
+    function UserProfileData(){
+        $userprofiles = UserProfile::where('is_profile_completed',"1")->get();
+        return Datatables::of($userprofiles)
+                ->addIndexColumn()
+                ->addColumn('name',function($profile){
+                    return $profile->firstname." ".$profile->lastname;
+                })
+                ->addColumn('qualification',function($profile){
+                    return $profile->Qualification->name;
+                })
+                ->addColumn('type',function($profile){
+                    if($profile->User->Registrations->count() > 0)
+                        return "True";
+                    else
+                        return "FALSE";
+                })
+                ->make();
+    }
     /**
      * Show the form for creating a new resource.
      * @return Renderable
@@ -45,9 +66,15 @@ class UserProfileController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function show()
     {
-        return view('userprofile::show');
+        $profile = Auth::user()->UserProfile;
+        return view('userprofile::user_profile',compact('profile'));
+    }
+    public function Adminshow($id)
+    {
+        $profile = UserProfile::find($id);
+        return view('userprofile::admin_user_profile',compact('profile'));
     }
 
     /**
@@ -60,6 +87,9 @@ class UserProfileController extends Controller
         $userprofile =  Auth::User()->UserProfile;
         $occupations = Occupation::all();
         $qualifications = Qualification::all();
+        if($userprofile->is_profile_completed && Auth::user()->user_type == "3"){
+            return redirect('/dashboard')->with('profile_complete','user profile already completed');
+        }
         return view('userprofile::edit',compact('userprofile','occupations','qualifications'));
     }
 
@@ -94,20 +124,26 @@ class UserProfileController extends Controller
         $userprofile->father_occupation = $request->father_occupation;
         $userprofile->fathers_income = $request->fathers_income; 
         $userprofile->fathers_mobile = $request->fathers_mobile; 
-        $userprofile->school_name = $request->school_name; 
-        $userprofile->employment_status = "0";
+        $userprofile->school_name = $request->school_name;
+        
+        $userprofile->blood_group = $request->blood_group; 
+        $userprofile->marital_status = $request->marital_status;
+        $userprofile->aadhaar = $request->aadhaar; 
+        $userprofile->home_type = $request->home_type;
+        
+        $userprofile->after_course_employment_status = "0";
         
         
         //saving files
         if($request->file('photo')){
-            $filename = $request->file('photo')->getClientOriginalName().time().".".$request->file('photo')->getClientOriginalExtension();
+            $filename = 'profile-'.time().".".$request->file('photo')->getClientOriginalExtension();
             $path = $request->file('photo')->storeAs('/profile_photos/',$filename);
             $userprofile->photo = $filename;
-        }
-        if($request->is_profile_completed)
-            $userprofile->is_profile_completed = "1";
+        }/* 
+        if($request->is_profile_completed) */
+        $userprofile->is_profile_completed = "1";
         $userprofile->save();
-        return redirect('/dashboard');
+        return redirect('/dashboard')->with('profile_updated','xyz');
     }
 
     /**

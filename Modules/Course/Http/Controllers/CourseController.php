@@ -6,8 +6,9 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\Course\Entities\Course;
-
+use Yajra\Datatables\Datatables;
 class CourseController extends Controller
 {
     /**
@@ -55,6 +56,24 @@ class CourseController extends Controller
         return view('course::show');
     }
 
+    public function EnrollmentData()
+    {
+        $courses = Course::all();
+        return Datatables::of($courses)
+            ->addIndexColumn()
+            ->addColumn('courseslot',function($course){
+                    return $course->CourseSlots;
+                })
+            ->addColumn('apply',function($course){
+                $registrations = Auth::user()->Registrations;
+                    foreach($registrations as $registration){
+                        if($course->id == $registration->course_id)
+                            return "true";
+                    } 
+                    return "false";  
+            })
+            ->make();
+    }
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -93,7 +112,7 @@ class CourseController extends Controller
         //
         $course = Course::find($id);
         if($course->delete())
-            return redirect()->route('course_list')->with('updated','course Updated successfully');
+            return redirect()->route('course_list')->with('deleted','course Updated successfully');
         else
             return redirect()->route('course_list')->with('error','Something went Wrong');
     }

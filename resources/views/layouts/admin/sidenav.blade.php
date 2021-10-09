@@ -16,7 +16,7 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{url('admin/dashboard')}}">
                 <i class="fa fa-home menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -30,11 +30,40 @@
             <div class="collapse" id="config-entities">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('course_list')}}">Courses</a></li>
+                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('coursebatch_list')}}">Course Batches</a></li>
                     <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('document_list')}}">Documents Required</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{route('occupations')}}">Occupation</a></li>
                     <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('qualifications')}}">Qualification</a></li>
+                    
                 </ul>
             </div>
         </li>
-            </ul>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false" aria-controls="page-layouts">
+                <i class="far fa-user menu-icon"></i>
+                <span class="menu-title">Users</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="users">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('user_profile_list')}}">Profiles</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#admission" aria-expanded="false" aria-controls="page-layouts">
+                <i class="far fa-address-card menu-icon"></i>
+                <span class="menu-title">Admission</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="admission">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('registration/')}}">Registrations</a></li>
+                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('admission/')}}">Admissions</a></li>
+
+                </ul>
+            </div>
+        </li>
+        </ul>
 </nav>

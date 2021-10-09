@@ -11,6 +11,8 @@
 |
 */
 
+use Modules\Course\Http\Controllers\CourseController;
+
 Route::prefix('course')->group(function() {
     Route::get('/', 'CourseController@index')->name('course_list');
     Route::get('/create','CourseController@create');
@@ -18,4 +20,5 @@ Route::prefix('course')->group(function() {
     Route::get('/edit/{id}','CourseController@edit');
     Route::post('/edit/{id}','CourseController@update');
     Route::post('/delete/{id}','CourseController@destroy');
+    Route::get('/enrollment/data',[CourseController::class,'EnrollmentData'])->name('enrollmentData');
 });

@@ -18,4 +18,5 @@ Route::prefix('courseslot')->group(function() {
     Route::get('/edit/{id}','CourseSlotController@edit');
     Route::post('/edit/{id}','CourseSlotController@update');
     Route::post('/delete/{id}','CourseSlotController@destroy');
+    Route::get('/get/{id}','CourseSlotController@get_course_slot');
 });

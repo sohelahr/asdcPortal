@@ -88,7 +88,7 @@ class DocumentListController extends Controller
         //
         $document_list = DocumentList::find($id);
         if($document_list->delete())
-            return redirect()->route('document_list')->with('updated','updated successfully');
+            return redirect()->route('document_list')->with('deleted','updated successfully');
         else
             return redirect()->route('document_list')->with('error','something went wrong');
     }

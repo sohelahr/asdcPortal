@@ -49,8 +49,11 @@ class RegisteredUserController extends Controller
 
 
         event(new Registered($user));
- 
+        
+        $name =  explode(' ',$user->name);
         $userprofile = new UserProfile();
+        $userprofile->firstname = $name[0];
+        $userprofile->lastname = $name[1];
         $userprofile->user_id = $user->id;
         $userprofile->save();
 

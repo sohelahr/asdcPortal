@@ -1,0 +1,13 @@
+{
+    "name": "SerialNumberConfigurations",
+    "alias": "serialnumberconfigurations",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SerialNumberConfigurations\\Providers\\SerialNumberConfigurationsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

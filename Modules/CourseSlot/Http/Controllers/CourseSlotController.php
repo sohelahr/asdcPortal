@@ -67,6 +67,12 @@ class CourseSlotController extends Controller
         return json_encode($courseslot);
     }
 
+    function get_course_slot($id){
+        $course = Course::find($id);
+        $courseslot = $course->courseSlots;
+        return json_encode($courseslot);
+    }
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
@@ -95,8 +101,8 @@ class CourseSlotController extends Controller
         //
         $courseslot = CourseSlot::find($id);
         if($courseslot->delete())
-            return redirect()->route('course_list')->with('deleted','courseSlot deleted successfully');
+            return redirect()->route('courseslot',$courseslot->course_id)->with('deleted','courseSlot deleted successfully');
         else
-            return redirect()->route('course_list')->with('error','Something went Wrong');
+            return redirect()->route('courseslot',$courseslot->course_id)->with('error','Something went Wrong');
     }
 }

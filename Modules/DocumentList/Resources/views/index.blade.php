@@ -106,7 +106,44 @@
 @endsection
 @section('jcontent')
     <script>
-        
+        @if(\Illuminate\Support\Facades\Session::has('created'))    
+            $.toast({
+                heading: 'Created',
+                text: 'Document Was Successfully Created',
+                position:'top-right',
+                icon: 'success',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('updated'))
+            $.toast({
+                heading: 'Updated',
+                text: 'Document Was Successfully Updated',
+                position:'top-right',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('deleted'))
+            $.toast({
+                heading: 'Deleted',
+                text: 'Document Was Successfully Deleted',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+            
+        @elseif(\Illuminate\Support\Facades\Session::has('error'))
+            $.toast({
+                heading: 'Danger',
+                text: 'Something Went Wrong ',
+                position:'top-right',
+                icon: 'danger',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @endif
         
         function Editdocumentlist(documentlist_id){
             getEditData(documentlist_id);

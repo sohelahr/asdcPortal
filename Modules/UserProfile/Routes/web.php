@@ -14,8 +14,11 @@
 use Modules\UserProfile\Http\Controllers\UserProfileController;
 
 Route::prefix('userprofile')->group(function() {
-    Route::get('/', 'UserProfileController@index');
+    Route::get('/', 'UserProfileController@index')->name('user_profile_list');
+    Route::get('/view', 'UserProfileController@show')->name('user_profile');
     Route::get('/update',[UserProfileController::class,'edit'])->name('profile_update');
     Route::post('/update',[UserProfileController::class,'update'])->name('profile_update');
+    Route::get('/data',[UserProfileController::class,'UserProfileData'])->name('user_profile_data');
+    Route::get('/admin/{id}/view', 'UserProfileController@Adminshow')->name('user_profile_admin');
 
 });

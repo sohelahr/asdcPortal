@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Admission\Entities\Admission;
+use Modules\CourseSlot\Entities\CourseSlot;
+use Modules\Registration\Entities\Registration;
 use Modules\UserProfile\Entities\UserProfile;
 
 class User extends Authenticatable
@@ -45,5 +48,8 @@ class User extends Authenticatable
 
     public function UserProfile(){
         return $this->hasOne(UserProfile::class,"user_id");
+    }
+    public function Registrations(){
+        return $this->hasMany(Registration::class,"student_id","id");
     }
 }

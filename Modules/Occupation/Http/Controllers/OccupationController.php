@@ -88,7 +88,7 @@ class OccupationController extends Controller
         //
         $occupation = Occupation::find($id);
         if($occupation->delete())
-            return redirect()->route('occupations')->with('updated','created successfully');
+            return redirect()->route('occupations')->with('deleted','created successfully');
         else
             return redirect()->route('occupations')->with('error','Error something went wrong');
         

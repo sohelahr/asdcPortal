@@ -7,5 +7,9 @@
     "Occupation": true,
     "DocumentList": true,
     "Register": true,
-    "UserProfile": true
+    "UserProfile": true,
+    "Registration": true,
+    "CourseBatch": true,
+    "Admission": true,
+    "SerialNumberConfigurations": true
 }

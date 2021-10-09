@@ -1,0 +1,13 @@
+{
+    "name": "CourseBatch",
+    "alias": "coursebatch",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CourseBatch\\Providers\\CourseBatchServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
