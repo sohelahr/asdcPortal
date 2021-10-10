@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Course\Entities\Course;
+use Modules\SerialNumberConfigurations\Http\Controllers\SerialNumberConfigurationsController;
 use Yajra\Datatables\Datatables;
 class CourseController extends Controller
 {
@@ -43,6 +44,9 @@ class CourseController extends Controller
         $course->duration = $request->duration;
         $course->slug = $request->slug;
         $course->save();
+
+        SerialNumberConfigurationsController::generateNewSerialNumber($course->id,$course->slug);
+
         return redirect()->route('course_list')->with('created','course created successfully');
     }
 

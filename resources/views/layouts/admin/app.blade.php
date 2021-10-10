@@ -17,6 +17,8 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/style.css">
+    <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/custom.css">
+
     <!-- endinject -->
     <link rel="shortcut icon" href="{{env('BACKEND_CDN_URL')}}/images/favicon.png"/>
     <style>

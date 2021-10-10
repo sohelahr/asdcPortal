@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#document-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#document-create">
+                    + Create
                 </button>
             </div>       
             
@@ -26,7 +25,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th style="width: 85%">Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>

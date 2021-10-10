@@ -1,313 +1,265 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Document</title>
+    <title>Admssion Form</title>
     <style>
         @media print {
-            .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+            .pagebreak { page-break-after: always; } /* page-break-after works, as well */
             }
+            table,th,td{
+                /* border: 1px solid black; */
+                font-size: 14px;
+                vertical-align: middle
+            }
+            td{
+                padding: 2px!important;
+            }
+            p{
+                padding: 0%;
+                margin: 4px;
+            }
+            tr{
+                vertical-align: middle;
+                margin: 0%;
+            }
+        
     </style>
 </head>
-<body style = " font-size: 12px;">
-    <page size = "A4" style = "padding: 2%;">
+<body>
+    <page size = "A4">
         <div style = "border: 1px solid red; border-top-left-radius: 20px; border-top-right-radius: 20px;">
-        <header style = "width: 100%; ">
-            <div style = "width: 30%; top: 0%; padding-left: 5%;padding-top: 2%;">
-                <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px">
-            </div>
-            <div style = "width: 40%;  padding-left: 5%;">
+        <table style = "width: 100%;" align="center">
+            <td>
+                <div style=" top: 0%; padding-left: 15%;padding-top: 2%;">
+                    <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px">
+                </div>
+            </td>
+            <td style = "width: 25%;">
                 <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px">
-            </div>
-            <div style = "width: 30%; padding-left: 10%; padding-top: 3%;">
-                <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px" style="margin-top: 1%;">
-            </div>
-        </header>
-        <div style = "text-align: center; background-color: rgb(226, 223, 223);">
+            </td>
+            <td style = "width: 30%;">
+                <div style=" padding-left: 15%; padding-top: 3%;">
+                    <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                </div>
+            </td>
+        </table>
+        <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
             <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
         </div>
-        <div style = "">
-            <div style = "width:70%">
-               <p style = "text-align: right; margin-top: 10%; padding-right: 5%;"><u>APPLICATION FORM FOR ADMISSION</u></p>
+        <table style = "width:100%;">
+            <td>
+                <div style = "width:100%;">
+                <p style = "text-align: center;margin-top:50px"><u>APPLICATION FORM FOR ADMISSION</u></p>
+                </div>
+            </td>
+        </table>
+        
+            <div style = "float: right;margin-top:-60px;margin-right:50px;">
+                   <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px">
             </div>
-            <div style = "width:30%">
-               <img src = "{{asset('/storage/app/profile_photos/'.$admission->Student->UserProfile->photo)}}" alt = "" height = "100px" width = "100px" style = "padding-left: 30%;">
-            </div>
-        </div>
-        <div style = " padding: 5%; margin-top: -2%;">
-            <div style = " font-size: 14px">
-                <div style = "width: 20%;">
-                    <p>Name:</p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">Hamza</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Date of Birth:</p>
-                </div>
-                <div style = "width: 20%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">29/12/2021</p>
-                    </div>
-                </div>
-                <div style = "width: 20%">
-                    <p style="padding-left: 10px;">Gender:</p>
-                </div>
-                <div style = " width: 40%;">
-                    <form style = "margin-top: 5%;">
-                        <input type = "radio" value = "male">
-                        <label>Male</label>
-                        <input type = "radio" value = "female">
-                        <label>Female</label>
-                    </form>
-                </div>
-                
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Mobile No.:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">9604195840</p>
-                    </div>
-                </div>
-                <div style = "width: 20%;">
-                    <p  style="padding-left: 10px;">Adhaar No.:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">123456789012</p>
-                    </div>
-                </div>
-                
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Qualification:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">BCA Graduate</p>
-                    </div>
-                </div>
-                <div style = "width: 20%;">
-                    <p  style="padding-left: 10px;">Occupation:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">Web Developer</p>
-                    </div>
-                </div>
-                
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Email:</p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">shaikhhamzasaleem960@gmail.com</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 30%;">
-                    <p>School/College Name:</p>
-                </div>
-                <div style = "width: 70%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">Abeda Inamdar Senior College</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Father's Name:</p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">Saleem Shaikh</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Father's Occupation:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">Civil Engineer</p>
-                    </div>
-                </div>
-                <div style = "width: 20%;">
-                    <p  style="padding-left: 10px;">Fathers's Income:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">10 LPA</p>
-                    </div>
-                </div>
-                
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Father's Mobile:</p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">9890851007</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Address: </p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">102, DSK Garden Enclave Society, Parge Nagar, Kondhwa-42</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px;  margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p style = "color: white;">Address: </p>
-                </div>
-                <div style = "width: 80%;">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%; color: white;">102, DSK Garden Enclave Society, Parge Nagar, Kondhwa-42</p>
-                    </div>
-                </div>
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Course Joining:</p>
-                </div>
-                <div style = "width: 20%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">UI Designing</p>
-                    </div>
-                </div>
-                <div style = "width: 20%">
-                    <p style="padding-left: 10px;">Timing:</p>
-                </div>
-                <div style = " width: 40%;">
-                    <form style = "margin-top: 5%;">
-                        <input type = "radio" value = "morning">
-                        <label>Morning</label>
-                        <input type = "radio" value = "afternoon">
-                        <label>Afternoon</label>
-                        <input type = "radio" value = "evening">
-                        <label>Evening</label>
-                    </form>
-                </div>
-                
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 20%;">
-                    <p>Attach:</p>
-                </div>
-            </div>
-            <div style = " font-size: 14px; margin-top: -2%;">
-                <div style = "width: 50%; ">
-                    <form>
-                        <input type = "checkbox">
-                        <label>Xerox of Higher Qualification Certificate</label>
-                    </form>
-                </div>
-                <div style = "width: 50%; ">
-                    <form>
-                        <input type = "checkbox">
-                        <label>Xerox of Student's Adhaar</label>
-                    </form>
-                </div>
-            </div>
-            <div style = " font-size: 14px; ;">
-                <div style = "width: 50%; ">
-                    <form>
-                        <input type = "checkbox">
-                        <label>Address Proof</label>
-                    </form>
-                </div>
-                <div style = "width: 50%; ">
-                    <form>
-                        <input type = "checkbox">
-                        <label>Latest Photograph</label>
-                    </form>
-                </div>
-            </div>
-            <div style = " font-size: 14px; margin-top: -1%;">
-                <div style = "width: 20%;">
-                    <p>Date:</p>
-                </div>
-                <div style = "width: 30%">
-                    <div style = " padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">13/09/2021</p>
-                    </div>
-                </div>
-                <div style = "width: 30%">
-                    <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                        <p style = "padding-bottom: 0%;">signature here</p>
-                    </div>
-                </div>
-                <div style = "width: 20%;">
-                    <p  style="padding-left: 10px;">Student Signature</p>
-                </div>
-                
-            </div>
-            
-            
-        </div>
-        <div style = "background-color: rgb(226, 223, 223); font-size: 14px; margin-top: -5%;">
-            <p style = "text-align: center; padding-top: 1%;">FOR OFFICE USE ONLY</p>
-            <div style = "padding: 2%;">
-                <div style = " font-size: 14px;  margin-top: -2%;">
-                    <div style = "width: 20%;">
-                        <p>Admission Number:</p>
-                    </div>
-                    <div style = "width: 80%;">
-                        <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                            <p style = "padding-bottom: 0%;">2074</p>
+        <div style="margin-top: 130px">
+            <table style = "margin:20px;width:100%">
+                <tr>
+                    <td>
+                        <p>Name:</p>
+                    </td>
+                    <td  colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['name']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Date of Birth:</p>
+                    </td>
+                    <td>
+                        <p style = "padding-bottom: 0; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['dob']}}</p>
+                    </td>
+                    <td>
+                            <p style="padding-left: 10px;">Gender:</p>
+                    </td>
+                    <td>
+                        <div style="display: inline-block">
+                            <input type = "radio" value = "male" @if ($data['gender'] == "male")
+                                checked
+                            @endif>Male
+                            <input type = "radio" value = "female" @if ($data['gender'] == "female")
+                                checked
+                            @endif>Female
                         </div>
-                    </div>
-                </div>
-                <div style = " font-size: 14px;  margin-top: -2%;">
-                    <div style = "width: 20%;">
-                        <p>Remarks:</p>
-                    </div>
-                    <div style = "width: 80%;">
-                        <div style = "border-bottom: 1px solid black; padding-bottom: 0%; height: 20px;">
-                            <p style = "padding-bottom: 0%;">remarks here</p>
-                        </div>
-                    </div>
-                </div>
-                <div style = " font-size: 14px; margin-top: -1%;">
-                    <div style = "width: 20%;">
-                        <p>Admin Signature</p>
-                    </div>
-                    <div style = "width: 30%">
-                        <div style = " padding-bottom: 0%; height: 20px;">
-                            <p style = "padding-bottom: 0%;">sign here</p>
-                        </div>
-                    </div>
-                    <div style = "width: 30%">
-                        <div style = " padding-bottom: 0%; height: 20px;">
-                            <p style = "padding-bottom: 0%;">sign here</p>
-                        </div>
-                    </div>
-                    <div style = "width: 20%;">
-                        <p  style="padding-left: 10px;">Director Signature</p>
-                    </div>
+                    </td>
+                <tr>
+                    <td>
+                        <p>Mobile No.:</p>
+                    </td>
+                    <td>
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['mobile']}}</p>
+                    </td>
+                    <td>
+                        <p  style="padding-left: 10px;">Adhaar No.:</p>
+                    </td>
+                    <td>
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['aadhaar']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Qualification:</p>
+                    </td>
+                    <td>
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['qualification']}}</p>
+                    </td>
+                    <td>
+                        <p  style="padding-left: 10px;">Occupation:</p>
+                    </td>
+                    <td>
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['occupation']}}</p>
+                    </td>
                     
-                </div>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Email:</p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['email']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>School/College Name:</p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['school_name']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Father's Name:</p>
+                    </td>
+                    <td colspan="3">
+                        <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['father_name']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Father's Occupation:</p>
+                    </td>
+                    <td>
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['father_occupation']}}</p>
+                    </td>
+                    <td>
+                        <p  style="padding-left: 10px;">Fathers's Income:</p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['fathers_income']}}</p>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>
+                        <p>Father's Mobile:</p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['fathers_mobile']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Address: </p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['address']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Course Joining:</p>
+                    </td>
+                    <td>
+                        <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['course']}}</p>
+                    </td>
+                    <td >
+                        <p style="padding-left: 10px;">Timing:</p>
+                    </td>
+                    <td>
+                        {{$data['course_slot']}}
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <p>Attach:</p>
+                    </td>
+                </tr>
+                <tr>
+                     <td colspan="4">
+                         <div style="margin-left: 20px">
+                        @foreach ($data['documents'] as $document)
+                            <input type = "checkbox"> {{$document->name}}
+                        @endforeach
+                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Date:</p>
+                    </td>
+                    <td>
+                        <div style = " padding-bottom: 0%;">
+                            <p style = "padding-bottom: 0%;">{{$data['current_date']}}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">signature here</p>
+                    </td>
+                    <td>
+                        <p  style="padding-left: 10px;">Student Signature</p>
+                    </td>
+                    
+                </tr>
+                
+                
+            </table>
+        </div>
+        <div style = "background-color: rgb(226, 223, 223);">
+            <div style="padding-bottom:2%">
+            <p style = "text-align: center;padding-top: 10px;">FOR OFFICE USE ONLY</p>
+            </div>
+            <div style="padding-bottom:2%">
+            <table style = "padding: 2%;width:100%">
+                <tr>
+                    <td>
+                        <p>Admission Number:</p>
+                    </td>
+                    <td colspan="3"> 
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['admission_number']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Remarks:</p>
+                    </td>
+                    <td colspan="3">
+                            <p style = "padding-bottom: 0%; border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['admission_remarks']}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Admin Signature</p>
+                    </td>
+                    <td>
+                        <div style = " padding-bottom: 0%;">
+                            <p style = "padding-bottom: 0%;">sign here</p>
+                        </div>
+                    </td>
+                    <td>   <div style = " padding-bottom: 0%;">
+                            <p style = "padding-bottom: 0%;">sign here</p>
+                        </div>
+                    </td>
+                    <td>   <p  style="padding-left: 10px;">Director Signature</p>
+                    </td>
+                    
+                </tr>
+            </table>
             </div>
         </div>
         </div>
@@ -315,8 +267,9 @@
     <div class="pagebreak"></div>
     
     <page>
+        <div style = "padding: 2%;">
         <h2 style = "text-align: center;">COMPUTER LABORATORY RULES AND REGULATIONS</h2>
-        <div style = "padding: 2%; font-size: 14px;">
+
             <ol>
                 <li>Smoking, chewing, eating and drinking are not allowed in the institiute building.</li>
                 <li>Mobile Phones must be on silent flight modea at all times in the lab.</li>

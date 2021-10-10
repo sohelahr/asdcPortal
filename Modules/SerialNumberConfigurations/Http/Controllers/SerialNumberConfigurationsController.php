@@ -9,25 +9,33 @@ use Modules\SerialNumberConfigurations\Entities\SerialNumberConfiguration;
 
 class SerialNumberConfigurationsController extends Controller
 {
-   function generateNewSerialNumber(){
-
+    
+    public static function generateNewSerialNumber($id,$slug){
+        $serial_number = new SerialNumberConfiguration;
+        $serial_number->initialRollNumber = '1001';
+        $serial_number->currentRollNumber = '1001';
+        $serial_number->slug = $slug;
+        $serial_number->initialAdmissionNumber = '1001';
+        $serial_number->currentAdmissionNumber = '1001';
+        $serial_number->course_id = $id;
+        $serial_number->save();
    }
    
-    /*public static function generate($slug)
+    public static function getCurrentNumbers($id)
     {
-        $serial_number = SerialNumberConfiguration::where('slug',$slug)->first();
-        $unique_id = $serial_number->current_value;
-        return $unique_id;
+        $serial_number = SerialNumberConfiguration::where('course_id',$id)->first();
+        return $serial_number;
     }
 
-    /*public static function increment($slug)
+    public static function incrementNumbers($id)
     {
-        $serial_number = SerialNumberConfiguration::where('slug',$slug)->first();
+        $serial_number = SerialNumberConfiguration::where('course_id',$id)->first();
         if(isset($serial_number))
         {
-            $serial_number->current_value = $serial_number->current_value + 1;
+            $serial_number->currentRollNumber = $serial_number->currentRollNumber + 1;
+            $serial_number->currentAdmissionNumber = $serial_number->currentAdmissionNumber + 1;
             $serial_number->save();
         }
         return;
-    } */
+    }
 }

@@ -146,6 +146,66 @@ class UserProfileController extends Controller
         return redirect('/dashboard')->with('profile_updated','xyz');
     }
 
+    public function AdminEdit(Request $request,$id){
+        $userprofile = UserProfile::find($id);
+        $occupations = Occupation::all();
+        $qualifications = Qualification::all();
+        if($request->method() == "GET"){
+
+            return view('userprofile::admin_profile_edit',compact('userprofile','occupations','qualifications'));
+        }
+
+        else{
+
+            $userprofile->firstname = $request->firstname;
+            $userprofile->lastname = $request->lastname;
+            $userprofile->dob = $request->dob;
+            $userprofile->age = $request->age;
+            $userprofile->mobile = $request->mobile; 
+            $userprofile->occupation_id = $request->occupation_id; 
+            $userprofile->qualification_id = $request->qualification_id;
+            $userprofile->qualification_specilization = $request->qualification_specilization;
+            $userprofile->qualification_status = $request->qualification_status;
+            $userprofile->gender = $request->gender;
+            $userprofile->comments = $request->comments; 
+            $userprofile->house_details = $request->house_details;  
+            $userprofile->street = $request->street;
+            $userprofile->landmark = $request->landmark;
+            $userprofile->city = $request->city;
+            $userprofile->state = $request->state; 
+            $userprofile->pincode = $request->pincode;
+            $userprofile->how_know_us = $request->how_know_us;
+            $userprofile->father_name = $request->father_name; 
+            $userprofile->father_occupation = $request->father_occupation;
+            $userprofile->fathers_income = $request->fathers_income; 
+            $userprofile->fathers_mobile = $request->fathers_mobile; 
+            $userprofile->school_name = $request->school_name;
+            
+            $userprofile->blood_group = $request->blood_group; 
+            $userprofile->marital_status = $request->marital_status;
+            $userprofile->aadhaar = $request->aadhaar; 
+            $userprofile->home_type = $request->home_type;
+            
+            $userprofile->after_course_employment_status = "0";
+            
+            
+            //saving files
+            if($request->file('photo')){
+
+                Storage::delete('/profile_photos/'.$userprofile->photo);
+
+                $filename = 'profile-'.time().".".$request->file('photo')->getClientOriginalExtension();
+                $path = $request->file('photo')->storeAs('/profile_photos/',$filename);
+                $userprofile->photo = $filename;
+            }/* 
+            if($request->is_profile_completed) */
+            $userprofile->is_profile_completed = "1";
+            $userprofile->save();
+
+            return redirect()->route('user_profile_list')->with('updated','0');
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      * @param int $id

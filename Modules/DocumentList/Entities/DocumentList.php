@@ -18,6 +18,6 @@ class DocumentList extends Model
     }
 
     function admisions(){
-        return $this->belongsToMany(Document::class,'admission__documentlists','admission_id','document_id')->withPivot('status');
+        return $this->belongsToMany(Document::class,'admission__documentlists','document_id','admission_id')->withPivot('status');
     }
 }

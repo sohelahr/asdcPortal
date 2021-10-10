@@ -21,4 +21,8 @@ Route::prefix('admission')->group(function() {
     Route::get('/getforminputs/{id}','AdmissionController@getFormData')->name('admission_input_select');
     Route::get('/view/{id}','AdmissionController@show')->name('admission_show');
     Route::get('/print/{id}','AdmissionController@PrintForm')->name('print_admission_form');
+
+    Route::get('/edit/{id}','AdmissionController@edit')->name('user_admission_edit');
+    Route::post('/edit/{id}','AdmissionController@update')->name('user_admission_edit');
+
 });

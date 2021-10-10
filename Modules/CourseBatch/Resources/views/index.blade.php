@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#course-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
+                    + Create
                 </button>
             </div>    
             
@@ -43,17 +42,28 @@
                                 <td>{{$coursebatch->batch_number}}</td>
                                 <td>{{$coursebatch->start_date}}</td>        
                                 <td>{{$coursebatch->expiry_date}}</td>
-                                <td>{{$coursebatch->status}}</td>
-                                <td class="d-flex p-1">
-                                        <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditCourseBatch({{$coursebatch->id}})">
+                                <td>
+                                    <form action="{{route('batch_change_status',$coursebatch->id)}}" method="get">
+                                        @csrf
+                                        @if($coursebatch->status == 1)
+                                            <button class="btn btn-sm btn-success badge-pill m-0" type="submit">Active</button>
+                                        @else
+                                            <button class="btn btn-sm badge-pill btn-warning m-0" type="submit">Inactive</button>
+                                        @endif
+                                    </form>
+                                </td>
+                                <td>
+                                    <div  class="d-flex p-0 m-0">
+                                        <button class="btn btn-dark btn-rounded p-2 mr-2 my-0" onclick="EditCourseBatch({{$coursebatch->id}})">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
-                                    <form action="{{url('course/delete/'.$coursebatch->id)}}" method="post" class="ml-2">
-                                        @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                        <form action="{{url('course/delete/'.$coursebatch->id)}}" method="post" class="ml-2">
+                                            @csrf
+                                            <button type=submit class="btn btn-danger btn-rounded p-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -236,6 +246,15 @@
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })
+        @elseif(\Illuminate\Support\Facades\Session::has('status'))
+            $.toast({
+                heading: 'Success',
+                text: 'Status changed Succesfully ',
+                position:'top-right',
+                icon: 'danger',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
         @endif
         function EditCourseBatch(coursebatch_id){
             getEditData(coursebatch_id);
@@ -269,7 +288,6 @@
                 },
             });
         }
-        
     </script>
     
 @endsection

@@ -18,4 +18,5 @@ Route::prefix('coursebatch')->group(function() {
     Route::get('/edit/{id}','CourseBatchController@edit');
     Route::post('/edit/{id}','CourseBatchController@update');
     Route::post('/delete/{id}','CourseBatchController@destroy');
+    Route::get('/changestatus/{id}','CourseBatchController@changeStatus')->name('batch_change_status');
 });

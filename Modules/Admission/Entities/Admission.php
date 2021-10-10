@@ -41,7 +41,7 @@ class Admission extends Model
         return $this->hasOne(CourseBatch::class,'id','coursebatch_id');
     }
     function documents(){
-        return $this->belongsToMany(DocumentList::class,'admission__documentlists','document_id','admission_id')->withPivot('status','student_id');
+        return $this->belongsToMany(DocumentList::class,'admission__documentlists','admission_id','document_id')->withPivot('status','student_id');
     }
     
     function Student(){
