@@ -63,7 +63,7 @@
     <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('course/create')}}">
+                <form method="POST" action="{{url('course/create')}}" id  ="courses">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="course-create-title">Create Course</h5>
@@ -199,6 +199,56 @@
                 },
             });
         }
+
+        $(document).ready(function (){
+        $('#courses').validate({
+            errorClass: "text-danger pt-1",
+            rules: {
+     
+ name: {
+
+     required: true,
+    
+
+ },
+
+ duration: {
+
+     required: true,
+
+    
+ },
+
+ slug: {
+
+     required: true,
+
+    
+
+ },
+
+ 
+ 
+},
+
+ messages: {
+    name:{
+        required: "Please enter your name",
+    },
+
+    duration:{
+        required: "Please enter duration",
+    },
+
+    slug:{ 
+        required: "Please enter a slug",
+    },
+
+} 
+
+        });
+    });
+
         
     </script>
     
