@@ -66,6 +66,13 @@ class CourseController extends Controller
         return Datatables::of($courses)
             ->addIndexColumn()
             ->addColumn('courseslot',function($course){
+                $registrations = Auth::user()->Registrations;
+                $courseslots = $course->CourseSlots->pluck(['id'])->toArray();
+                    foreach($registrations as $registration){
+                        if(in_array($registration->course_slot_id,$courseslots)){
+                            return true;
+                        }
+                    }
                     return $course->CourseSlots;
                 })
             ->addColumn('apply',function($course){

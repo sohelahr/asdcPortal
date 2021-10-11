@@ -90,7 +90,13 @@
                             
                             {data: 'courseslot',render:function(data,type,row){
                                 data = JSON.parse(data)
-                                if(data.length){
+                        
+                                if(data == true){
+                                    return "Applied"
+
+                                }
+                                else{
+                                    
                                     let options =  "<option value=''>Select a Slot</option>";
 
                                     data.forEach(element => {
@@ -101,14 +107,11 @@
                                                 ${options}
                                             </select>`
                                 }
-                                else
-                                    return "Not Available"    
-                                },
+                            },
                             name:"course_slot"},
                     
                             {data: 'apply',
                                 render:function(data,type,row){
-                                    console.log(data)
                                     if(data=="false")
                                         return '<button class="badge badge-pill badge-info apply-button" onclick="ApplyForEnrollment('+row.id+')"  >Apply For this Course</button>';
                                     else
@@ -134,7 +137,8 @@
                             url: "{{route('user_registration_create')}}",
                             data: data,
                             beforeSend: function () {
-                                $('.apply-button').hide();
+                                $('.apply-button').attr("disable").addClass('btn-disabled');
+                                $('.apply-button').append(`<i class="fas fa-spinner"></i>`);
                             },
                             success: function (response) {
                                if(response.status == "success"){
@@ -161,6 +165,7 @@
                                     },3000)
                                 }
                                 table.draw();
+                                $('.apply-button').removeAttr("disable").removeClass('btn-disabled');
                             },
                         });
                     }
