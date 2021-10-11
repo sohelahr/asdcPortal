@@ -137,8 +137,9 @@
                             url: "{{route('user_registration_create')}}",
                             data: data,
                             beforeSend: function () {
-                                $('.apply-button').attr("disable").addClass('btn-disabled');
-                                $('.apply-button').append(`<i class="fas fa-spinner"></i>`);
+                                $('.apply-button').attr("disable");
+                                $('.apply-button').addClass('btn-inverse-info');
+                                $('.apply-button').append(` <i class="fas fa-spinner  fa-spin"></i>`);
                             },
                             success: function (response) {
                                if(response.status == "success"){

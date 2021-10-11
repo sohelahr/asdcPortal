@@ -46,7 +46,13 @@
                                 </td>
                                 <td>{{$subadmin->email}}</td>
                                 <td class="d-flex p-1">
-                                    <form action="{{url('course/delete/'.$subadmin->id)}}" method="post" class="ml-2">
+                                    <button class="btn btn-info btn-rounded p-2 mr-2">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                    <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditSubAdmin({{$subadmin->id}})">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <form action="{{url('subadmin/delete/'.$subadmin->id)}}" method="post" class="ml-2">
                                         @csrf
                                         <button type=submit class="btn btn-danger btn-rounded p-2">
                                             <i class="fas fa-trash"></i>
@@ -100,13 +106,13 @@
         </div>
     </div>
 
-    <div id="course-edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="course-edit-title" aria-hidden="true">
+    <div id="subadmin-edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="subadmin-edit-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="POST"  id="edit-form" action="{{url('course/edit/')}}">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="course-edit-title">Edit Course</h5>
+                        <h5 class="modal-title" id="course-edit-title">Edit SubAdmin</h5>
                         <button class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -115,16 +121,12 @@
                         <h5 class="text-danger" id="showtext">Please Wait...</h5>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
+                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" >
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
-                                <label for="Duration">Duration</label>
-                                <input id="edit-Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
-                            </div>
-                            <div class="form-group col-6">
-                                <label for="slug">Slug</label>
-                                <input id="edit-slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
+                            <div class="form-group col-12">
+                                <label for="email">Email</label>
+                                <input id="edit-email" class="form-control form-control-sm" type="text" name="email">
                             </div>
                         </div>
                     </div>
@@ -177,6 +179,33 @@
                 loaderBg: '#9EC600'  // To change the background
             })
         @endif
+
+        function EditSubAdmin(subadmin_id){
+            getEditData(subadmin_id);
+            $("#subadmin-edit").modal('show');
+        }
+
+        function getEditData(course_id){
+            $.ajax({
+                type: "get",
+                url: `{{url('subadmin/edit/${course_id}')}}`,
+                beforeSend: function () {
+                    $('#showtext').show();
+                },
+                success: function (response) {
+                    data = JSON.parse(response);
+                    $("#edit-form").attr("action", `{{url('subadmin/edit/${course_id}')}}`);
+                    $("#edit-name").val(data.name);
+                    $("#edit-email").val(data.email);
+                },
+                complete: function () {
+                    $('#showtext').hide();
+                },
+            });
+        }
+
+
+
         $(document).ready(function (){
         $('#subadmin').validate({
             errorClass: "text-danger pt-1",

@@ -78,7 +78,8 @@ class SubAdminController extends Controller
      */
     public function edit($id)
     {
-        return view('subadmin::edit');
+        $user = User::find($id);
+        return json_encode($user);
     }
 
     /**
@@ -90,6 +91,11 @@ class SubAdminController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+        return redirect('/subadmin')->with('updated','123');
     }
 
     /**
@@ -101,6 +107,6 @@ class SubAdminController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('/subadmin')->with('deleted','123');
+        return redirect('/subadmin')->with('deleted','123');
     }
 }
