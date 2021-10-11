@@ -30,14 +30,14 @@
         <table style = "width: 100%;" align="center">
             <tr>
                 <td>
-                    <div style=" top: 0%; padding-left: 15%;padding-top: 2%;">
-                        <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px">
+                    <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
+                        <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px" style = "padding-left: 30px">
                     </div>
                 </td>
-                <td style = "width: 25%;">
+                <td style = "width: 55%;">
                     <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px">
                 </td>
-                <td style = "width: 30%;">
+                <td style = "width: 20%;">
                     <div style=" padding-left: 15%; padding-top: 3%;">
                         <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
                     </div>
@@ -47,20 +47,17 @@
         <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
             <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
         </div>
-        <table style = "width:100%;">
-            <tr>
-                <td>
-                    <div style = "width:100%;">
-                    <p style = "text-align: center;margin-top:50px"><u>APPLICATION FORM FOR ADMISSION</u></p>
-                    </div>
-                </td>
-            </tr>
-        </table>
         
-            <div style = "float: right;margin-top:-60px;margin-right:50px;">
-                   <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px">
+                    <div>
+                    <p style = "margin-top:100px; padding-left: 200px "><u>APPLICATION FORM FOR ADMISSION</u></p>
+                    </div>
+                
+           
+        
+            <div style = "margin-top:-60px;margin-right:10px;">
+                   <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">
             </div>
-        <div style="margin-top: 130px">
+        <div style="margin-top: 30px">
             <table style = "margin:20px;width:100%">
                 <tr>
                     <td>
@@ -234,8 +231,8 @@
                     <td>
                         <p>Admission Number:</p>
                     </td>
-                    <td colspan="3"> style="border-bottom: 1px solid black; padding-bottom: 0%;" 
-                            <p style = "padding-bottom: 0%; ">{{$data['admission_number']}}</p>
+                    <td colspan="3">
+                            <p style = "border-bottom: 1px solid black; padding-bottom: 0%; ">{{$data['admission_number']}}</p>
                     </td>
                 </tr>
                 <tr>
@@ -307,6 +304,175 @@
             <p style = "padding-top: 3%;">Note: Violoation of these rules will result in immediate suspension of admission. Strict action will be taken against any misbehaviour and damage will be reovered from the student. </p>
             <div style = "padding-top: 5%;">
                 <p style="text-align: right;">Student Signature</p>
+            </div>
+        </div>
+    </page>
+    <div class="pagebreak"></div>
+    <page>
+        <div style = "border: 1px solid black">
+            <table style = "width: 100%;" align="center">
+                <tr>
+                    <td>
+                        <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
+                            <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px" style = "padding-left: 30px">
+                        </div>
+                    </td>
+                    <td style = "width: 55%;">
+                        <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px">
+                    </td>
+                    <td style = "width: 20%;">
+                        <div style=" padding-left: 15%; padding-top: 3%;">
+                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                        </div>
+                    </td>
+                </tr>
+            </table> 
+            <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
+                <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
+            </div>
+            <div>
+                <h4 style = "text-align: center"><u>ACKNOWLEDGEMENT OF CERTIFICATE RECEIVED</u></h4>
+                <h5 style = "text-align: center;"><u>Student's Copy</u></h5>
+            </div>
+            <div>
+                <table style = "margin:10px;width:100%">
+                    <tr>
+                        <td>
+                            <p>Name:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">{{$data['name']}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Mobile No.:</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">{{$data['mobile']}}</p>
+                        </td>
+                        <td>
+                            <p  style="padding-left: 10px;">Admission No.:</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">abcd</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Course Applied:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; "></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Original Certificate Submit:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; "></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style = "padding-top: 50px">
+                            <p><b>Student Signature</b></p>
+                        </td>
+                        <td style = "padding-top: 50px">
+                            <p><b>Admin Signature</b></p>
+                        </td>
+                        <td style = "padding-top: 50px">
+                            <p><b>Director Signature</b></p>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                <tr>
+                    <td>
+                        <p>Note:This acknowledgement is compulsory at the time of withdrawal of original certificate. </p>
+                    </td>
+                </tr>
+                </table>
+            </div>
+        </div>
+        <div style = "border: 1px solid black; margin-top: 50px">
+            <table style = "width: 100%;" align="center">
+                <tr>
+                    <td>
+                        <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
+                            <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px" style = "padding-left: 30px">
+                        </div>
+                    </td>
+                    <td style = "width: 55%;">
+                        <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px">
+                    </td>
+                    <td style = "width: 20%;">
+                        <div style=" padding-left: 15%; padding-top: 3%;">
+                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                        </div>
+                    </td>
+                </tr>
+            </table> 
+            <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
+                <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
+            </div>
+            <div>
+                <h4 style = "text-align: center"><u>ACKNOWLEDGEMENT OF CERTIFICATE RECEIVED</u></h4>
+                
+            </div>
+            <div>
+                <table style = "margin:10px;width:100%">
+                    <tr>
+                        <td>
+                            <p>Name:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">{{$data['name']}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Mobile No.:</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">{{$data['mobile']}}</p>
+                        </td>
+                        <td>
+                            <p  style="padding-left: 10px;">Admission No.:</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">abcd</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Course Applied:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; "></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Original Certificate Submit:</p>
+                        </td>
+                        <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; "></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style = "padding-top: 50px">
+                            <p>Student Signature</p>
+                        </td>
+                        <td style = "padding-top: 50px">
+                            <p>Admin Signature</p>
+                        </td>
+                        <td style = "padding-top: 50px">
+                            <p>Director Signature</p>
+                        </td>
+                    </tr>
+                </table>
+                
             </div>
         </div>
     </page>
