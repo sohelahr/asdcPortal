@@ -203,6 +203,8 @@
 @endsection
 @section('jcontent')
     <script>
+
+
         
         $('.datepicker').datepicker({
             autoclose: true,
@@ -288,6 +290,8 @@
                 },
             });
         }
+
+ 
     </script>
     
 @endsection

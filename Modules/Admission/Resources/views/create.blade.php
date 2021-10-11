@@ -14,7 +14,7 @@
     <div class="card">
         
         <div class="card-body">
-            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data"> 
+            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data" id = "admission"> 
                 @csrf       
                 <div class="row">
                     <div class="col-md-4">
@@ -98,7 +98,7 @@
                          
                       </div>
                 </div>                                                         
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button type="submit" class="btn btn-primary mr-2" onclick = "validate()">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
             </form>
         </div>
@@ -146,5 +146,13 @@
             }
         });
     });
+
+    function validate() {
+    var val = document.getElementById('textarea').value;
+    if (/^\s*$/g.test(val)) {
+        alert('Wrong content!');
+    }
+}
+    
 </script>
 @endsection
