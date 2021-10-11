@@ -12,5 +12,6 @@
 */
 
 Route::prefix('subadmin')->group(function() {
-    Route::get('/', 'SubAdminController@index');
+    Route::get('/', 'SubAdminController@index')->name('subadmin_list');
+    Route::post('/create', 'SubAdminController@store')->name('subadmin_create');
 });

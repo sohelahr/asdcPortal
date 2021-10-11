@@ -203,48 +203,43 @@
         $(document).ready(function (){
         $('#courses').validate({
             errorClass: "text-danger pt-1",
-            rules: {
-     
- name: {
+            rules: {     
+                name: {
+                    required: true,
+                },
+                duration: {
 
-     required: true,
-    
+                    required: true,
 
- },
+                    
+                },
 
- duration: {
+                slug: {
 
-     required: true,
+                    required: true,
 
-    
- },
+                    
 
- slug: {
+                },
 
-     required: true,
+                
+                
+                },
 
-    
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
 
- },
+                    duration:{
+                        required: "Please enter duration",
+                    },
 
- 
- 
-},
+                    slug:{ 
+                        required: "Please enter a slug",
+                    },
 
- messages: {
-    name:{
-        required: "Please enter your name",
-    },
-
-    duration:{
-        required: "Please enter duration",
-    },
-
-    slug:{ 
-        required: "Please enter a slug",
-    },
-
-} 
+                } 
 
         });
     });

@@ -50,7 +50,8 @@
                             <select class="form-control" name="coursebatch_id" id="course_batch">
                                 @if(count($initial_course_batches) > 0)
                                     @foreach ($initial_course_batches as $coursebatch)
-                                        <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
+                                        
+                                            <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
                                     <option>No Batches Found</option>
@@ -131,10 +132,11 @@
                         `);
                 }
                 if(response.course_batches.length > 0){
-                    $.each(response.course_batches, function (index, element) { 
-                        $("#course_batch").append(`
-                            <option value="${element.id}">${element.batch_number}</option>
-                        `);
+                    $.each(response.course_batches, function (index, element) {
+                        
+                            $("#course_batch").append(`
+                                <option value="${element.id}">${element.batch_number}</option>
+                            `);
                     });
                 }
                 else

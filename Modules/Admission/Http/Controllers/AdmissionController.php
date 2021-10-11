@@ -92,7 +92,7 @@ class AdmissionController extends Controller
 
         $courses = Course::all();
         $initial_course_slots = $selected_course->CourseSlots; 
-        $initial_course_batches = $selected_course->CourseBatches; 
+        $initial_course_batches = $selected_course->CourseBatches->where('status','1'); 
 
         $documents =    DocumentList::all();
 
@@ -169,7 +169,7 @@ class AdmissionController extends Controller
     {
         $course = Course::find($id);
         $course_slots = $course->CourseSlots;
-        $course_batches = $course->CourseBatches;
+        $course_batches = $course->CourseBatches->where('status','1');
         
         return response()->json(['course_slots'=>$course_slots,'course_batches'=>$course_batches]);
     }
@@ -262,7 +262,7 @@ class AdmissionController extends Controller
         }
         if($admission->save()){                
 
-            //Incrrement Numbers if data saves
+            //Increment Numbers if data saves
 
             $documents = DocumentList::all();
             foreach($documents as $document){

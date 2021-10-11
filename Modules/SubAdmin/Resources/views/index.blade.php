@@ -13,10 +13,18 @@
         </nav>
     </div>
     <div class="card">
-        
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#subadmin-create">
                      + Create
                 </button>
             </div>    
@@ -26,8 +34,8 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>mail</th>
-                            <th>Permissions</th>
+                            <th>Email</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,12 +45,8 @@
                                     {{$subadmin->name}}
                                 </td>
                                 <td>{{$subadmin->email}}</td>
-                                <td><a class="nav-link p-0" href="{{route('courseslot',$course->id)}}">View</a></td>
                                 <td class="d-flex p-1">
-                                        <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditCourse({{$course->id}})">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                    <form action="{{url('course/delete/'.$course->id)}}" method="post" class="ml-2">
+                                    <form action="{{url('course/delete/'.$subadmin->id)}}" method="post" class="ml-2">
                                         @csrf
                                         <button type=submit class="btn btn-danger btn-rounded p-2">
                                             <i class="fas fa-trash"></i>
@@ -57,13 +61,13 @@
         </div>
     </div>
 
-    <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
+    <div id="subadmin-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('course/create')}}">
+                <form method="POST" action="{{route('subadmin_create')}}" id="subadmin">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="course-create-title">Create Course</h5>
+                        <h5 class="modal-title" id="subadmin-create-title">Create SubAdmin</h5>
                         <button class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -71,16 +75,20 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
+                            <input id="name" class="form-control form-control-sm" type="text" name="name" >
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
-                                <label for="Duration">Duration</label>
-                                <input id="Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
+                            <div class="form-group col-12">
+                                <label for="email">Email</label>
+                                <input id="email" class="form-control form-control-sm" type="text" name="email" >
                             </div>
                             <div class="form-group col-6">
-                                <label for="slug">Slug</label>
-                                <input id="slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
+                                <label for="slug">Password</label>
+                                <input id="slug" class="form-control form-control-sm" type="password" name="password" >
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="slug">Confirm Password</label>
+                                <input id="slug" class="form-control form-control-sm" type="password" name="password_confirmation" >
                             </div>
                         </div>
                     </div>
@@ -169,32 +177,39 @@
                 loaderBg: '#9EC600'  // To change the background
             })
         @endif
-        function EditCourse(course_id){
-            console.log(course_id)
-            getEditData(course_id);
-            $("#course-edit").modal('show');
-        }
+        $(document).ready(function (){
+        $('#subadmin').validate({
+            errorClass: "text-danger pt-1",
+            rules: {     
+                name: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                },
 
-        function getEditData(course_id){
-            $.ajax({
-                type: "get",
-                url: `{{url('course/edit/${course_id}')}}`,
-                beforeSend: function () {
-                    $('#showtext').show();
+                password: {
+                    required: true,
                 },
-                success: function (response) {
-                    data = JSON.parse(response);
+            },
 
-                    $("#edit-form").attr("action", `{{url('course/edit/${course_id}')}}`);
-                    $("#edit-name").val(data.name);
-                    $("#edit-Duration").val(data.Duration);
-                    $("#edit-slug").val(data.slug);
-                },
-                complete: function () {
-                    $('#showtext').hide();
-                },
-            });
-        }
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
+
+                    email:{
+                        required: "Please enter email",
+                    },
+
+                    password:{ 
+                        required: "Please enter a password",
+                    },
+
+                } 
+
+        });
+    });
         
     </script>
     

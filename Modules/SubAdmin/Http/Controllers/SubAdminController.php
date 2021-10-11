@@ -18,7 +18,8 @@ class SubAdminController extends Controller
      */
     public function index()
     {
-        return view('subadmin::index');
+        $subadmins= User::where('user_type','2')->get();
+        return view('subadmin::index',compact('subadmins'));
     }
 
     /**
@@ -47,12 +48,17 @@ class SubAdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'user_type' => '2',
+            'user_type' => 2,
         ]);
 
 
         event(new Registered($user));
-        return redirect()->route('/subadmin')->with('created','123');
+        if($user){
+            return redirect()->route('subadmin_list')->with('created','123');
+        }
+        else{
+            return redirect()->route('subadmin_list')->with('error','123');
+        }
     }
 
     /**
@@ -98,4 +104,3 @@ class SubAdminController extends Controller
         return redirect()->route('/subadmin')->with('deleted','123');
     }
 }
-/* Cant select two courses */
