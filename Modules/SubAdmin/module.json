@@ -1,0 +1,13 @@
+{
+    "name": "SubAdmin",
+    "alias": "subadmin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SubAdmin\\Providers\\SubAdminServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

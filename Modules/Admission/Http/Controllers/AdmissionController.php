@@ -202,10 +202,8 @@ class AdmissionController extends Controller
         $data['admission_number'] = $admission->admission_form_number;
         $data['admission_remarks'] = $admission->admission_remarks;
 
-        view()->share('data',$data);
-        $pdf = PDF::loadView('admission::admission_form', $data);
-        $pdf->setPaper('a4');
-        return $pdf->stream();
+        $pdf = PDF::loadView('admission::admission_form',compact('data'));
+        return $pdf->stream('document.pdf');
     }
     /**
      * Show the form for editing the specified resource.

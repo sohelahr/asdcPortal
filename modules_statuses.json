@@ -13,5 +13,6 @@
     "Admission": true,
     "SerialNumberConfigurations": true,
     "Seeder": true,
-    "InitialSeeder": true
+    "InitialSeeder": true,
+    "SubAdmin": true
 }
