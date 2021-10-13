@@ -100,6 +100,10 @@ class CourseSlotController extends Controller
     {
         //
         $courseslot = CourseSlot::find($id);
+        if($courseslot->Registrations){
+           return redirect()->route('courseslot',$courseslot->course_id)->With('prohibited','123'); 
+        }
+
         if($courseslot->delete())
             return redirect()->route('courseslot',$courseslot->course_id)->with('deleted','courseSlot deleted successfully');
         else

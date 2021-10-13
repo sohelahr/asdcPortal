@@ -5,6 +5,7 @@ namespace Modules\DocumentList\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use League\CommonMark\Node\Block\Document;
+use Modules\Admission\Entities\Admission;
 
 class DocumentList extends Model
 {
@@ -16,8 +17,8 @@ class DocumentList extends Model
     {
         return \Modules\DocumentList\Database\factories\DocumentListFactory::new();
     }
-
-    function admisions(){
-        return $this->belongsToMany(Document::class,'admission__documentlists','document_id','admission_id')->withPivot('status');
+    
+    function admissions(){
+        return $this->belongsToMany(Admission::class,'admission__documentlists','document_id','admission_id')->withPivot('status');
     }
 }

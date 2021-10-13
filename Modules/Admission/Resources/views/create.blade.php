@@ -29,8 +29,9 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
                             <p id="wait-text" class="text-danger">Please Wait...</p>
+
+                        <div class="form-group">
 
                             <label class="form-label">Course</label>
                             <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
@@ -156,11 +157,7 @@
         });
     });
 
-    function validate() {
-    var val = document.getElementById('textarea').value;
-    if (/^\s*$/g.test(val)) {
-        alert('Wrong content!');
-    }
+   
 }
     
 </script>

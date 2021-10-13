@@ -87,6 +87,10 @@ class OccupationController extends Controller
     {
         //
         $occupation = Occupation::find($id);
+        if($occupation->UserProfile){
+           return redirect()->route('occupations')->With('prohibited','123'); 
+        }
+
         if($occupation->delete())
             return redirect()->route('occupations')->with('deleted','created successfully');
         else

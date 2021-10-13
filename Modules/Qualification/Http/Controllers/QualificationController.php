@@ -88,6 +88,10 @@ class QualificationController extends Controller
     {
         //
         $qualification = Qualification::find($id);
+        if($qualification->UserProfile){
+           return redirect()->route('qualifications')->With('prohibited','123'); 
+        }
+
         if($qualification->delete())
         return redirect()->route('qualifications')->with('created','Created Successfully');
         else

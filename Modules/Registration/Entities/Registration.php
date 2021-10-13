@@ -28,4 +28,8 @@ class Registration extends Model
     function Student(){
         return $this->belongsTo(User::class,'student_id','id');
     }
+    
+    public function Registrations(){
+        return $this->hasMany(Registration::class);
+    }
 }

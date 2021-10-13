@@ -133,6 +133,15 @@
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            $.toast({
+                heading: 'Cannot Delete',
+                text: 'This Document already has registrations',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
             
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
             $.toast({

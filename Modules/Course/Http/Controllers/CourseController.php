@@ -124,6 +124,11 @@ class CourseController extends Controller
         $course = Course::find($id);
         $batches = $course->CourseBatches;
         $slots = $course->CourseSlots;
+
+        if($course->Registrations){
+           return redirect()->route('course_list')->With('prohibited','123'); 
+        }
+
         foreach($slots as $slot){
             $slot->delete();
         }

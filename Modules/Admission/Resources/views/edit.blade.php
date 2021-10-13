@@ -39,8 +39,8 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
                             <p id="wait-text" class="text-danger">Please Wait...</p>
+                        <div class="form-group">
 
                             <label class="form-label">Course</label>
 

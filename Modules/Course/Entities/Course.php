@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
+use Modules\Registration\Entities\Registration;
+
 class Course extends Model
 {
     use HasFactory;
@@ -23,5 +25,8 @@ class Course extends Model
 
     public function CourseBatches(){
         return $this->hasMany(CourseBatch::class);
+    }
+    public function Registrations(){
+        return $this->hasMany(Registration::class);
     }
 }
