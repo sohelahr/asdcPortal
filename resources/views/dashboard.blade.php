@@ -38,6 +38,7 @@
                         <table class="table table-hover" id="registrations">
                         <thead>
                             <tr>
+                                <th>Registration Number</th>
                                 <th>Course Name</th>
                                 <th>Course Timing</th>
                                 <th>Registered On</th>
@@ -48,6 +49,8 @@
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th>Registration Number</th>
+
                                 <th>Course Name</th>
                                 <th>Course Timing</th>
                                 <th>Registered On</th>
@@ -135,6 +138,7 @@
             ajax: "{{route('user_registrations')}}",
             columns:[
                 /* {data: 'student_name', name: 'student_name'}, */
+                {data: 'registration_no', name: 'registration_no'},
                 {data: 'course_name',name:"course_name"},
                 {data: 'course_slot',name:"course_slot"},
                 {data: 'date',name:"date"},

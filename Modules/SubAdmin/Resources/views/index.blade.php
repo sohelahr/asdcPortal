@@ -46,9 +46,9 @@
                                 </td>
                                 <td>{{$subadmin->email}}</td>
                                 <td class="d-flex p-1">
-                                    <button class="btn btn-info btn-rounded p-2 mr-2">
+                                    <a class="btn btn-info btn-rounded p-2 mr-3" href="{{route('permissions',$subadmin->id)}}">
                                         <i class="fas fa-lock"></i>
-                                    </button>
+                                    </a>
                                     <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditSubAdmin({{$subadmin->id}})">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>

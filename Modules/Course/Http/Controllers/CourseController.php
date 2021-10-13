@@ -122,8 +122,16 @@ class CourseController extends Controller
     {
         //
         $course = Course::find($id);
+        $batches = $course->CourseBatches;
+        $slots = $course->CourseSlots;
+        foreach($slots as $slot){
+            $slot->delete();
+        }
+        foreach($batches as $batch){
+            $batch->delete();
+        }
         if($course->delete())
-            return redirect()->route('course_list')->with('deleted','course Updated successfully');
+            return redirect()->route('course_list')->with('deleted','Course Updated successfully');
         else
             return redirect()->route('course_list')->with('error','Something went Wrong');
     }

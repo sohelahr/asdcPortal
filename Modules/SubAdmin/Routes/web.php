@@ -13,6 +13,7 @@
 
 Route::prefix('subadmin')->group(function() {
     Route::get('/', 'SubAdminController@index')->name('subadmin_list');
+
     Route::post('/create', 'SubAdminController@store')->name('subadmin_create');
     Route::get('/edit/{id}', 'SubAdminController@edit')->name('subadmin_edit');
     Route::post('/edit/{id}', 'SubAdminController@update')->name('subadmin_edit');

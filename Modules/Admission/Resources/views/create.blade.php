@@ -30,8 +30,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Course</label>
+                            <p id="wait-text" class="text-danger">Please Wait...</p>
 
+                            <label class="form-label">Course</label>
+                            <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
                             <select class="form-control" name="course_id" id="admission_course">
                                 @foreach ($courses as $course)
                                     <option value="{{$course->id}}" @if ($course->id == $selected_course->id)
@@ -107,12 +109,16 @@
 @endsection
 @section('jcontent')
 <script>
+    $('#wait-text').hide();  
     
     $("#admission_course").on('change',function(){
         let course_id = $("#admission_course").val()
         $.ajax({
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
+            beforeSend: function() {
+              $('#wait-text').show();  
+            },
             success: function (response) {
                 console.log(response)
                 $("#course_slot").empty();
@@ -145,6 +151,7 @@
                             <option value="">Not Found</option>
                         `);
                 }
+                $('#wait-text').hide();  
             }
         });
     });

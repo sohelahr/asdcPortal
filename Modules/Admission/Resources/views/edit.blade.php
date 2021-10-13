@@ -23,6 +23,7 @@
                             <input required type="text" class="form-control form-control-sm" name="firstname"
                                 value="{{$student->name}}" disabled>
                                 <input type="hidden" name="student_id" value="{{$student->id}}">
+                                <input type="hidden" name="registered_course_id" value="{{$selected_course_id}}">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -39,6 +40,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
+                            <p id="wait-text" class="text-danger">Please Wait...</p>
+
                             <label class="form-label">Course</label>
 
                             <select class="form-control" name="course_id" id="admission_course">
@@ -117,12 +120,16 @@
 @endsection
 @section('jcontent')
 <script>
+    $('#wait-text').hide();  
     
     $("#admission_course").on('change',function(){
         let course_id = $("#admission_course").val()
         $.ajax({
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
+            beforeSend: function() {
+              $('#wait-text').show();  
+            },
             success: function (response) {
                 console.log(response)
                 $("#course_slot").empty();
@@ -154,6 +161,7 @@
                             <option value="">Not Found</option>
                         `);
                 }
+                $('#wait-text').hide();  
             }
         });
     });

@@ -14,5 +14,6 @@
     "SerialNumberConfigurations": true,
     "Seeder": true,
     "InitialSeeder": true,
-    "SubAdmin": true
+    "SubAdmin": true,
+    "Security": true
 }

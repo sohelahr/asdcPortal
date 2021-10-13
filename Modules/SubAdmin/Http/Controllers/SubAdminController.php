@@ -97,7 +97,9 @@ class SubAdminController extends Controller
         $user->save();
         return redirect('/subadmin')->with('updated','123');
     }
-
+    function permission($id){
+        return view('subadmin::permissions');
+    }
     /**
      * Remove the specified resource from storage.
      * @param int $id

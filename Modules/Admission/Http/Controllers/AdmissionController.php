@@ -114,6 +114,14 @@ class AdmissionController extends Controller
         $admission->status = "2";
         $admission->student_id = $request->student_id;
 
+        if($admission->course_id == $request->registered_course_id){
+            $admission->is_course_changed = false;
+        }
+        else{
+            $admission->is_course_changed = true;
+        }
+
+
         //get Current Values Of Admission and Roll NUMBERS
         $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
         
@@ -197,7 +205,7 @@ class AdmissionController extends Controller
         $data['address'] = $userprofile->house_details.", ".$userprofile->street.", ".$userprofile->landmark.", ".$userprofile->city.", ".$userprofile->state.", ".$userprofile->pincode;
         $data['course'] = $admission->Course->name;
         $data['course_slot'] = $admission->CourseSlot->name;
-        $data['documents'] = DocumentList::all();
+        $data['documents'] = $admission->documents()->get();
         $data['current_date'] = Date('d M Y');
         $data['admission_number'] = $admission->admission_form_number;
         $data['admission_remarks'] = $admission->admission_remarks;
@@ -215,6 +223,7 @@ class AdmissionController extends Controller
         
         $admission = Admission::find($id);
         $student = $admission->Student;
+        $selected_course_id = $admission->Registration->Course->id;
 
         $courses = Course::all();
 
@@ -224,7 +233,7 @@ class AdmissionController extends Controller
         $initial_course_slots = $admission->Course->CourseSlots; 
         $initial_course_batches = $admission->Course->CourseBatches; 
         
-        return view('admission::edit',compact('documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
+        return view('admission::edit',compact('selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
     }
 
     /**
@@ -244,7 +253,13 @@ class AdmissionController extends Controller
         $admission->courseslot_id = $request->course_slot_id;
         $admission->coursebatch_id = $request->coursebatch_id;
 
-
+        if($admission->course_id == $request->registered_course_id){
+            $admission->is_course_changed = false;
+        }
+        else{
+            $admission->is_course_changed = true;
+        }
+    
         if($admission->course_id != $request->course_id){
         
             $admission->course_id = $request->course_id;

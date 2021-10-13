@@ -92,7 +92,7 @@
                                 data = JSON.parse(data)
                         
                                 if(data == true){
-                                    return "Applied"
+                                    return "<p class='ml-2'>Applied<p>"
 
                                 }
                                 else{

@@ -11,7 +11,7 @@
                 vertical-align: middle
             }
             td{
-                padding: 2px!important;
+                padding: 3px!important;
             }
             p{
                 padding: 0%;
@@ -19,7 +19,7 @@
             }
             tr{
                 vertical-align: middle;
-                margin: 0%;
+                margin: 1%;
             }
         
     </style>
@@ -68,13 +68,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="width: 20%">
                         <p>Date of Birth:</p>
                     </td>
                     <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
                         <p style = "padding-bottom: 0; ">{{$data['dob']}}</p>
                     </td>
-                    <td>
+                    <td style="width: 20%">
                             <p style="padding-left: 10px;">Gender:</p>
                     </td>
                     <td>
@@ -91,7 +91,7 @@
                     <td>
                         <p>Mobile No.:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:30%">
                             <p style = "padding-bottom: 0%; ">{{$data['mobile']}}</p>
                     </td>
                     <td>
@@ -102,10 +102,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td >
                         <p>Qualification:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:40%">
                             <p style = "padding-bottom: 0%; ">{{$data['qualification']}}</p>
                     </td>
                     <td>
@@ -188,14 +188,14 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <p>Attach:</p>
+                        <p>Attached:</p>
                     </td>
                 </tr>
                 <tr>
                      <td colspan="4">
                          <div style="margin-left: 20px">
                         @foreach ($data['documents'] as $document)
-                            <input type = "checkbox"> {{$document->name}}
+                            <input type = "checkbox" checked=""> {{$document->name}}
                         @endforeach
                          </div>
                     </td>
@@ -355,7 +355,7 @@
                             <p  style="padding-left: 10px;">Admission No.:</p>
                         </td>
                         <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">abcd</p>
+                                <p style = "padding-bottom: 0%; ">{{$data['admission_number']}}</p>
                         </td>
                     </tr>
                     <tr>
@@ -363,7 +363,7 @@
                             <p>Course Applied:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; "></p>
+                                <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                         </td>
                     </tr>
                     <tr>
@@ -371,7 +371,9 @@
                             <p>Original Certificate Submit:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; "></p>
+                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents'] as $document)
+                                {{$document->name}} 
+                            @endforeach</p>
                         </td>
                     </tr>
                     <tr>
@@ -441,7 +443,7 @@
                             <p  style="padding-left: 10px;">Admission No.:</p>
                         </td>
                         <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">abcd</p>
+                                <p style = "padding-bottom: 0%; ">{{$data['admission_number']}}</p>
                         </td>
                     </tr>
                     <tr>
@@ -449,7 +451,7 @@
                             <p>Course Applied:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; "></p>
+                                <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                         </td>
                     </tr>
                     <tr>
@@ -457,7 +459,10 @@
                             <p>Original Certificate Submit:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; "></p>
+                                <p style = "padding-bottom: 0%; "> 
+                            @foreach ($data['documents'] as $document)
+                                {{$document->name}} 
+                            @endforeach</p>
                         </td>
                     </tr>
                     <tr>
