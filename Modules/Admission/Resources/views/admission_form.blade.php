@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Admssion Form</title>
+    <title>Admission Form</title>
     <style>
         @media print {
             .pagebreak { page-break-after: always; } /* page-break-after works, as well */
@@ -8,10 +8,12 @@
             table,th,td{
                 /* border: 1px solid black; */
                 font-size: 14px;
-                vertical-align: middle
+                vertical-align: middle;
+                height: 20px
             }
             td{
-                padding: 2px!important;
+                padding: 2px;
+
             }
             p{
                 padding: 0%;
@@ -20,6 +22,8 @@
             tr{
                 vertical-align: middle;
                 margin: 0%;
+                padding: 8px;
+                height: 10% !important;
             }
         
     </style>
@@ -175,31 +179,32 @@
                     <td>
                         <p>Course Joining:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;" colspan = "3">
                         <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                     </td>
+                </tr>
+                <tr>
                     <td >
                         <p style="padding-left: 10px;">Timing:</p>
                     </td>
-                    <td>
+                    <td colspan = "3">
                         {{$data['course_slot']}}
                     </td>
                     
                 </tr>
                 <tr>
-                    <td colspan="4">
+                    <td>
                         <p>Attach:</p>
                     </td>
+                    <td colspan = "3">
+                        <div style="margin-left: 20px">
+                       @foreach ($data['documents'] as $document)
+                           <input type = "checkbox"> {{$document->name}}
+                       @endforeach
+                        </div>
+                   </td>
                 </tr>
-                <tr>
-                     <td colspan="4">
-                         <div style="margin-left: 20px">
-                        @foreach ($data['documents'] as $document)
-                            <input type = "checkbox"> {{$document->name}}
-                        @endforeach
-                         </div>
-                    </td>
-                </tr>
+                
                 <tr>
                     <td>
                         <p>Date:</p>
@@ -210,7 +215,7 @@
                         </div>
                     </td>
                     <td style="border-bottom: 1px solid black; padding-bottom: 0%;">
-                        <p style = "padding-bottom: 0%; ">signature here</p>
+                        <p style = "padding-bottom: 0%; "></p>
                     </td>
                     <td>
                         <p  style="padding-left: 10px;">Student Signature</p>
@@ -228,35 +233,28 @@
             <div style="padding-bottom:2%">
             <table style = "padding: 2%;width:100%">
                 <tr>
-                    <td>
+                    <td width = "200px">
                         <p>Admission Number:</p>
                     </td>
-                    <td colspan="3">
-                            <p style = "border-bottom: 1px solid black; padding-bottom: 0%; ">{{$data['admission_number']}}</p>
+                    <td colspan = "3">
+                            <p style = "border-bottom: 1px solid black; padding-bottom: 0%;">{{$data['admission_number']}}</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <p>Remarks:</p>
                     </td>
-                    <td colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;" colspan = "3">
                             <p style = "padding-bottom: 0%; ">{{$data['admission_remarks']}}</p>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style = "padding-top: 50px;">
                         <p>Admin Signature</p>
                     </td>
-                    <td>
-                        <div style = " padding-bottom: 0%;">
-                            <p style = "padding-bottom: 0%;">sign here</p>
-                        </div>
-                    </td>
-                    <td>   <div style = " padding-bottom: 0%;">
-                            <p style = "padding-bottom: 0%;">sign here</p>
-                        </div>
-                    </td>
-                    <td>   <p  style="padding-left: 10px;">Director Signature</p>
+                    <td></td>
+                   <td></td>
+                    <td style="padding-top: 50px;text-align: right">   <p >Director Signature</p>
                     </td>
                     
                 </tr>
@@ -337,7 +335,7 @@
             <div>
                 <table style = "margin:10px;width:100%">
                     <tr>
-                        <td>
+                        <td  width = "200px">
                             <p>Name:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
@@ -375,13 +373,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px; text-align: center">
                             <p><b>Student Signature</b></p>
                         </td>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px; text-align: right">
                             <p><b>Admin Signature</b></p>
                         </td>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px; text-align: center" colspan = "2">
                             <p><b>Director Signature</b></p>
                         </td>
                     </tr>
@@ -423,7 +421,7 @@
             <div>
                 <table style = "margin:10px;width:100%">
                     <tr>
-                        <td>
+                        <td width = "200px">
                             <p>Name:</p>
                         </td>
                         <td  colspan="3" style="border-bottom: 1px solid black; padding-bottom: 0%;">
@@ -461,13 +459,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px; text-align: center">
                             <p>Student Signature</p>
                         </td>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px;  text-align: right">
                             <p>Admin Signature</p>
                         </td>
-                        <td style = "padding-top: 50px">
+                        <td style = "padding-top: 50px;  text-align: center" colspan = "2">
                             <p>Director Signature</p>
                         </td>
                     </tr>
