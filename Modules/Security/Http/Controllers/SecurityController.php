@@ -2,78 +2,30 @@
 
 namespace Modules\Security\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Security\Entities\Permission;
+use Modules\Security\Entities\UserPermission;
 
 class SecurityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    function setPermission($id)
     {
-        return view('security::index');
+        $user_details = User::find($id);
+        $permissions = Permission::where('status','1')->orderBy('module')->get(['id','name','module'])->toArray();
+        $user_permission = UserPermission::where('user_id',$id)->get()->pluck('permission_id')->toArray();
+        $permission_arr = $this->arrayGroupBy($permissions,'module');
+        return view('security::permissions',compact('permission_arr','user_details','user_permission'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('security::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('security::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('security::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+    public function arrayGroupBy($array, $key) {
+        $return = array();
+        foreach ($array as $val)
+        {
+            $val = (array) $val;
+            $return[$val[$key]][] = $val;
+        }
+        return $return;
     }
 }

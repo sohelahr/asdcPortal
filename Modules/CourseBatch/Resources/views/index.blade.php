@@ -37,7 +37,7 @@
                         @foreach ($coursebatches as $coursebatch)
                             <tr>
                                 <td>
-                                    {{$coursebatch->Course->name}}
+                                    @if($coursebatch->Course){{$coursebatch->Course->name}}@else not found @endif
                                 </td>
                                 <td>{{$coursebatch->batch_number}}</td>
                                 <td>{{$coursebatch->start_date}}</td>        
@@ -251,7 +251,7 @@
         @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
         $.toast({
             heading: 'Cannot Delete',
-            text: 'This coursebatch already has registrations',
+            text: 'This coursebatch already has admissions',
             position:'top-right',
             icon: 'warning',
             loader: true,        // Change it to false to disable loader

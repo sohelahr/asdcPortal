@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-header">
         <h3 class="page-title">
-            Courses
+            Sub Admins
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -14,14 +14,14 @@
     </div>
     <div class="card">
         @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#subadmin-create">

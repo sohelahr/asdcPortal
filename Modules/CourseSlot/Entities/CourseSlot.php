@@ -4,6 +4,7 @@ namespace Modules\CourseSlot\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admission\Entities\Admission;
 use Modules\Registration\Entities\Registration;
 
 class CourseSlot extends Model
@@ -22,5 +23,8 @@ class CourseSlot extends Model
     
     public function Registrations(){
         return $this->hasMany(Registration::class);
+    }
+    public function Admissions(){
+        return $this->hasMany(Admission::class);
     }
 }

@@ -124,8 +124,8 @@ class CourseController extends Controller
         $course = Course::find($id);
         $batches = $course->CourseBatches;
         $slots = $course->CourseSlots;
-
-        if($course->Registrations){
+        
+        if($course->Registrations->count() > 0 || $course->Admissions->count() > 0){
            return redirect()->route('course_list')->With('prohibited','123'); 
         }
 

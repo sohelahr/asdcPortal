@@ -87,7 +87,7 @@ class OccupationController extends Controller
     {
         //
         $occupation = Occupation::find($id);
-        if($occupation->UserProfile){
+        if($occupation->UserProfile->count() > 0){
            return redirect()->route('occupations')->With('prohibited','123'); 
         }
 

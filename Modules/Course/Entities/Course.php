@@ -4,6 +4,7 @@ namespace Modules\Course\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admission\Entities\Admission;
 use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\Registration\Entities\Registration;
@@ -28,5 +29,8 @@ class Course extends Model
     }
     public function Registrations(){
         return $this->hasMany(Registration::class);
+    }
+    public function Admissions(){
+        return $this->hasMany(Admission::class);
     }
 }

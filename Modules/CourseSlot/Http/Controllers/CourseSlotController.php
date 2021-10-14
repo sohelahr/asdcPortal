@@ -100,7 +100,7 @@ class CourseSlotController extends Controller
     {
         //
         $courseslot = CourseSlot::find($id);
-        if($courseslot->Registrations){
+        if($courseslot->Registrations->count() > 0 || $courseslot->Admissions->count() > 0){
            return redirect()->route('courseslot',$courseslot->course_id)->With('prohibited','123'); 
         }
 

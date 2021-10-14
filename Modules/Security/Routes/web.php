@@ -13,5 +13,5 @@
 
 Route::prefix('security')->group(function() {
     Route::get('/', 'SecurityController@index');
-    Route::get('/permissions/{id}', 'SecurityController@permission')->name('permissions');
+    Route::get('/permissions/{id}', 'SecurityController@setPermission')->name('permissions');
 });

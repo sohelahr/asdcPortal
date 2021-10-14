@@ -165,7 +165,7 @@
         @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
             $.toast({
                 heading: 'Cannot Delete',
-                text: 'This course already has registrations',
+                text: 'This course already has registrations or admissions',
                 position:'top-right',
                 icon: 'warning',
                 loader: true,        // Change it to false to disable loader

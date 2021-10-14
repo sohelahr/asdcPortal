@@ -88,7 +88,7 @@ class QualificationController extends Controller
     {
         //
         $qualification = Qualification::find($id);
-        if($qualification->UserProfile){
+        if($qualification->UserProfile->count() > 0){
            return redirect()->route('qualifications')->With('prohibited','123'); 
         }
 

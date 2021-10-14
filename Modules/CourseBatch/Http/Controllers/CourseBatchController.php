@@ -108,7 +108,7 @@ class CourseBatchController extends Controller
     {
         //
         $coursebatch = CourseBatch::find($id);
-        if($coursebatch->Registrations){
+        if($coursebatch->Admissions->count() > 0){
            return redirect()->route('coursebatch_list')->With('prohibited','123'); 
         }
 
