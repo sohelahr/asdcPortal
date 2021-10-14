@@ -1,0 +1,10 @@
+td{
+    padding: 10px!important;
+    vertical-align: middle!important;
+}
+th{
+    padding-left: 10px!important;
+}
+.action{
+    text-align: center;
+}

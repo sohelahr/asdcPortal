@@ -16,10 +16,10 @@
                             <h4>Hello! let's get started</h4>
                             <h6 class="font-weight-light">Sign up to continue.</h6>
                             <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                            <form class="pt-3"  action="{{route('register')}}" method="POST">
+                            <form class="pt-3"  action="{{route('register')}}" method="POST" id = "register">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-sm" id="email" placeholder="Full Name" name="name">
+                                    <input type="text" class="form-control form-control-sm" id="name" placeholder="Full Name" name="name">
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-sm" id="email" placeholder="Email" name="email">
@@ -43,3 +43,69 @@
         </div>
     </div>
 @endsection
+
+@section('jcontent')
+<script>
+    $(document).ready(function (){
+        $('#register').validate({
+            errorClass: "text-danger pt-1",
+            rules: {
+     
+ name: {
+
+     required: true,
+    
+
+ },
+
+ email: {
+
+     required: true,
+
+     email: true
+
+ },
+
+ password: {
+
+     required: true,
+
+    
+
+ },
+
+ password_confirmation: {
+
+     required: true,
+
+    
+
+ },
+
+ 
+},
+
+ messages: {
+    name:{
+        required: "Please enter your name",
+    },
+
+    email:{
+        required: "Please enter your email id",
+    },
+
+    password:{ 
+        required: "Please enter a password",
+    },
+
+    password_confirmation:{
+        required: "Please re-enter your password",
+    },
+} 
+
+        });
+    });
+</script>
+@endsection
+
+

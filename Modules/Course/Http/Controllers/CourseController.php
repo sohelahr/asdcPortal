@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Course\Entities\Course;
+use Modules\SerialNumberConfigurations\Http\Controllers\SerialNumberConfigurationsController;
 use Yajra\Datatables\Datatables;
 class CourseController extends Controller
 {
@@ -43,6 +44,9 @@ class CourseController extends Controller
         $course->duration = $request->duration;
         $course->slug = $request->slug;
         $course->save();
+
+        SerialNumberConfigurationsController::generateNewSerialNumber($course->id,$course->slug);
+
         return redirect()->route('course_list')->with('created','course created successfully');
     }
 
@@ -62,6 +66,13 @@ class CourseController extends Controller
         return Datatables::of($courses)
             ->addIndexColumn()
             ->addColumn('courseslot',function($course){
+                $registrations = Auth::user()->Registrations;
+                $courseslots = $course->CourseSlots->pluck(['id'])->toArray();
+                    foreach($registrations as $registration){
+                        if(in_array($registration->course_slot_id,$courseslots)){
+                            return true;
+                        }
+                    }
                     return $course->CourseSlots;
                 })
             ->addColumn('apply',function($course){
@@ -111,8 +122,21 @@ class CourseController extends Controller
     {
         //
         $course = Course::find($id);
+        $batches = $course->CourseBatches;
+        $slots = $course->CourseSlots;
+
+        if($course->Registrations){
+           return redirect()->route('course_list')->With('prohibited','123'); 
+        }
+
+        foreach($slots as $slot){
+            $slot->delete();
+        }
+        foreach($batches as $batch){
+            $batch->delete();
+        }
         if($course->delete())
-            return redirect()->route('course_list')->with('deleted','course Updated successfully');
+            return redirect()->route('course_list')->with('deleted','Course Updated successfully');
         else
             return redirect()->route('course_list')->with('error','Something went Wrong');
     }

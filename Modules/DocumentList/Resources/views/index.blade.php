@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#document-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#document-create">
+                    + Create
                 </button>
             </div>       
             
@@ -26,7 +25,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th style="width: 85%">Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,7 +37,7 @@
                                     <button class="btn btn-dark btn-rounded p-2" onclick="Editdocumentlist({{$document->id}})">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
-                                    <form action="{{url('documentlist/delete/'.$document->id)}}" method="post" class="ml-2">
+                                    <form action="{{url('documentlist/delete/'.$document->id)}}" method="post" class="ml-2" id = "document">
                                         @csrf
                                         <button type=submit class="btn btn-danger btn-rounded p-2">
                                             <i class="fas fa-trash"></i>
@@ -57,7 +56,7 @@
     <div id="document-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('documentlist/create')}}">
+                <form method="POST" action="{{url('documentlist/create')}}" id  = "myForm">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="document-create-title">Create Document</h5>
@@ -69,10 +68,11 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Adhaar">
+                          
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">    
+                        <input type="submit" value="Submit" class="btn btn-primary" onsubmit="validateform()">    
                     </div>
                 </form>
             </div>
@@ -133,6 +133,15 @@
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            $.toast({
+                heading: 'Cannot Delete',
+                text: 'This Document already has registrations',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
             
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
             $.toast({
@@ -169,6 +178,18 @@
                 },
             });
         }
+
+        function validateform(){  
+            var name=document.documents.name.value;  
+            
+            
+            if (name==null || name==""){  
+            alert("Name can't be blank");  
+            return false;  
+            }
+        }  
+ 
+
         
     </script>
     

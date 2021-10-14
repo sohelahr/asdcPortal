@@ -104,7 +104,7 @@
                                     {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>{{$profile->city}},
                                     {{$profile->state}}, {{$profile->pincode}}
                                 </p>
-                                <p>House Type:- {{$profile->house_type}}</p>
+                                <p>House Type:- {{$profile->home_type}}</p>
                             </div>
                             </div>
                             <div class="d-flex align-items-start profile-feed-item">

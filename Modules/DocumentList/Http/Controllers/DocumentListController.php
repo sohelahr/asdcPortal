@@ -87,6 +87,10 @@ class DocumentListController extends Controller
     {
         //
         $document_list = DocumentList::find($id);
+        if($document_list->admissions()->first()){
+           return redirect()->route('document_list')->With('prohibited','123'); 
+        }
+
         if($document_list->delete())
             return redirect()->route('document_list')->with('deleted','updated successfully');
         else

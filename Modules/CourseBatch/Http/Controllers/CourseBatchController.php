@@ -49,6 +49,17 @@ class CourseBatchController extends Controller
         return redirect()->route('coursebatch_list')->with('created','course created successfully');
     }
 
+    function changeStatus($id)
+    {
+        $coursebatch = CourseBatch::find($id);
+        if($coursebatch->status == "1")
+            $coursebatch->status = "2";
+        else
+            $coursebatch->status = "1";
+
+        if($coursebatch->save())
+            return redirect()->route('coursebatch_list')->with('status','course created successfully');    
+    }
     /**
      * Show the specified resource.
      * @param int $id
@@ -97,6 +108,10 @@ class CourseBatchController extends Controller
     {
         //
         $coursebatch = CourseBatch::find($id);
+        if($coursebatch->Registrations){
+           return redirect()->route('coursebatch_list')->With('prohibited','123'); 
+        }
+
         if($coursebatch->delete())
             return redirect()->route('coursebatch_list')->with('deleted','course Updated successfully');
         else

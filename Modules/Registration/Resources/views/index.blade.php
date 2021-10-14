@@ -21,6 +21,7 @@
                     <thead>
                         <tr>
                             <th style="width: 30px">No</th>
+                            <th>Reg Number</th>
                             <th>Student Name</th>
                             <th>Course Name</th>
                             <th>Course Timing</th>
@@ -33,6 +34,7 @@
                      <tfoot>
                         <tr>
                             <th>No</th>
+                            <th>Reg Number</th>
                             <th>Student Name</th>
                             <th>Course Name</th>
                             <th>Course Timing</th>
@@ -59,6 +61,7 @@
         ajax: "{{route('all_registrations')}}",
         columns:[
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'registration_no', name: 'registration_no'},
             {data: 'student_name', name: 'student_name'},
             {data: 'course_name',name:"course_name"},
             {data: 'course_slot',name:"course_slot"},

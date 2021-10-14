@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <form action="{{route('profile_update')}}" method="POST" enctype="multipart/form-data">        
+    <form action="{{route('profile_update')}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
         <div class="pt-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -400,7 +400,10 @@
             </div>
         </div>
     </form>
-    @section('jcontent')
+    
+</x-app-layout>
+
+
     <script>
         $('#datepicker-popup').datepicker({
             format: 'yy/mm/dd',
@@ -408,6 +411,410 @@
             todayHighlight: true
         });
 
+         $(document).ready(function (){
+        $('#edit_profile').validate({
+            errorClass: "text-danger pt-1",
+            rules: {
+     
+            firstname: {
+
+                required: true,
+                
+
+            },
+
+            lastname: {
+
+                required: true,
+
+               
+
+            },
+
+            mobile: {
+
+                required: true,
+                digits: true,
+                minlength: 0,
+                maxlength: 10 
+
+                
+
+            },
+
+            gender: {
+
+                required: true,
+
+                
+
+            },
+
+            dob: {
+
+            required: true,
+
+
+
+
+            },
+
+            age: {
+
+            required: true,
+
+            number: true,
+
+
+
+            },
+            aadhaar: {
+
+            required: true,
+            digits: true,
+            minlength: 0,
+            maxlength: 12
+
+
+
+            },
+            blood_group: {
+
+            required: true,
+
+
+
+            },
+            marital_status: {
+
+            required: true,
+
+
+
+            },
+            photo: {
+
+            required: true,
+
+
+
+            },
+
+            address: {
+
+            required: true,
+
+
+
+            },
+
+            home_type: {
+
+            required: true,
+
+            },
+
+            house_details: {
+
+            required: true,
+
+            },
+
+            street: {
+
+            required: true,
+
+            },
+
+            landmark: {
+
+            required: true,
+
+            },
+
+            pincode: {
+
+            required: true,
+
+            },
+            
+            city: {
+
+            required: true,
+
+            },
+
+            state: {
+
+            required: true,
+
+            },
+            qualification_id: {
+
+            required: true,
+
+            },
+            qualification_specilization: {
+
+            required: true,
+
+            },
+            school_name: {
+
+            required: true,
+
+            },
+
+            qualification_status: {
+
+            required: true,
+
+            },
+            occupation_id: {
+
+            required: true,
+
+            },
+            father_name: {
+
+            required: true,
+
+            },
+
+            fathers_mobile: {
+
+            required: true,
+            digits: true,
+            minlength: 0,
+            maxlength: 10
+
+            },
+
+            father_occupation: {
+
+            required: true,
+
+            },
+
+            fathers_income: {
+
+            required: true,
+
+            },
+
+            how_know_us: {
+
+            required: true,
+
+            },
+
+            comments: {
+
+            required: true,
+
+            },
+        },
+
+        messages: {
+     
+     firstname: {
+
+         required: "Please enter your first name",
+         
+
+     },
+
+     lastname: {
+
+         required: "Please enter your second name",
+
+        
+
+     },
+
+     mobile: {
+
+         required: "Please enter your mobile number",
+      
+         
+
+     },
+
+     gender: {
+
+         required: "Please select your gender",
+
+         
+
+     },
+
+     dob: {
+
+     required: "Please select date of birth",
+
+
+
+
+     },
+
+     age: {
+
+     required: "Please enter your age",
+
+     number: true,
+
+
+
+     },
+     aadhaar: {
+
+     required: "Please enter your adhaar number",
+     
+
+     },
+     blood_group: {
+
+     required: "Please enter yor blood group",
+
+
+
+     },
+     marital_status: {
+
+     required: "Please select your marital status",
+
+
+
+     },
+     photo: {
+
+     required: "Please choose a file",
+
+
+
+     },
+
+     address: {
+
+     required: "Please enter your address",
+
+
+
+     },
+
+     home_type: {
+
+     required: "Please select home type",
+
+     },
+
+     house_details: {
+
+     required: "Please enter your house details",
+
+     },
+
+     street: {
+
+     required: "Please enter street name",
+
+     },
+
+     landmark: {
+
+     required: "Please enter landmark",
+
+     },
+
+     pincode: {
+
+     required: "Please enter landmark",
+
+     },
+     
+     city: {
+
+     required: "Please enter city",
+
+     },
+
+     state: {
+
+     required: "Please enter state",
+
+     },
+     qualification_id: {
+
+     required: "Please enter qualification",
+
+     },
+     qualification_specilization: {
+
+     required: "Please enter specialization",
+
+     },
+     school_name: {
+
+     required: "Please enter school name",
+
+     },
+
+     qualification_status: {
+
+     required: "Please enter qualification status",
+
+     },
+     occupation_id: {
+
+     required: "Please enter your occupation",
+
+     },
+     father_name: {
+
+     required: "Please enter father's name",
+
+     },
+
+     fathers_mobile: {
+
+     required: "Please enter father's mobile number",
+
+     },
+
+     father_occupation: {
+
+     required: "Please enter father's occupation",
+
+     },
+
+     fathers_income: {
+
+     required: "Please enter father's income",
+
+     },
+
+     how_know_us: {
+
+     required: "Please tell us something",
+
+     },
+
+     comments: {
+
+     required: "Please give us a feedback",
+
+     },
+ }
+
+
+
+        });
+    });
+
+
     </script>
-    @endsection
-</x-app-layout>
+
+
+    
+
+

@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                    <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#occupation-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#occupation-create">
+                    + Create
                 </button>
             </div>    
             
@@ -26,7 +25,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th style="width: 85%">Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -127,6 +126,15 @@
             $.toast({
                 heading: 'Deleted',
                 text: 'Occupation Was Successfully Deleted',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            $.toast({
+                heading: 'Cannot Delete',
+                text: 'This Occupation already has registrations',
                 position:'top-right',
                 icon: 'warning',
                 loader: true,        // Change it to false to disable loader

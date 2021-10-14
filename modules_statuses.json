@@ -11,5 +11,9 @@
     "Registration": true,
     "CourseBatch": true,
     "Admission": true,
-    "SerialNumberConfigurations": true
+    "SerialNumberConfigurations": true,
+    "Seeder": true,
+    "InitialSeeder": true,
+    "SubAdmin": true,
+    "Security": true
 }

@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#course-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
+                     + Create
                 </button>
             </div>    
             
@@ -64,7 +63,7 @@
     <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('course/create')}}">
+                <form method="POST" action="{{url('course/create')}}" id  ="courses">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="course-create-title">Create Course</h5>
@@ -163,7 +162,15 @@
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })
-            
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            $.toast({
+                heading: 'Cannot Delete',
+                text: 'This course already has registrations',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
             $.toast({
                 heading: 'Danger',
@@ -200,6 +207,51 @@
                 },
             });
         }
+
+        $(document).ready(function (){
+        $('#courses').validate({
+            errorClass: "text-danger pt-1",
+            rules: {     
+                name: {
+                    required: true,
+                },
+                duration: {
+
+                    required: true,
+
+                    
+                },
+
+                slug: {
+
+                    required: true,
+
+                    
+
+                },
+
+                
+                
+                },
+
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
+
+                    duration:{
+                        required: "Please enter duration",
+                    },
+
+                    slug:{ 
+                        required: "Please enter a slug",
+                    },
+
+                } 
+
+        });
+    });
+
         
     </script>
     

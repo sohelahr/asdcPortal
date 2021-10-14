@@ -106,7 +106,7 @@
             {data: 'admitted_by',name:"admitted_by"},
             {data: 'date',name:"date"},
             {data:'Action',render:function(type,data,row){
-                    return "<button class='badge badge-primary badge-pill'>Edit</button>"
+                    return "<a href='admission/edit/"+row.id+"' class='badge badge-primary badge-pill'>Edit</a>"
                 },name:'action'}
         ]
     });

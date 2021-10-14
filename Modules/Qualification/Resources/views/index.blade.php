@@ -16,9 +16,8 @@
         
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-success btn-icon-text" type="button" data-toggle="modal" data-target="#qualification-create">
-                    Create
-                    <i class="fa fa-plus btn-icon-prepend"></i>
+                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#qualification-create">
+                     + Create
                 </button>
             </div>    
             
@@ -26,7 +25,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th style="width: 85%">Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,9 +37,9 @@
                                     <button class="btn btn-dark btn-rounded p-2" onclick="Editqualification({{$qualification->id}})">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
-                                    <form action="{{url('qualification/delete/'.$qualification->id)}}" method="post" class="ml-2">
+                                    <form action="{{url('qualification/delete/'.$qualification->id)}}" method="post" class="ml-2 mb-0">
                                         @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2">
+                                        <button type=submit class="btn btn-danger btn-rounded p-2 mb-0">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -128,6 +127,15 @@
             $.toast({
                 heading: 'Deleted',
                 text: 'Qualification Was Successfully Deleted',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            $.toast({
+                heading: 'Cannot Delete',
+                text: 'This Qualification already has registrations',
                 position:'top-right',
                 icon: 'warning',
                 loader: true,        // Change it to false to disable loader

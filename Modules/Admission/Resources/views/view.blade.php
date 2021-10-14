@@ -31,7 +31,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Admission Form Number</label>
-                            <input class="form-control form-control-sm" type="text" name="admission_form_number" value="{{$admission->admission_form_number}}">
+                            <input class="form-control form-control-sm" type="text" disabled name="admission_form_number" value="{{$admission->admission_form_number}}">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -63,10 +63,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                         <label class="form-label">Documents Submitted</label>
-                        @foreach ($documents_submitted as $document)
+                        @foreach ($documents as $document)
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                              <input type="checkbox" class="form-check-input"  checked value="{{$document->id}}" disabled>
+                              <input type="checkbox" class="form-check-input" @if(in_array($document->id,$documents_submitted)) checked  @endif value="{{$document->id}}" disabled>
                               {{$document->name}}
                             <i class="input-helper"></i></label>
                           </div>  

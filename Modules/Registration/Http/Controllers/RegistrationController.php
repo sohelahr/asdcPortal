@@ -113,6 +113,7 @@ class RegistrationController extends Controller
         $registration->course_slot_id = $request->course_slot_id;
         $registration->status = "1";
     
+        $registration->registration_no = 'RG-'.$this->generateRandomString()."".$registration->student_id;
         
         $count_registrations = Auth::user()->Registrations->count();
         if($count_registrations < 2){
@@ -167,5 +168,15 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    function generateRandomString($length = 6) {
+        $characters = '0123456789876543210';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

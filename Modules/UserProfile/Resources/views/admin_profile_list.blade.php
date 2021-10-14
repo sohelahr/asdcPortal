@@ -123,14 +123,14 @@
                 //this will be rendered from server just for demo here
                 console.log(data)
                 if(data == "True")
-                   return "<label class='badge badge-pill badge-success'>Registered</label>"
+                   return "<p class='text-success mb-0'>Registered</p>"
                 else
-                    return "<label class='badge badge-warning badge-pill'>Not Registered</label>"
+                    return "<p class='text-warning mb-0'>Not Registered</p>"
                 },
             name:'type'
             },
             {data: 'edit',render:function(type,data,row){
-                return "<a href='/userprofile/admin/edit/"+row.id+"' class='btn btn-dark btn-rounded p-2 mr-2'><i class='fas fa-pencil-alt'></i></a>"
+                return "<a href='userprofile/admin/"+row.id+"/edit/' class='btn btn-dark btn-rounded p-2 mr-2'><i class='fas fa-pencil-alt'></i></a>"
                 },
             },
         ]

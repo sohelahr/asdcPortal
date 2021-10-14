@@ -14,7 +14,7 @@
     <div class="card">
         
         <div class="card-body">
-            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data"> 
+            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data" id = "admission"> 
                 @csrf       
                 <div class="row">
                     <div class="col-md-4">
@@ -29,9 +29,12 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Course</label>
+                            <p id="wait-text" class="text-danger">Please Wait...</p>
 
+                        <div class="form-group">
+
+                            <label class="form-label">Course</label>
+                            <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
                             <select class="form-control" name="course_id" id="admission_course">
                                 @foreach ($courses as $course)
                                     <option value="{{$course->id}}" @if ($course->id == $selected_course->id)
@@ -50,7 +53,8 @@
                             <select class="form-control" name="coursebatch_id" id="course_batch">
                                 @if(count($initial_course_batches) > 0)
                                     @foreach ($initial_course_batches as $coursebatch)
-                                        <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
+                                        
+                                            <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
                                     <option>No Batches Found</option>
@@ -98,7 +102,7 @@
                          
                       </div>
                 </div>                                                         
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button type="submit" class="btn btn-primary mr-2" onclick = "validate()">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
             </form>
         </div>
@@ -106,12 +110,16 @@
 @endsection
 @section('jcontent')
 <script>
+    $('#wait-text').hide();  
     
     $("#admission_course").on('change',function(){
         let course_id = $("#admission_course").val()
         $.ajax({
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
+            beforeSend: function() {
+              $('#wait-text').show();  
+            },
             success: function (response) {
                 console.log(response)
                 $("#course_slot").empty();
@@ -131,10 +139,11 @@
                         `);
                 }
                 if(response.course_batches.length > 0){
-                    $.each(response.course_batches, function (index, element) { 
-                        $("#course_batch").append(`
-                            <option value="${element.id}">${element.batch_number}</option>
-                        `);
+                    $.each(response.course_batches, function (index, element) {
+                        
+                            $("#course_batch").append(`
+                                <option value="${element.id}">${element.batch_number}</option>
+                            `);
                     });
                 }
                 else
@@ -143,8 +152,13 @@
                             <option value="">Not Found</option>
                         `);
                 }
+                $('#wait-text').hide();  
             }
         });
     });
+
+   
+}
+    
 </script>
 @endsection
