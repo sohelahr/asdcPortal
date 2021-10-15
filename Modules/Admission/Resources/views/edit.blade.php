@@ -12,9 +12,21 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-            <form action="{{route('user_admission_edit',$admission->id)}}" method="POST" enctype="multipart/form-data"> 
+            <form action="{{route('user_admission_edit',$admission->id)}}" method="POST" enctype="multipart/form-data" id="edit_form"> 
                 @csrf       
                 <div class="row">
                     <div class="col-md-4">
@@ -39,7 +51,6 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                            <p id="wait-text" class="text-danger">Please Wait...</p>
                         <div class="form-group">
 
                             <label class="form-label">Course</label>
@@ -81,7 +92,7 @@
                                     @endif>{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
-                                    <option>No Batches Found</option>
+                                    <option value="">No Batches Found</option>
                                 @endif
                             </select>
 
@@ -128,10 +139,10 @@
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
             beforeSend: function() {
-              $('#wait-text').show();  
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
             },
             success: function (response) {
-                console.log(response)
                 $("#course_slot").empty();
                 $("#course_batch").empty();
 
@@ -161,9 +172,47 @@
                             <option value="">Not Found</option>
                         `);
                 }
-                $('#wait-text').hide();  
-            }
+                
+            },
+            complete: function () {
+                    $('#overlay-loader').hide();
+            },
+
         });
     });
+
+    $(document).ready(function () {
+             $('#edit_form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    course_id: {
+                        required: true,
+                    },
+                    coursebatch_id: {
+                        required: true,
+                    },
+                    course_slot_id: {
+                        required: true,
+                    },
+                    admission_remarks: {
+                        required: true,
+                    },  
+                },
+                messages: {
+                    course_id: {
+                        required: "Course is required",
+                    },
+                    coursebatch_id: {
+                        required: "Please select a batch",
+                    },
+                    course_slot_id: {
+                        required: "Please select a timing",
+                    },
+                    admission_remarks: {
+                        required: "Please enter a remarks",
+                    },  
+                } 
+            });
+    }); 
 </script>
 @endsection

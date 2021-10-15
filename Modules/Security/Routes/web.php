@@ -14,4 +14,6 @@
 Route::prefix('security')->group(function() {
     Route::get('/', 'SecurityController@index');
     Route::get('/permissions/{id}', 'SecurityController@setPermission')->name('permissions');
+    Route::post('/set/permissions', 'SecurityController@setSecurityPermission')->name('set_security_permissions');
+
 });

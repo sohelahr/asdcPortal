@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @yield('title')
+    <title>ASDC | Admin</title>
     <!-- plugins:css -->
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -36,7 +36,9 @@
             @include('layouts.admin.sidenav')
             <div class="main-panel">
                 {{--main content here--}}
+                
                 <div class="content-wrapper">
+                     
                     @yield('content')
                 </div>
                 {{--footer include here--}}

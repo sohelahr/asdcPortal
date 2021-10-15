@@ -13,7 +13,19 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#document-create">
@@ -53,7 +65,7 @@
     </div>
 
     
-    <div id="document-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-create-title" aria-hidden="true">
+    <div id="document-create" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="document-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="POST" action="{{url('documentlist/create')}}" id  = "myForm">
@@ -78,26 +90,25 @@
             </div>
         </div>
     </div>
-    <div id="documentlist-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-create-title" aria-hidden="true">
+    <div id="documentlist-edit" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="document-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="POST" action="{{url('documentlist/edit')}}" id="edit-form">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="document-create-title">Edit Document</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-danger" id="showtext">Please Wait...</h5>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Adhaar">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">    
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
+
                     </div>
                 </form>
             </div>
@@ -106,6 +117,10 @@
 @endsection
 @section('jcontent')
     <script>
+        
+        function closeModal(){
+            $('#documentlist-edit').modal('hide');
+        }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
             $.toast({
                 heading: 'Created',
@@ -156,7 +171,6 @@
         
         function Editdocumentlist(documentlist_id){
             getEditData(documentlist_id);
-            $("#documentlist-edit").modal('show');
         }
 
         function getEditData(documentlist_id){
@@ -165,29 +179,59 @@
                 type: "get",
                 url: `{{url('documentlist/edit/${documentlist_id}')}}`,
                 beforeSend: function () {
-                    $('#showtext').show();
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
                 },
                 success: function (response) {
                     data = JSON.parse(response);
 
                     $("#edit-form").attr("action", `{{url('documentlist/edit/${documentlist_id}')}}`);
                     $("#edit-name").val(data.name);
+                    $("#documentlist-edit").modal('show');  
+
                 },
                 complete: function () {
-                    $('#showtext').hide();
+                    $('#overlay-loader').hide();
                 },
             });
         }
 
-        function validateform(){  
-            var name=document.documents.name.value;  
-            
-            
-            if (name==null || name==""){  
-            alert("Name can't be blank");  
-            return false;  
-            }
-        }  
+        $(document).ready(function () {
+             $('#myForm').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Name",
+                    },
+                    
+                } 
+
+            });
+             $('#edit-form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Name",
+                    },
+                    
+                } 
+
+            });
+        });
  
 
         

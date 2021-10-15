@@ -14,7 +14,19 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#timing-create">
@@ -59,10 +71,10 @@
         </div>
     </div>
 
-    <div id="timing-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="timing-create-title" aria-hidden="true">
+    <div id="timing-create" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="timing-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('courseslot/create')}}">
+                <form method="POST" action="{{url('courseslot/create')}}" id="timing-create-form">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="timing-create-title">Create timing for {{$course->name}}</h5>
@@ -102,12 +114,8 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="timing-edit-title">Edit timing</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-danger" id="showtext">Please Wait...</h5>
                         <div class="form-group">
                             <label for="name">Timing in hours</label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
@@ -124,7 +132,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary" >    
+                        <input type="submit" value="Submit" class="btn btn-primary" > 
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
+
                     </div>
                 </form>
             </div>
@@ -135,7 +145,9 @@
 @endsection
 @section('jcontent')
     <script>
-        
+        function closeModal(){
+            $('#timing-edit').modal('hide');
+        }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
             $.toast({
                 heading: 'Created',
@@ -185,9 +197,7 @@
         @endif
         
         function EditTiming(timing_id){
-            console.log(timing_id)
             getEditData(timing_id);
-            $("#timing-edit").modal('show');
         }
 
         function getEditData(timing_id){
@@ -195,7 +205,9 @@
                 type: "get",
                 url: `{{url('courseslot/edit/${timing_id}')}}`,
                 beforeSend: function () {
-                    $('#showtext').show();
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
+                    
                 },
                 success: function (response) {
                     data = JSON.parse(response);
@@ -204,13 +216,70 @@
                     $("#edit-name").val(data.name);
                     $("#edit-TotalCapacity").val(data.TotalCapacity);
                     $("#edit-CurrentCapacity").val(data.CurrentCapacity);
+                    $("#timing-edit").modal('show');
+                    
                 },
                 complete: function () {
-                    $('#showtext').hide();
+                    $('#overlay-loader').hide();
                 },
             });
         }
-        
+        $(document).ready(function () {
+             $('#timing-create-form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    TotalCapacity:{
+                        required:true,
+                    },
+                    CurrentCapacity: {
+                        required: true,                    
+                    },
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Timing",
+                    },
+                    TotalCapacity:{
+                        required:"Please Add Total Capacity",
+                    },
+                    CurrentCapacity:{
+                        required: "Please Add Current Capacity",
+                    },
+                } 
+
+            });
+             $('#edit-form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    TotalCapacity:{
+                        required:true,
+                    },
+                    CurrentCapacity: {
+                        required: true,                    
+                    },
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Timing",
+                    },
+                    TotalCapacity:{
+                        required:"Please Add Total Capacity",
+                    },
+                    CurrentCapacity:{
+                        required: "Please Add Current Capacity",
+                    },
+                } 
+
+            });
+        });
     </script>
     
 @endsection

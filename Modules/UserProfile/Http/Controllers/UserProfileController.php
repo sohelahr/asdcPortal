@@ -68,8 +68,12 @@ class UserProfileController extends Controller
      */
     public function show()
     {
+
         $profile = Auth::user()->UserProfile;
-        return view('userprofile::user_profile',compact('profile'));
+            if($profile->is_profile_completed)
+                return view('userprofile::user_profile',compact('profile'));
+        return redirect('/dashboard')->with('profile_not_complete','not complete');
+        
     }
     public function Adminshow($id)
     {

@@ -9,7 +9,7 @@ class UserPermission extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['user_id','permission_id','created_by'];
     protected $table = 'user_permissions';
     
     protected static function newFactory()

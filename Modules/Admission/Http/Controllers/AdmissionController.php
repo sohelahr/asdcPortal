@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Node\Block\Document;
 use Modules\Admission\Entities\Admission;
 use Modules\Course\Entities\Course;
+use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\DocumentList\Entities\Admission_DocumentList;
 use Modules\DocumentList\Entities\AdmissionDocumentList;
@@ -120,16 +121,18 @@ class AdmissionController extends Controller
         else{
             $admission->is_course_changed = true;
         }
-
+/* 392C70 */
 
         //get Current Values Of Admission and Roll NUMBERS
         $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
         
         //Create new Admission Numbers using that 
         $course_slug = Course::find($request->course_id)->slug;
+        
         $admission->admission_form_number = "asdc/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
-
-        $admission->roll_no =  $course_slug . date("y") ."-". $current_numbers->currentRollNumber;
+        
+        $coursebatch = CourseBatch::where('id',$request->coursebatch_id)->first();
+        $admission->roll_no =  $course_slug . date("y") .$coursebatch->batch_number."-". $current_numbers->currentRollNumber;
         if($admission->save()){                
 
             //Incrrement Numbers if data saves
@@ -206,6 +209,7 @@ class AdmissionController extends Controller
         $data['course'] = $admission->Course->name;
         $data['course_slot'] = $admission->CourseSlot->name;
         $data['documents'] = DocumentList::all();
+        $data['documents_name'] = $admission->documents()->get();
         $data['current_date'] = Date('d M Y');
         $data['admission_number'] = $admission->admission_form_number;
         $data['admission_remarks'] = $admission->admission_remarks;

@@ -13,7 +13,19 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#occupation-create">
@@ -54,7 +66,7 @@
     <div id="occupation-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="occupation-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('occupation/create')}}">
+                <form method="POST" action="{{url('occupation/create')}}" id="myForm">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="occupation-create-title">Create Occupation</h5>
@@ -76,7 +88,7 @@
         </div>
     </div>
     
-    <div id="occupation-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-create-title" aria-hidden="true">
+    <div id="occupation-edit" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="document-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="POST" action="{{url('occupation/edit')}}" id="edit-form">
@@ -88,14 +100,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-danger" id="showtext">Please Wait...</h5>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">    
+                        <input type="submit" value="Submit" class="btn btn-primary">  
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
+
                     </div>
                 </form>
             </div>
@@ -104,6 +117,9 @@
 @endsection
 @section('jcontent')
     <script>
+        function closeModal(){
+            $('#occupation-edit').modal('hide');
+        }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
             $.toast({
                 heading: 'Created',
@@ -154,28 +170,67 @@
         
         function Editoccupation(occupation_id){
             getEditData(occupation_id);
-            $("#occupation-edit").modal('show');
         }
 
         function getEditData(occupation_id){
-            console.log(occupation_id)
             $.ajax({
                 type: "get",
                 url: `{{url('occupation/edit/${occupation_id}')}}`,
                 beforeSend: function () {
-                    $('#showtext').show();
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
+
                 },
                 success: function (response) {
                     data = JSON.parse(response);
 
                     $("#edit-form").attr("action", `{{url('occupation/edit/${occupation_id}')}}`);
                     $("#edit-name").val(data.name);
+                    $("#occupation-edit").modal('show');
+
                 },
                 complete: function () {
-                    $('#showtext').hide();
+                    $('#overlay-loader').hide();
                 },
             });
         }
+        $(document).ready(function () {
+             $('#myForm').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Name",
+                    },
+                    
+                } 
+
+            });
+             $('#edit-form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    name: {
+                        required: true,
+                    },
+                    
+                },
+
+                messages: {
+                    name:{
+                        required: "Please Add Name",
+                    },
+                    
+                } 
+
+            });
+        });
+ 
         
     </script>
     

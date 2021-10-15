@@ -214,7 +214,7 @@
                         <div style="margin-left: 20px">
                        @foreach ($data['documents'] as $document)
                            <input type="checkbox" @if(in_array($document->id,$data['documents_submitted'])) checked=""  @endif>
-                              {{$document->name}}
+                              {{$document->name}}, 
                        @endforeach
                         </div>
                    </td>
@@ -393,8 +393,8 @@
                             <p>Original Certificate Submitted:</p>
                         </td>
                         <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents'] as $document)
-                                {{$document->name}} 
+                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents_name'] as $document)
+                                {{$document->name}}; 
                             @endforeach</p>
                         </td>
                     </tr>
@@ -490,8 +490,8 @@
                             <p>Original Certificate Submitted:</p>
                         </td>
                         <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents'] as $document)
-                                {{$document->name}} 
+                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents_name'] as $document)
+                                {{$document->name}};   
                             @endforeach</p>
                         </td>
                     </tr>

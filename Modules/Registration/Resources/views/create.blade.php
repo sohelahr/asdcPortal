@@ -113,7 +113,7 @@
                             {data: 'apply',
                                 render:function(data,type,row){
                                     if(data=="false")
-                                        return '<button class="badge badge-pill badge-info apply-button" onclick="ApplyForEnrollment('+row.id+')"  >Apply For this Course</button>';
+                                        return '<button class="badge badge-pill badge-primary apply-button" onclick="ApplyForEnrollment('+row.id+')"  >Apply For this Course</button>';
                                     else
                                         return '<button class="badge badge-pill badge-warning" disabled>Already Applied</button>';
                                 },

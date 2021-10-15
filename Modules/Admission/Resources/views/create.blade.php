@@ -12,9 +12,21 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data" id = "admission"> 
+            <form action="{{route('user_admission_create')}}" method="POST" enctype="multipart/form-data" id="admission_form"> 
                 @csrf       
                 <div class="row">
                     <div class="col-md-4">
@@ -29,7 +41,6 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                            <p id="wait-text" class="text-danger">Please Wait...</p>
 
                         <div class="form-group">
 
@@ -57,7 +68,7 @@
                                             <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
-                                    <option>No Batches Found</option>
+                                    <option value="">No Batches Found</option>
                                 @endif
                             </select>
 
@@ -69,11 +80,15 @@
                             <label class="form-label">Course Timing</label>
 
                             <select class="form-control" name="course_slot_id" id="course_slot">
-                                @foreach ($initial_course_slots as $courseslot)
-                                    <option value="{{$courseslot->id}}" @if ($courseslot->id == $selected_course_slot->id)
-                                        selected
-                                    @endif>{{$courseslot->name}}</option>
-                                @endforeach
+                                @if($selected_course_slot)
+                                    @foreach ($initial_course_slots as $courseslot)
+                                        <option value="{{$courseslot->id}}" @if ($courseslot->id == $selected_course_slot->id)
+                                            selected
+                                        @endif>{{$courseslot->name}}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">No Batches Found</option>
+                                @endif
                             </select>
 
                         </div>
@@ -102,7 +117,7 @@
                          
                       </div>
                 </div>                                                         
-                <button type="submit" class="btn btn-primary mr-2" onclick = "validate()">Submit</button>
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
             </form>
         </div>
@@ -118,10 +133,10 @@
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
             beforeSend: function() {
-              $('#wait-text').show();  
+              $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
             },
             success: function (response) {
-                console.log(response)
                 $("#course_slot").empty();
                 $("#course_batch").empty();
 
@@ -152,13 +167,46 @@
                             <option value="">Not Found</option>
                         `);
                 }
-                $('#wait-text').hide();  
-            }
+            },
+             complete: function () {
+                    $('#overlay-loader').hide();
+                },
         });
     });
 
-   
-}
+    $(document).ready(function () {
+             $('#admission_form').validate({
+                errorClass: "text-danger pt-1",            
+                rules: {     
+                    course_id: {
+                        required: true,
+                    },
+                    coursebatch_id: {
+                        required: true,
+                    },
+                    course_slot_id: {
+                        required: true,
+                    },
+                    admission_remarks: {
+                        required: true,
+                    },  
+                },
+                messages: {
+                    course_id: {
+                        required: "Course is required",
+                    },
+                    coursebatch_id: {
+                        required: "Please select a batch",
+                    },
+                    course_slot_id: {
+                        required: "Please select a timing",
+                    },
+                    admission_remarks: {
+                        required: "Please enter a remarks",
+                    },  
+                } 
+            });
+    }); 
     
 </script>
 @endsection

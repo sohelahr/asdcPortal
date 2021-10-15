@@ -24,7 +24,7 @@
         @endif
         <div class="card-body">
                         
-                <form id="add_security_permission_form" action="{{url('/security/set/permission')}}" method="POST">
+                <form id="add_security_permission_form" action="{{url('set_security_permissions')}}" method="POST">
                     <input type="hidden" name="user_id" value="{{$user_details->id}}">
                     @csrf
             

@@ -13,7 +13,19 @@
         </nav>
     </div>
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
@@ -95,36 +107,34 @@
         </div>
     </div>
 
-    <div id="course-edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="course-edit-title" aria-hidden="true">
+    <div id="course-edit" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="course-edit-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST"  id="edit-form" action="{{url('course/edit/')}}">
+                <form method="POST"  id="editform" action="{{url('course/edit/')}}">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="course-edit-title">Edit Course</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-danger" id="showtext">Please Wait...</h5>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
+                            <input id="edit_name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-6">
                                 <label for="Duration">Duration</label>
-                                <input id="edit-Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
+                                <input id="edit_Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
                             </div>
                             <div class="form-group col-6">
                                 <label for="slug">Slug</label>
-                                <input id="edit-slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
+                                <input id="edit_slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary" >    
+                        <input type="submit" value="Submit" class="btn btn-primary" >  
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
+
                     </div>
                 </form>
             </div>
@@ -135,6 +145,11 @@
 @endsection
 @section('jcontent')
     <script>
+
+        function closeModal(){
+            $('#course-edit').modal('hide');
+        }
+
         @if(\Illuminate\Support\Facades\Session::has('created'))    
             $.toast({
                 heading: 'Created',
@@ -184,7 +199,6 @@
         function EditCourse(course_id){
             console.log(course_id)
             getEditData(course_id);
-            $("#course-edit").modal('show');
         }
 
         function getEditData(course_id){
@@ -192,18 +206,20 @@
                 type: "get",
                 url: `{{url('course/edit/${course_id}')}}`,
                 beforeSend: function () {
-                    $('#showtext').show();
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
                 },
                 success: function (response) {
                     data = JSON.parse(response);
 
-                    $("#edit-form").attr("action", `{{url('course/edit/${course_id}')}}`);
-                    $("#edit-name").val(data.name);
-                    $("#edit-Duration").val(data.Duration);
-                    $("#edit-slug").val(data.slug);
+                    $("#editform").attr("action", `{{url('course/edit/${course_id}')}}`);
+                    $("#edit_name").val(data.name);
+                    $("#edit_Duration").val(data.Duration);
+                    $("#edit_slug").val(data.slug);
+                    $("#course-edit").modal('show');
                 },
                 complete: function () {
-                    $('#showtext').hide();
+                    $('#overlay-loader').hide();
                 },
             });
         }
@@ -233,6 +249,37 @@
                 
                 
                 },
+
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
+
+                    duration:{
+                        required: "Please enter duration",
+                    },
+
+                    slug:{ 
+                        required: "Please enter a slug",
+                    },
+
+                } 
+
+        });
+        $('#editform').validate({
+            errorClass: "text-danger pt-1",
+            rules: {     
+                name: {
+                    required: true,
+                },
+                duration: {
+                    required: true,    
+                },
+
+                slug: {
+                    required: true,
+                },
+            },
 
                 messages: {
                     name:{

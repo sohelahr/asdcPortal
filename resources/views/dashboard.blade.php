@@ -28,9 +28,8 @@
                     
                     <div class="float-right">
                         <a href="{{route('user_registration_create')}}">
-                        <button class="btn btn-info btn-icon-text" >
+                        <button class="btn btn-outline-primary btn-fw" >
                             Enroll In A Course
-                            <i class="fa fa-plus btn-icon-prepend"></i>
                         </button>
                         </a>
                     </div>

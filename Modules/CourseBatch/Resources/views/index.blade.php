@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
+<div class="page-header">
         <h3 class="page-title">
             Courses
         </h3>
@@ -12,15 +12,27 @@
             </ol>
         </nav>
     </div>
+
     <div class="card">
-        
+        <div id="overlay-loader" class="d-none">
+            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                <div >  
+                    
+                        <div class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
                     + Create
                 </button>
-            </div>    
-            
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -76,11 +88,11 @@
     <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{url('coursebatch/create')}}">
+                <form method="POST" action="{{url('coursebatch/create')}}" id="coursebatch-create">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="course-create-title">Create Course Batch</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <button class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -132,7 +144,7 @@
         </div>
     </div>
 
-    <div id="coursebatch-edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="course-edit-title" aria-hidden="true">
+    <div id="coursebatch-edit" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="course-edit-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="POST"  id="edit-form" action="{{url('coursebatch/edit/')}}">
@@ -140,12 +152,8 @@
                     <div class="modal-header">
 
                         <h5 class="modal-title" id="course-create-title">Edit Course Batch</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-danger" id="showtext">Please Wait...</h5>
 
                         <div class="form-group">
                             <label for="course">Course</label>
@@ -192,7 +200,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">    
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
                     </div>
                 </form>
             </div>
@@ -203,7 +212,9 @@
 @endsection
 @section('jcontent')
     <script>
-
+        function closeModal(){
+            $('#coursebatch-edit').modal('hide');
+        }
 
         
         $('.datepicker').datepicker({
@@ -269,7 +280,6 @@
         @endif
         function EditCourseBatch(coursebatch_id){
             getEditData(coursebatch_id);
-            $("#coursebatch-edit").modal('show');
         }
 
         function getEditData(coursebatch_id){
@@ -277,7 +287,8 @@
                 type: "get",
                 url: `{{url('coursebatch/edit/${coursebatch_id}')}}`,
                 beforeSend: function () {
-                    $('#showtext').show();
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
                 },
                 success: function (response) {
                     data = JSON.parse(response);
@@ -287,20 +298,120 @@
                     $("#edit-start-date").val(data.start_date);
                     $("#edit-end-date").val(data.expiry_date);
                     $("#edit-course option").map((index,option) => {
+                        $("#"+option.id).removeAttr("selected");
                         if(option.value == data.course_id){
-                            $("#"+option.id).attr("selected","selected")
+                            $("#"+option.id).attr("selected","")
                         }
 
                     })
-
+                    $("#coursebatch-edit").modal('show');
                 },
                 complete: function () {
-                    $('#showtext').hide();
+                    $('#overlay-loader').hide();
                 },
             });
         }
 
- 
+        $(document).ready(function (){
+        $('#coursebatch-create').validate({
+            errorClass: "text-danger pt-1",
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "start_date" ) {
+                    error.insertAfter($("#datepicker-popup"));
+                }
+                else if (element.attr("name") == "end_date"){
+                    error.insertAfter(element.parent());
+
+                }
+                else {
+                    error.insertAfter(element);
+                }          
+            },
+            rules: {     
+                course_id: {
+                    required: true,
+                },
+                batch_number:{
+                    required:true,
+                },
+                start_date: {
+                    required: true,                    
+                },
+
+                end_date: {
+                    required: true,
+                },
+
+            },
+
+            messages: {
+                course_id:{
+                    required: "Please select course",
+                },
+                batch_number:{
+                    required:"Enter Batch Number",
+                },
+                start_date:{
+                    required: "Please enter batch start date",
+                },
+
+                end_date:{ 
+                    required: "Please enter batch end date",
+                },
+
+            } 
+
+        });
+        $('#edit-form').validate({
+            errorClass: "text-danger pt-1",            
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "start_date" ) {
+                    error.insertAfter($("#datepicker-popup"));
+                }
+                else if (element.attr("name") == "end_date")
+                {
+                    error.insertAfter(element.parent);
+                }
+                else {
+                    error.insertAfter(element);
+                }          
+            },
+            rules: {     
+                course_id: {
+                    required: true,
+                },
+                batch_number:{
+                    required:true,
+                },
+                start_date: {
+                    required: true,                    
+                },
+
+                end_date: {
+                    required: true,
+                },
+
+            },
+
+            messages: {
+                course_id:{
+                    required: "Please select course",
+                },
+                batch_number:{
+                    required:"Enter Batch Number",
+                },
+                start_date:{
+                    required: "Please enter batch start date",
+                },
+
+                end_date:{ 
+                    required: "Please enter batch end date",
+                },
+
+            } 
+
+        });
+    });
     </script>
     
 @endsection
