@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('courseslot')->group(function() {
+Route::prefix('courseslot')->middleware(['auth'])->group(function() {
     Route::get('/{id}', 'CourseSlotController@index')->name('courseslot');
     Route::get('/create','CourseSlotController@create');
     Route::post('/create','CourseSlotController@store');

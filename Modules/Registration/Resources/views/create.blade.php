@@ -10,37 +10,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    {{-- <div class="mt-2 row justify-content-around">
-                        <div class="col-4"> 
-                            <form action="{{route('user_registration_create')}}" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="course">Choose A Course</label>
-                                    <select name="course_id" id="select-course" class="form-control">
-                                        <option>Choose One</option>
-                                        @foreach ($courses as $course)
-                                            <option value="{{$course->id}}">{{$course->name}}</option>                                    
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="course-slot">Choose Available Slot</label>
-                                    <select name="course_slot_id" id="select-course-slot" class="form-control">
-                                        <option>First Choose A Course</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                            </form>
-                        </div>
-                        <div class="col-4">
-                            <div id="course-information">
-
-                            </div>
-                            <div id="courseslot-information">
-
-                            </div>
-                        </div>
-                    </div> --}}
                     <div>
                         <table class="table table-hover" id="enrollment">
                         <thead>
@@ -56,11 +25,11 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>No</th>
+                                <th style="width: 30px">No</th>
                                 <th>Course Name</th>
                                 <th>Course Duration</th>
                                 <th>Available Timings</th>
-                                <th>Apply</th>                            
+                                <th>Apply</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -80,6 +49,7 @@
                 }
             });
             var table =  $('#enrollment').DataTable({
+                        pageLength: 20,
                         processing: true,
                         serverSide: true,
                         ajax: "{{route('enrollmentData')}}",

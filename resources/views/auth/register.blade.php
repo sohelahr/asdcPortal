@@ -15,11 +15,20 @@
                             </div>--}}
                             <h4>Hello! let's get started</h4>
                             <h6 class="font-weight-light">Sign up to continue.</h6>
-                            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                            <x-auth-validation-errors class="mb-4 text-warning" :errors="$errors" />
                             <form class="pt-3"  action="{{route('register')}}" method="POST" id = "register">
                                 @csrf
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-sm" id="name" placeholder="Full Name" name="name">
+                                <div class="form-row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" id="firstname" placeholder="First Name" name="first_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" id="lastname" placeholder="Last Name" name="last_name">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-sm" id="email" placeholder="Email" name="email">
@@ -48,63 +57,54 @@
 <script>
     $(document).ready(function (){
         $('#register').validate({
-            errorClass: "text-danger pt-1",
-            rules: {
-     
- name: {
+        errorClass: "text-danger pt-1",
+        rules: {
+            first_name: {
+                required: true,
+            },
 
-     required: true,
-    
+            last_name: {
+                required: true,
+            },
+            email: {
+                required: true,
+                email: true
+            },
 
- },
+            password: {
+                required: true,
+            },
 
- email: {
+            password_confirmation: {
+                required: true,
+            },
 
-     required: true,
 
-     email: true
+        },
 
- },
+        messages: {
+            first_name: {
+                required: "Please enter your name",
+            },
+            last_name: {
+                required: "Please enter your name",
+            },
 
- password: {
+            email: {
+                required: "Please enter your email id",
+            },
 
-     required: true,
+            password: {
+                required: "Please enter a password",
+            },
 
-    
-
- },
-
- password_confirmation: {
-
-     required: true,
-
-    
-
- },
-
- 
-},
-
- messages: {
-    name:{
-        required: "Please enter your name",
-    },
-
-    email:{
-        required: "Please enter your email id",
-    },
-
-    password:{ 
-        required: "Please enter a password",
-    },
-
-    password_confirmation:{
-        required: "Please re-enter your password",
-    },
-} 
+            password_confirmation: {
+                required: "Please re-enter your password",
+            },
+        }
 
         });
-    });
+        });
 </script>
 @endsection
 

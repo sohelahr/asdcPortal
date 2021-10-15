@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('qualification')->group(function() {
+Route::prefix('qualification')->middleware(['auth'])->group(function() {
     Route::get('/', 'QualificationController@index')->name('qualifications');
     Route::get('/create','QualificationController@create');
     Route::post('/create','QualificationController@store');

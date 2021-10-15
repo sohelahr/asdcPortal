@@ -121,7 +121,7 @@ class AdmissionController extends Controller
         else{
             $admission->is_course_changed = true;
         }
-/* 392C70 */
+
 
         //get Current Values Of Admission and Roll NUMBERS
         $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);

@@ -13,7 +13,7 @@
 
 use Modules\UserProfile\Http\Controllers\UserProfileController;
 
-Route::prefix('userprofile')->group(function() {
+Route::prefix('userprofile')->middleware(['auth'])->group(function() {
     Route::get('/', 'UserProfileController@index')->name('user_profile_list');
     Route::get('/view', 'UserProfileController@show')->name('user_profile');
     Route::get('/update',[UserProfileController::class,'edit'])->name('profile_update');

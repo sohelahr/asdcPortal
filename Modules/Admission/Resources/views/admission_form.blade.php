@@ -10,17 +10,21 @@
                 font-size: 14px;
                 vertical-align: middle;
             }
+            table{
+                margin-bottom:5px; 
+            }
             td{
                 padding: 2px;
+                margin-bottom: 10px;
             }
             p{
                 padding: 0%;
-                margin: 4px;
+                margin: 20px;
             }
             tr{
                 vertical-align: middle;
                 margin-top: 5px;
-                margin-bottom:7px; 
+                margin-bottom:7px!important; 
                 padding: 8px;
             }
         
@@ -50,19 +54,19 @@
             <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
         </div>
         
-                    <div>
-                    <p style = "margin-top:100px; padding-left: 200px "><u>APPLICATION FORM FOR ADMISSION</u></p>
+                    <div style="text-align: center">
+                    <p style = "margin-top:80px;"><u>APPLICATION FORM FOR ADMISSION</u></p>
                     </div>
                 
            
         
-            <div style = "margin-top:-60px;margin-right:10px;">
+            <div style = "margin-top:-90px;margin-right:30px;">
                    <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">
             </div>
         <div style="margin-top: 30px;margin:20px;">
-            <table style = "width:100%">
+            <table style = "width:100%;">
                 <tr>
-                    <td width="90px">
+                    <td width="15%">
                         <p>Name:</p>
                     </td>
                     <td   style="border-bottom: 1px solid black; padding-bottom: 0%;width:90%">
@@ -70,7 +74,7 @@
                     </td>
                 </tr>
             </table>
-            <table style = "width:100%">
+            <table style = "width:100%;">
                 <tr>
                     <td style="width: 15%">
                         <p>Date of Birth:</p>
@@ -78,7 +82,7 @@
                     <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:15%">
                         <p style = "padding-bottom: 0;">{{$data['dob']}}</p>
                     </td>
-                    <td style="width: 20%">
+                    <td style="width: 15%">
                             <p style="padding-left: 10px;">Gender:</p>
                     </td>
                     <td>
@@ -123,20 +127,16 @@
             </table>
             <table style = "width:100%">
                 <tr>
-                    <td style="width: 10%">
+                    <td style="width: 15%">
                         <p>Email:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:90%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:25%">
                             <p style = "padding-bottom: 0%; ">{{$data['email']}}</p>
                     </td>
-                </tr>
-            </table>
-            <table style = "width:100%">
-                <tr>
                     <td style="width: 25%">
                         <p>School/College Name:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:75%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
                             <p style = "padding-bottom: 0%; ">{{$data['school_name']}}</p>
                     </td>
                 </tr>
@@ -146,34 +146,29 @@
                     <td style="width: 20%">
                         <p>Father's Name:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:80%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:20%">
                         <p style = "padding-bottom: 0%; ">{{$data['father_name']}}</p>
                     </td>
                 </tr>
-            </table>
-            <table style = "width:100%">
-                <tr>
                     <td style="width: 25%">
                         <p>Father's Occupation:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:25%">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
                             <p style = "padding-bottom: 0%; ">{{$data['father_occupation']}}</p>
                     </td>
+            </table>
+            <table style="width: 100%">
+                <tr>
                     <td style="width: 20%">
                         <p  style="padding-left: 10px;">Fathers's Income:</p>
                     </td>
-                    <td  style="width:35%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                    <td  style="width:20%;border-bottom: 1px solid black; padding-bottom: 0%;">
                             <p style = "padding-bottom: 0%; ">{{$data['fathers_income']}}</p>
                     </td>
-                    
-                </tr>
-            </table>
-            <table style = "width:100%">
-                <tr>
-                    <td style="width:20%">
+                    <td style="width:25%">
                         <p>Father's Mobile:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:80%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
                             <p style = "padding-bottom: 0%; ">{{$data['fathers_mobile']}}</p>
                     </td>
                 </tr>
@@ -193,10 +188,10 @@
                     <td style="width: 20%">
                         <p>Course Joining:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:30%">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
                         <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                     </td>
-                    <td style="width: 25%">
+                    <td style="width: 15%">
                         <p style="padding-left: 10px;">Timing:</p>
                     </td>
                     <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:25%">
@@ -230,10 +225,10 @@
                             <p style = "padding-bottom: 0%;">{{$data['current_date']}}</p>
                         </div>
                     </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:20%">
+                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:20%;" align="right">
                         <p style = "padding-bottom: 0%; "></p>
                     </td>
-                    <td style="width: 30%">
+                    <td style="width: 10%" align="right">
                         <p  style="padding-left: 10px;">Student Signature</p>
                     </td>
                 </tr>                
@@ -326,7 +321,7 @@
     <div class="pagebreak"></div>
     <page>
         <div style = "border: 1px solid black">
-            <table style = "width: 100%;" align="center">
+            <table style = "width: 100%;margin-bottom:0px" align="center">
                 <tr>
                     <td>
                         <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
@@ -351,55 +346,51 @@
                 <h5 style = "text-align: center;"><u>Student's Copy</u></h5>
             </div>
             <div style = "margin:10px;">
-                <table style = "width:100%">
+                <table style = "width:100%;margin-bottom:0px;">
                     <tr>
                         <td  style = "width:20%">
                             <p>Name:</p>
                         </td>
-                        <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                        <td   style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['name']}}</p>
                         </td>
-                    </tr>
-                </table>
-                <table style = "width:100%">
-                    <tr>
                         <td style="width: 20%">
                             <p>Mobile No.:</p>
                         </td>
                         <td style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['mobile']}}</p>
                         </td>
+                    </tr>
+                </table>
+                <table style = "width:100%;margin-bottom:0px;">
+                    <tr>
                         <td style="width: 20%">
                             <p  style="padding-left: 10px;">Admission No.:</p>
                         </td>
                         <td style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['admission_number']}}</p>
                         </td>
-                    </tr>
-                </table>
-                <table style = "width:100%">
-                    <tr>
                         <td style="width: 20%">
                             <p>Course Applied:</p>
                         </td>
-                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                        <td   style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                         </td>
                     </tr>
                 </table>
-                <table style = "width:100%">
+                <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 20%">
-                            <p>Original Certificate Submitted:</p>
+                        <td style="width: 15%">
+                            <p>Original Documents Submitted:</p>
                         </td>
-                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents_name'] as $document)
+                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;"> 
+                            @foreach ($data['documents_name'] as $document)
                                 {{$document->name}}; 
-                            @endforeach</p>
+                            @endforeach
                         </td>
                     </tr>
                 </table>
-                <table style="width: 100%">
+                <table style="width: 100%;margin-bottom:0px;">
                     <tr>
                         <td style = "padding-top: 70px; text-align: center">
                             <p><b>Student Signature</b></p>
@@ -421,8 +412,8 @@
                 </table>
             </div>
         </div>
-        <div style = "border: 1px solid black; margin-top: 50px">
-            <table style = "width: 100%;" align="center">
+        <div style = "border: 1px solid black; margin-top: 30px">
+            <table style = "width: 100%;margin-bottom:0;" align="center">
                 <tr>
                     <td>
                         <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
@@ -448,55 +439,51 @@
             </div>
             
             <div style = "margin:10px;">
-                <table style = "width:100%">
+                <table style = "width:100%;margin-bottom:0px;">
                     <tr>
                         <td  style = "width:20%">
                             <p>Name:</p>
                         </td>
-                        <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                        <td   style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['name']}}</p>
                         </td>
-                    </tr>
-                </table>
-                <table style = "width:100%">
-                    <tr>
                         <td style="width: 20%">
                             <p>Mobile No.:</p>
                         </td>
                         <td style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['mobile']}}</p>
                         </td>
+                    </tr>
+                </table>
+                <table style = "width:100%;margin-bottom:0px;">
+                    <tr>
                         <td style="width: 20%">
                             <p  style="padding-left: 10px;">Admission No.:</p>
                         </td>
                         <td style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['admission_number']}}</p>
                         </td>
-                    </tr>
-                </table>
-                <table style = "width:100%">
-                    <tr>
                         <td style="width: 20%">
                             <p>Course Applied:</p>
                         </td>
-                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                        <td   style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
                                 <p style = "padding-bottom: 0%; ">{{$data['course']}}</p>
                         </td>
                     </tr>
                 </table>
-                <table style = "width:100%">
+                <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 20%">
-                            <p>Original Certificate Submitted:</p>
+                        <td style="width: 15%">
+                            <p>Original Documents Submitted:</p>
                         </td>
-                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;">
-                                <p style = "padding-bottom: 0%; ">@foreach ($data['documents_name'] as $document)
-                                {{$document->name}};   
-                            @endforeach</p>
+                        <td   style="width:70%;border-bottom: 1px solid black; padding-bottom: 0%;"> 
+                            @foreach ($data['documents_name'] as $document)
+                                {{$document->name}}; 
+                            @endforeach
                         </td>
                     </tr>
                 </table>
-                <table style="width: 100%">
+                <table style="width: 100%;margin-bottom:0px;">
                     <tr>
                         <td style = "padding-top: 70px; text-align: center">
                             <p><b>Student Signature</b></p>

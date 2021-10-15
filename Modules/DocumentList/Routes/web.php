@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('documentlist')->group(function() {
+Route::prefix('documentlist')->middleware(['auth'])->group(function() {
     Route::get('/', 'DocumentListController@index')->name('document_list');
     Route::get('/create','DocumentListController@create');
     Route::post('/create','DocumentListController@store');

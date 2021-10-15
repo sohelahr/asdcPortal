@@ -13,7 +13,7 @@
 
 use Modules\Course\Http\Controllers\CourseController;
 
-Route::prefix('course')->group(function() {
+Route::prefix('course')->middleware(['auth'])->group(function() {
     Route::get('/', 'CourseController@index')->name('course_list');
     Route::get('/create','CourseController@create');
     Route::post('/create','CourseController@store');

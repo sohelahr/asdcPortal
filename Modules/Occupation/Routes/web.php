@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('occupation')->group(function() {
+Route::prefix('occupation')->middleware(['auth'])->group(function() {
     Route::get('/', 'OccupationController@index')->name('occupations');
     Route::get('/create','OccupationController@create');
     Route::post('/create','OccupationController@store');

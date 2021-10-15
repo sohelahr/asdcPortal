@@ -24,7 +24,7 @@
         @endif
         <div class="card-body">
                         
-                <form id="add_security_permission_form" action="{{url('set_security_permissions')}}" method="POST">
+                <form id="add_security_permission_form" action="{{route('set_security_permissions')}}" method="POST">
                     <input type="hidden" name="user_id" value="{{$user_details->id}}">
                     @csrf
             
@@ -58,7 +58,7 @@
                         @endforeach
                     </div>
                 <div class="p-2">            
-                <button type="submit" class="btn btn-primary mr-2" onclick = "validate()">Submit</button>
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
                 </div>
 

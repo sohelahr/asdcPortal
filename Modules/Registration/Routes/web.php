@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('registration')->group(function() {
+Route::prefix('registration')->middleware(['auth'])->group(function() {
     Route::get('/', 'RegistrationController@index');
     Route::get('/mydata','RegistrationController@UserRegistrationData')->name('user_registrations');
     Route::get('/data','RegistrationController@AllRegistrationData')->name('all_registrations');

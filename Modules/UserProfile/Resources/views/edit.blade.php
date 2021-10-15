@@ -20,17 +20,22 @@
                                     <div class="form-group">
                                         <label class="form-label">First Name</label>
 
-                                        <input required type="text" class="form-control form-control-sm" name="firstname"
+                                        <input required type="text" class="form-control form-control-sm"
                                             value="{{$userprofile->firstname}}" disabled>
 
+                                        <input required type="hidden" name="firstname"
+                                            value="{{$userprofile->firstname}}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label">Last Name</label>
 
-                                        <input required type="text" class="form-control form-control-sm" name="lastname"
+                                        <input required type="text" class="form-control form-control-sm"
                                             value="{{$userprofile->lastname}}" disabled>
+
+                                        <input required type="hidden" class="form-control form-control-sm" name="lastname"
+                                            value="{{$userprofile->lastname}}">
 
                                     </div>
                                 </div>

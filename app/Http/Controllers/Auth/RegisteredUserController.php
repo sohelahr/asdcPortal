@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -35,13 +36,14 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        
+        $name = $request->first_name ." ".$request->last_name;
         $user = User::create([
-            'name' => $request->name,
+            'name' => $name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_type' => '3',
@@ -49,14 +51,14 @@ class RegisteredUserController extends Controller
 
 
         event(new Registered($user));
-        
-        $name =  explode(' ',$user->name);
+    
         $userprofile = new UserProfile();
-        $userprofile->firstname = $name[0];
-        $userprofile->lastname = $name[1];
+        $userprofile->firstname = $request->first_name;
+        $userprofile->lastname = $request->last_name;
         $userprofile->user_id = $user->id;
         $userprofile->save();
 
+        MailController::sendRegistrationEmail($request->email,$user->name);
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);

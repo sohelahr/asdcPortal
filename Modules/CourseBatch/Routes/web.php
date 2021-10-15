@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('coursebatch')->group(function() {
+Route::prefix('coursebatch')->middleware(['auth'])->group(function() {
     Route::get('/', 'CourseBatchController@index')->name('coursebatch_list');
     Route::get('/create','CourseBatchController@create');
     Route::post('/create','CourseBatchController@store');

@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('admission')->group(function() {
+Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/', 'AdmissionController@index');
     Route::get('/mydata','AdmissionController@UserAdmissionData')->name('user_admission');
     Route::get('/data','AdmissionController@AllAdmissionData')->name('all_admissions');

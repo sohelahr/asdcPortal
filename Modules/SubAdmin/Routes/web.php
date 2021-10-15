@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('subadmin')->group(function() {
+Route::prefix('subadmin')->middleware(['auth'])->group(function() {
     Route::get('/', 'SubAdminController@index')->name('subadmin_list');
 
     Route::post('/create', 'SubAdminController@store')->name('subadmin_create');
