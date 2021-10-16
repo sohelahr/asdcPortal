@@ -2,6 +2,7 @@
 
 namespace Modules\Registration\Http\Controllers;
 
+use App\Http\Controllers\MailController;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Course\Entities\Course;
 use Modules\CourseSlot\Entities\CourseSlot;
+use Modules\DocumentList\Entities\DocumentList;
 use Modules\Registration\Entities\Registration;
 use Modules\UserProfile\Entities\UserProfile;
 use Yajra\Datatables\Datatables;
@@ -118,6 +120,14 @@ class RegistrationController extends Controller
         $count_registrations = Auth::user()->Registrations->count();
         if($count_registrations < 2){
             if($registration->save()){
+                
+                $mailcontent = ['user_name'=>Auth::user()->name,
+                                'course_name' => $registration->Course->name,
+                                'documents'=>DocumentList::all()->pluck('name')->toArray() 
+                            ];
+
+
+                MailController::sendCourseEnrollmentEmail(Auth::user()->email,$mailcontent);
                 return response()->json(['status' => 'success','msg' => 'You have successfully enrolled for a course',]);
             }
             else

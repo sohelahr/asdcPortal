@@ -22,4 +22,19 @@ class MailController extends Controller
 
         return true;
     }
+
+    public static function sendCourseEnrollmentEmail($reciever,$content){
+        $data = [
+          'subject' => 'Course Enrollment',
+          'email' => $reciever,
+          'content' =>$content,
+        ];
+
+        Mail::send('email.course_registrations_template', $data, function($message) use ($data) {
+          $message->to($data['email'])
+          ->subject($data['subject']);
+        });
+
+        return true;
+    }
 }

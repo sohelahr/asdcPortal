@@ -18,10 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/demo', function () {
-    return view('email.email_template');
-});
-Route::get('/registration/email', [MailController::class,'sendRegistrationEmail'])->name('send.email');
+
 Route::get('/dashboard', function () {
     if(Auth::user()->user_type == '2' || Auth::user()->user_type == '1'){
         return redirect('/admin/dashboard');

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -16,9 +17,10 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user_type == "1" || $request->user_type == "2")
-            return $next($request);
-        else
-            return redirect('/dashboard')->with("error","Authorization error");
+        if(Auth::user()->user_type != "1" || Auth::user()->user_type != "2"){
+            Auth::logout();
+            return redirect('/login');
+        }
+        return $next($request);
     }
 }
