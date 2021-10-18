@@ -9,6 +9,11 @@ use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\Course\Entities\Course;
 class CourseSlotController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('admin')->except('get_course_slot');
+    }
+    
     /**
      * Display a listing of the resource.
      * @return Renderable

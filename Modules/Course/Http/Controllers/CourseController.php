@@ -16,6 +16,11 @@ class CourseController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    function __construct()
+    {
+        $this->middleware('admin')->except('EnrollmentData');
+    }
+
     public function index()
     {
         $courses = Course::all();

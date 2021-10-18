@@ -1,5 +1,16 @@
 <x-app-layout>
-    
+     <div id="overlay-loader" class="d-none">
+        <div style="height: 200%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+            <div> 
+                <div class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>                
+            </div>
+        </div>
+    </div>
+
     <x-slot name="header">
         <h5 class="font-semibold text-m text-gray-800 leading-tight">
             {{ __('Course Enrollment') }}
@@ -107,6 +118,8 @@
                             url: "{{route('user_registration_create')}}",
                             data: data,
                             beforeSend: function () {
+                                $('#overlay-loader').removeClass('d-none');
+                                $('#overlay-loader').show();
                                 $('.apply-button').attr("disable");
                                 $('.apply-button').addClass('btn-inverse-info');
                                 $('.apply-button').append(` <i class="fas fa-spinner  fa-spin"></i>`);
@@ -137,6 +150,7 @@
                                 }
                                 table.draw();
                                 $('.apply-button').removeAttr("disable").removeClass('btn-disabled');
+                                $('#overlay-loader').hide();
                             },
                         });
                     }

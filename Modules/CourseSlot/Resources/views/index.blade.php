@@ -84,17 +84,17 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Timing in hours</label>
+                            <label for="name">Timing in hours <sup class="text-danger">*</sup></label>
                             <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: 10:00 - 12:00">
                         </div>
                         <input type="hidden" name="course_id" value="{{$course->id}}">
                         <div class="form-row">
                             <div class="form-group col-6">
-                                <label for="Total Capacity">Total Capacity</label>
+                                <label for="Total Capacity">Total Capacity <sup class="text-danger">*</sup></label>
                                 <input id="TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 60">
                             </div>
                             <div class="form-group col-6">
-                                <label for="CurrentCapacity">Current Capacity</label>
+                                <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
                                 <input id="CurrentCapacity" class="form-control form-control-sm" type="text" name="CurrentCapacity" placeholder="eg : 59">
                             </div>
                         </div>
@@ -117,16 +117,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Timing in hours</label>
+                            <label for="name">Timing in hours <sup class="text-danger">*</sup></label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-6">
-                                <label for="TotalCapacity">Total Capacity</label>
+                                <label for="TotalCapacity">Total Capacity <sup class="text-danger">*</sup></label>
                                 <input id="edit-TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 3 months">
                             </div>
                             <div class="form-group col-6">
-                                <label for="CurrentCapacity">Current Capacity</label>
+                                <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
                                 <input id="edit-CurrentCapacity" class="form-control form-control-sm" type="text" name="CurrentCapacity" placeholder="eg : DM">
                             </div>
                         </div>

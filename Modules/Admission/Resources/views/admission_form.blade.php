@@ -206,12 +206,25 @@
                         <p>Attached:</p>
                     </td>
                     <td style="width:80%">
-                        <div style="margin-left: 20px">
-                       @foreach ($data['documents'] as $document)
-                           <input type="checkbox" @if(in_array($document->id,$data['documents_submitted'])) checked=""  @endif>
-                              {{$document->name}}, 
-                       @endforeach
-                        </div>
+                        @php
+                            $i = 1;
+                        @endphp
+                        <table style="width: 100%">
+                            @foreach ($data['documents'] as $document)
+                                @if ($i==1)
+                                    <tr>
+                                @endif
+                                        <td style="width:10vw">
+                                            <input type="checkbox" @if(in_array($document->id,$data['documents_submitted'])) checked=""  @endif>
+                                                {{$document->name}}, 
+                                        </td>
+                                @if ($i%2==0)
+                                    </tr>
+                                    <tr>
+                                @endif
+                                {{$i++}}
+                            @endforeach
+                        </table>
                    </td>
                 </tr>
             </table>

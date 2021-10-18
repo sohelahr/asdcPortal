@@ -53,7 +53,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
 
-                            <label class="form-label">Course</label>
+                            <label class="form-label">Course <sup class="text-danger">*</sup></label>
 
                             <select class="form-control" name="course_id" id="admission_course">
                                 @foreach ($courses as $course)
@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Course Timing</label>
+                            <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
 
                             <select class="form-control" name="course_slot_id" id="course_slot">
                                 @foreach ($initial_course_slots as $courseslot)
@@ -82,7 +82,7 @@
                     
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Course Batch</label>
+                            <label class="form-label">Course Batch <sup class="text-danger">*</sup></label>
 
                             <select class="form-control" name="coursebatch_id" id="course_batch">
                                 @if(count($initial_course_batches) > 0)
@@ -101,7 +101,7 @@
             
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Admission Remarks</label>
+                            <label class="form-label">Admission Remarks <sup class="text-danger">*</sup></label>
                             <textarea class="form-control" rows="7" name="admission_remarks">{{$admission->admission_remarks}}</textarea>
                         </div>
                     </div>

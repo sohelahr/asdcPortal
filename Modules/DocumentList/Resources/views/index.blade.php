@@ -78,7 +78,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Name <sup class="text-danger">*</sup></label>
                             <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Adhaar">
                           
                         </div>
@@ -101,7 +101,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Name <sup class="text-danger">*</sup></label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Adhaar">
                         </div>
                     </div>

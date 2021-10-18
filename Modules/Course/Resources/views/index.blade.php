@@ -7,8 +7,8 @@
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Courses</li>
+                <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Courses</li>
             </ol>
         </nav>
     </div>
@@ -85,16 +85,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Name <sup class="text-danger">*</sup></label>
                             <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-6">
-                                <label for="Duration">Duration</label>
+                                <label for="Duration">Duration <sup class="text-danger">*</sup></label>
                                 <input id="Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
                             </div>
                             <div class="form-group col-6">
-                                <label for="slug">Slug</label>
+                                <label for="slug">Slug <sup class="text-danger">*</sup></label>
                                 <input id="slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
                             </div>
                         </div>
@@ -117,16 +117,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Name <sup class="text-danger">*</sup></label>
                             <input id="edit_name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-6">
-                                <label for="Duration">Duration</label>
+                                <label for="Duration">Duration <sup class="text-danger">*</sup></label>
                                 <input id="edit_Duration" class="form-control form-control-sm" type="text" name="duration" placeholder="eg : 3 months">
                             </div>
                             <div class="form-group col-6">
-                                <label for="slug">Slug</label>
+                                <label for="slug">Slug <sup class="text-danger">*</sup></label>
                                 <input id="edit_slug" class="form-control form-control-sm" type="text" name="slug" placeholder="eg : DM">
                             </div>
                         </div>

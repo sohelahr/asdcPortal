@@ -98,7 +98,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="course">Course</label>
+                            <label for="course">Course <sup class="text-danger">*</sup></label>
                             <select id="course" class="form-control" name="course_id">
                                 @foreach ($courses as $course)
                                     <option value="{{$course->id}}">{{$course->name}}</option>                                    
@@ -107,12 +107,12 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <label for="batch_number">Batch Number</label>
+                                <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
                                 <input id="batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
                             </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Batch Start Date</label>
+                                        <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="start_date">
                                             <span class="input-group-addon input-group-append border-left">
@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Batch End Date</label>
+                                        <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="end_date">
                                             <span class="input-group-addon input-group-append border-left">
@@ -156,7 +156,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="course">Course</label>
+                            <label for="course">Course <sup class="text-danger">*</sup></label>
                             <select id="edit-course" class="form-control" name="course_id">
                                 @foreach ($courses as $course)
                                     <option value="{{$course->id}}" id="edit-option-{{$course->id}}"> {{$course->name}}</option>                                    
@@ -165,7 +165,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <label for="batch_number">Batch Number</label>
+                                <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
                                 <input id="edit-batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                             </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Batch Start Date</label>
+                                        <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="start_date" id="edit-start-date">
                                             <span class="input-group-addon input-group-append border-left">
@@ -187,7 +187,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Batch End Date</label>
+                                        <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
                                         <div id="end-datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="end_date" id="edit-end-date">
                                             <span class="input-group-addon input-group-append border-left">

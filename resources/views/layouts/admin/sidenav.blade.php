@@ -49,7 +49,7 @@
             <div class="collapse" id="users">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('user_profile_list')}}">Profiles</a></li>
-                    @if(Auth::user()->type=='1')
+                    @if(Auth::user()->user_type=='1')
                         <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('subadmin_list')}}">Sub Admins</a></li>
                     @endif
                 </ul>

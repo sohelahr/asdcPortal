@@ -44,7 +44,7 @@
 
                         <div class="form-group">
 
-                            <label class="form-label">Course</label>
+                            <label class="form-label">Course <sup class="text-danger">*</sup></label>
                             <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
                             <select class="form-control" name="course_id" id="admission_course">
                                 @foreach ($courses as $course)
@@ -59,7 +59,7 @@
                     
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Course Batch</label>
+                            <label class="form-label">Course Batch <sup class="text-danger">*</sup></label>
 
                             <select class="form-control" name="coursebatch_id" id="course_batch">
                                 @if(count($initial_course_batches) > 0)
@@ -77,7 +77,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Course Timing</label>
+                            <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
 
                             <select class="form-control" name="course_slot_id" id="course_slot">
                                 @if($selected_course_slot)
@@ -93,7 +93,7 @@
 
                         </div>
                         <div class="form-group">
-                        <label class="form-label">Documents Submitted</label>
+                        <label class="form-label">Documents Submitted <sup class="text-danger">*</sup></label>
                         @foreach ($documents as $document)
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
@@ -109,7 +109,7 @@
             
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label class="form-label">Admission Remarks</label>
+                            <label class="form-label">Admission Remarks <sup class="text-danger">*</sup></label>
                             <textarea class="form-control" rows="14" name="admission_remarks"></textarea>
                         </div>
                     </div>

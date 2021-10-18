@@ -27,6 +27,7 @@ class SerialNumberConfigurationsController extends Controller
         return $serial_number;
     }
 
+
     public static function incrementNumbers($id)
     {
         $serial_number = SerialNumberConfiguration::where('course_id',$id)->first();

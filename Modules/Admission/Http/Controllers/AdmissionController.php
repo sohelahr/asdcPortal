@@ -26,6 +26,11 @@ class AdmissionController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function index()
     {
         return view('admission::index');
