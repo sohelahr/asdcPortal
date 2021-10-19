@@ -18,4 +18,9 @@ Route::prefix('registration')->middleware(['auth'])->group(function() {
     Route::get('/data/{id}','RegistrationController@OneRegistrationData')->name('profile_registrations');
     Route::get('/create','RegistrationController@create')->name('user_registration_create');
     Route::post('/create','RegistrationController@store')->name('user_registration_create');
+
+    Route::post('/withdraw/{id}','RegistrationController@destroy');
+    Route::get('/getforminputs/{id}','RegistrationController@getRegFormData');
+
 });
+  

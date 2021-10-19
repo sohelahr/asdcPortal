@@ -133,8 +133,7 @@
                     </div>
                     <div class="modal-footer">
                         <input type="submit" value="Submit" class="btn btn-primary" >  
-                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
-
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>
                     </div>
                 </form>
             </div>

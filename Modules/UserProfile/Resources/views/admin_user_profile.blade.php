@@ -192,11 +192,11 @@
             {data: 'date',name:"date"},
             {data:'status',render:function(type,data,row){
                 if(row.status == "1")
-                    return "<label class='badge badge-warning badge-pill'>Applied</label>"
+                    return "<label class='badge badge-warning badge-pill px-4'>Applied</label>"
                 else if(row.status == "2")
-                    return "<label class='badge badge-success badge-pill'>Admitted</label>"
+                    return "<label class='badge badge-success badge-pill px-3'>Admitted</label>"
                 else if(row.status == "3")
-                    return "<label class='badge badge-danger badge-pill'>Expired</label>"
+                    return "<label class='badge badge-danger badge-pill px-3'>Cancelled</label>"
                 },
             name:'status'
             },

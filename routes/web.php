@@ -3,6 +3,7 @@
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Modules\Course\Entities\Course;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/* Route::get('/mail', function () {
+    //$content['user_name'] = 'Naseem';
+    //$content['course_name'] = 'BCA';
+    $content = 'Naseem';
+    //$content['documents'] = ['1'=>'asdnas'];
+    //return view('email.course_registrations_template',compact('content'));
+    return view('email.user_registration_mail',compact('content'));
+}); */
+
+
 Route::get('/dashboard', function () {
     if(Auth::user()->user_type == '2' || Auth::user()->user_type == '1'){
         return redirect('/admin/dashboard');
     }
-    return view('dashboard');
+    $courses = Course::all();
+    return view('dashboard',compact(('courses')));
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

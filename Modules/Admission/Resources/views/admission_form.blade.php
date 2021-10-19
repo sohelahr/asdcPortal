@@ -8,32 +8,30 @@
             table,th,td{
                 /* border: 1px solid black; */
                 font-size: 14px;
+                 padding: 0.3%;
                 vertical-align: middle;
             }
-            table{
-                margin-bottom:5px; 
+            div{
+                padding: 3px;
             }
             td{
                 padding: 2px;
                 margin-bottom: 10px;
             }
             p{
-                padding: 0%;
-                margin: 20px;
+                padding: 0;
+                padding-bottom: 30px!important;
+                margin: 1%;
             }
             tr{
                 vertical-align: middle;
-                margin-top: 5px;
-                margin-bottom:7px!important; 
-                padding: 8px;
             }
-        
     </style>
 </head>
 <body>
-    <page size = "A4">
-        <div style = "border: 1px solid red; border-top-left-radius: 20px; border-top-right-radius: 20px;">
-        <table style = "width: 100%;" align="center">
+    <page>
+        <div style = "border: 1px solid red; border-top-left-radius: 20px; border-top-right-radius: 20px;padding:0">
+        <table style = "width: 100%;">
             <tr>
                 <td>
                     <div style=" top: 0%; margin-left: 10%; padding-top: 2%; width: 25%">
@@ -50,20 +48,18 @@
                 </td>
             </tr>
         </table>
-        <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
-            <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
+        <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px;padding:1px">
+            <p style="padding: 0%">1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
         </div>
         
-                    <div style="text-align: center">
-                    <p style = "margin-top:80px;"><u>APPLICATION FORM FOR ADMISSION</u></p>
-                    </div>
-                
-           
+        <div style="text-align: center">
+            <p style = "margin-top:60px;font-size:12px"><u>APPLICATION FORM FOR ADMISSION</u></p>
+        </div>
         
-            <div style = "margin-top:-90px;margin-right:30px;">
-                   <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">
-            </div>
-        <div style="margin-top: 30px;margin:20px;">
+        <div style = "margin-top:-95px;margin-right:30px;">
+                <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">
+        </div>
+        <div style="margin:20px;margin-top:0">
             <table style = "width:100%;">
                 <tr>
                     <td width="20%">
@@ -150,29 +146,33 @@
                     <td style="width: 20%">
                         <p>Father's Name:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:20%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:80%">
                         <p style = "padding-bottom: 0%; ">{{$data['father_name']}}</p>
                     </td>
                 </tr>
-                    <td style="width: 25%">
-                        <p>Father's Occupation:</p>
-                    </td>
-                    <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
-                            <p style = "padding-bottom: 0%; ">{{$data['father_occupation']}}</p>
-                    </td>
             </table>
-            <table style="width: 100%">
+            <table style = "width:100%">
+                    <tr>
+                        <td style="width: 25%">
+                            <p>Father's Occupation:</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-bottom: 0%;width:25%">
+                                <p style = "padding-bottom: 0%; ">{{$data['father_occupation']}}</p>
+                        </td>
+                        <td style="width: 20%">
+                            <p  style="padding-left: 10px;">Fathers's Income:</p>
+                        </td>
+                        <td  style="width:30%;border-bottom: 1px solid black; padding-bottom: 0%;">
+                                <p style = "padding-bottom: 0%; ">{{$data['fathers_income']}}</p>
+                        </td>
+                    </tr>
+            </table>
+            <table style = "width:100%">
                 <tr>
-                    <td style="width: 20%">
-                        <p  style="padding-left: 10px;">Fathers's Income:</p>
-                    </td>
-                    <td  style="width:20%;border-bottom: 1px solid black; padding-bottom: 0%;">
-                            <p style = "padding-bottom: 0%; ">{{$data['fathers_income']}}</p>
-                    </td>
-                    <td style="width:25%">
+                    <td style="width:20%">
                         <p>Father's Mobile:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:35%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:80%">
                             <p style = "padding-bottom: 0%; ">{{$data['fathers_mobile']}}</p>
                     </td>
                 </tr>
@@ -204,21 +204,26 @@
                     
                 </tr>
             </table>
-            <table style="width: 100%">
+            <table style="width: 100%;padding-bottom:0;">
                 <tr>
-                    <td style="width: 20%">
+                    <td style="width: 20%;padding-bottom:0;">
                         <p>Attached:</p>
                     </td>
-                    <td style="width:80%">
+                </tr>
+                <tr>    
+                    <td style="width: 20%;padding-bottom:0;">
+                        <p>&nbsp;</p>
+                    </td>
+                <td style="width:80%;padding-bottom:0;">
                         @php
                             $i = 1;
                         @endphp
-                        <table style="width: 100%">
+                        <table style="width: 100%;padding-bottom:0;">
                             @foreach ($data['documents'] as $document)
                                 @if ($i==1)
                                     <tr>
                                 @endif
-                                        <td style="width:10vw">
+                                        <td style="width:30vw">
                                             <input type="checkbox" @if(in_array($document->id,$data['documents_submitted'])) checked=""  @endif>
                                                 {{$document->name}}, 
                                         </td>
@@ -232,7 +237,7 @@
                    </td>
                 </tr>
             </table>
-            <table style="width: 100%;margin-top:10px;">
+            <table style="width: 100%;">
                 <tr>
                     <td style="width: 10%">
                         <p>Date:</p>
@@ -252,24 +257,24 @@
             </table>
         </div>
         <div style = "background-color: rgb(226, 223, 223);">
-            <div style="padding-bottom:2%">
-            <p style = "text-align: center;padding-top: 10px;">FOR OFFICE USE ONLY</p>
+            <div style="padding-bottom:0.5%;">
+                <p style = "text-align: center;padding:0%">FOR OFFICE USE ONLY</p>
             </div>
-            <div style="padding-bottom:2%">
-            <table style = "width:100%">
+            <div>
+            <table style = "width:100%;padding-bottom:0;">
                 <tr>
-                    <td style = "width:20%">
+                    <td style = "width:23%;padding-bottom:0;">
                         <p>Admission Number:</p>
                     </td>
-                    <td style="border-bottom: 1px solid black; width: 80%">
+                    <td style="border-bottom: 1px solid black; width: 80%;padding-bottom:0;">
                             <p style = " padding-bottom: 0%;">{{$data['admission_number']}}</p>
                     </td>
                 </tr>
             </table>
-            <table style="width: 100%">
+            <table style="width: 100%;padding-bottom:0;">
     
                 <tr>
-                    <td style="width: 20%">
+                    <td style="width: 23%;padding-bottom:0;">
                         <p>Remarks:</p>
                     </td>
                     <td style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;">
@@ -279,12 +284,12 @@
             </table>
             <table style="padding: 2%;width: 100%">
                 <tr>
-                    <td style = "padding-top: 20px;">
+                    <td>
                         <p>Admin Signature</p>
                     </td>
                     <td></td>
                    <td></td>
-                    <td style="padding-top: 20px;text-align: right">   <p >Director Signature</p>
+                    <td style="text-align: right">   <p >Director Signature</p>
                     </td>
                     
                 </tr>
@@ -337,7 +342,7 @@
     </page>
     <div class="pagebreak"></div>
     <page>
-        <div style = "border: 1px solid black">
+        <div style = "border: 1px solid black;padding:0">
             <table style = "width: 100%;margin-bottom:0px" align="center">
                 <tr>
                     <td>
@@ -356,7 +361,7 @@
                 </tr>
             </table> 
             <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
-                <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
+                <p style="padding: 0%;margin:0">1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
             </div>
             <div>
                 <h4 style = "text-align: center"><u>ACKNOWLEDGEMENT OF CERTIFICATE RECEIVED</u></h4>
@@ -409,13 +414,13 @@
                 </table>
                 <table style="width: 100%;margin-bottom:0px;">
                     <tr>
-                        <td style = "padding-top: 70px; text-align: center">
+                        <td style = "padding-top: 40px; text-align: center">
                             <p><b>Student Signature</b></p>
                         </td>
-                        <td style = "padding-top: 70px; text-align: center">
+                        <td style = "padding-top: 40px; text-align: center">
                             <p><b>Admin Signature</b></p>
                         </td>
-                        <td style = "padding-top: 70px; text-align: center" colspan = "2">
+                        <td style = "padding-top: 40px; text-align: center" colspan = "2">
                             <p><b>Director Signature</b></p>
                         </td>
                     </tr>
@@ -447,8 +452,8 @@
                     </td>
                 </tr>
             </table> 
-            <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px">
-                <p>1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
+            <div style = "text-align: center; background-color: rgb(226, 223, 223);font-size:12px;margin:0">
+                <p style="padding: 0%;margin:0">1<sup>st</sup> floor, Near LEE Chinese Restaurant, Syed Ali Chabutra Shah Ali Banda Road, Hyderabad-65</p>
             </div>
             <div>
                 <h4 style = "text-align: center"><u>ACKNOWLEDGEMENT OF CERTIFICATE RECEIVED</u></h4>
@@ -502,13 +507,13 @@
                 </table>
                 <table style="width: 100%;margin-bottom:0px;">
                     <tr>
-                        <td style = "padding-top: 70px; text-align: center">
+                        <td style = "padding-top: 40px; text-align: center">
                             <p><b>Student Signature</b></p>
                         </td>
-                        <td style = "padding-top: 70px; text-align: center">
+                        <td style = "padding-top: 40px; text-align: center">
                             <p><b>Admin Signature</b></p>
                         </td>
-                        <td style = "padding-top: 70px; text-align: center" colspan = "2">
+                        <td style = "padding-top: 40px; text-align: center" colspan = "2">
                             <p><b>Director Signature</b></p>
                         </td>
                     </tr>

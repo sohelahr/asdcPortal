@@ -220,7 +220,8 @@ class AdmissionController extends Controller
         $data['admission_remarks'] = $admission->admission_remarks;
         $data['documents_submitted'] =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
         
-        $pdf = PDF::loadView('admission::admission_form',compact('data'));
+        $pdf = PDF::loadView('admission::admission_form',compact('data'),[], [
+                                'format' => [216, 280]]);
         return $pdf->stream('document.pdf');
     }
     /**

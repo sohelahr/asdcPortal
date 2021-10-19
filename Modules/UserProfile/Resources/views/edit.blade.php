@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Last Name</label>
+                                        <label class="form-label">Last Name </label>
 
                                         <input required type="text" class="form-control form-control-sm"
                                             value="{{$userprofile->lastname}}" disabled>
@@ -42,7 +42,7 @@
                                 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Mobile Number</label>
+                                        <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="mobile"
                                             value="{{$userprofile->mobile}}">
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Gender</label>
+                                        <label class="form-label">Gender <sup class="text-danger">*</sup></label>
 
                                         <select class="form-control" name="gender">
                                             <option value="male" @if ($userprofile->gender == "male")
@@ -68,7 +68,7 @@
                             
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Date of Birth</label>
+                                        <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="dob"
                                                 value="{{$userprofile->dob}}">
@@ -81,7 +81,7 @@
                                 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Age</label>
+                                        <label class="form-label">Age <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="age"
                                             value="{{$userprofile->age}}">
@@ -91,14 +91,14 @@
                                 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Aadhaar Number</label>
+                                        <label class="form-label">Aadhaar Number <sup class="text-danger">*</sup></label>
                                         <input required type="text" class="form-control form-control-sm" name="aadhaar"
                                             value="{{$userprofile->aadhaar}}">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Blood Group</label>
+                                        <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
                                         <input required type="text" class="form-control form-control-sm" name="blood_group"
                                             value="{{$userprofile->blood_group}}">
                                     </div>
@@ -106,7 +106,7 @@
                                 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Marital Status</label>
+                                        <label class="form-label">Marital Status <sup class="text-danger">*</sup></label>
 
                                         <select class="form-control" name="marital_status">
                                             <option value="single" @if ($userprofile->marital_status == "single")
@@ -140,7 +140,7 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="form-label">Home Type</label>
+                                        <label class="form-label">Home Type <sup class="text-danger">*</sup></label>
 
                                         <select class="form-control" name="home_type">
                                             <option value="rented" @if ($userprofile->home_type == "rented")
@@ -156,7 +156,7 @@
  
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label class="form-label">House Name/Number</label>
+                                        <label class="form-label">House Name/Number <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm"
                                             name="house_details" value="{{$userprofile->house_details}}">
@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label class="form-label">Street/Locality</label>
+                                        <label class="form-label">Street/Locality <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="street"
                                             value="{{$userprofile->street}}">
@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Landmark</label>
+                                        <label class="form-label">Landmark <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="landmark"
                                             value="{{$userprofile->landmark}}">
@@ -183,7 +183,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Pincode</label>
+                                        <label class="form-label">Pincode <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="pincode"
                                             value="{{$userprofile->pincode}}">
@@ -192,7 +192,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">City</label>
+                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="city"
                                             value="{{$userprofile->city}}">
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">State</label>
+                                        <label class="form-label">State <sup class="text-danger">*</sup></label>
                                         <input required type="text" class="form-control form-control-sm" name="state"
                                             value="{{$userprofile->state}}">
                                     </div>
@@ -226,7 +226,7 @@
                             
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Last Qualification</label>
+                                    <label class="form-label">Last Qualification <sup class="text-danger">*</sup></label>
 
                                     <select class="form-control " name="qualification_id">
                                         @foreach ($qualifications as $qualification)
@@ -240,7 +240,7 @@
                             
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Qualification Specialization</label>
+                                    <label class="form-label">Qualification Specialization <sup class="text-danger">*</sup></label>
 
                                     <input required type="text" class="form-control form-control-sm"
                                         name="qualification_specilization"
@@ -251,7 +251,7 @@
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label class="form-label">School/College Name</label>
+                                    <label class="form-label">School/College Name <sup class="text-danger">*</sup></label>
 
                                     <input required type="text" class="form-control form-control-sm" name="school_name"
                                         value="{{$userprofile->school_name}}">
@@ -261,7 +261,7 @@
                             
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label class="form-label">Qualification Status</label>
+                                    <label class="form-label">Qualification Status <sup class="text-danger">*</sup></label>
 
                                     <select class="form-control " name="qualification_status">
                                         <option value="Passed" @if($userprofile->qualification_status == "Passed")
@@ -280,7 +280,7 @@
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label class="form-label">Occupation</label>
+                                    <label class="form-label">Occupation <sup class="text-danger">*</sup></label>
 
                                     <select class="form-control" name="occupation_id">
                                         @foreach ($occupations as $occupation)
@@ -305,7 +305,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Father's/Gaurdian's Name</label>
+                                    <label class="form-label">Father's/Gaurdian's Name <sup class="text-danger">*</sup></label>
 
                                     <input required type="text" class="form-control form-control-sm" name="father_name"
                                         value="{{$userprofile->father_name}}">
@@ -314,7 +314,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Father's/Gaurdian's Mobile</label>
+                                    <label class="form-label">Father's/Gaurdian's Mobile <sup class="text-danger">*</sup></label>
 
                                     <input required type="text" class="form-control form-control-sm"
                                         name="fathers_mobile" value="{{$userprofile->fathers_mobile}}">
@@ -323,7 +323,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Father's/Gaurdian's Annual Income</label>
+                                    <label class="form-label">Father's/Gaurdian's Annual Income <sup class="text-danger">*</sup></label>
 
                                     <select class="form-control " name="fathers_income">
                                         <option value="0 to 1 lac" @if($userprofile->fathers_income == "0 to 1 lac")
@@ -342,13 +342,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Father's/Gaurdian's Occupation</label>
+                                    <label class="form-label">Father's/Gaurdian's Occupation <sup class="text-danger">*</sup></label>
 
                                     <input required type="text" class="form-control form-control-sm"
                                         name="father_occupation" value="{{$userprofile->father_occupation}}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">How You Got To Know About Us</label>
+                                    <label class="form-label">How You Got To Know About Us <sup class="text-danger">*</sup></label>
 
                                     
                                     <select class="form-control " name="how_know_us">
@@ -367,7 +367,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Any Comments</label>
+                                    <label class="form-label">Any Comments <sup class="text-danger">*</sup></label>
                                     <textarea class="form-control" rows="7" name="comments">{{$userprofile->comments}}</textarea>
                                 </div>
                             </div>
@@ -402,6 +402,7 @@
             format: 'yy/mm/dd',
             autoclose: true,
             todayHighlight: true
+            maxDate: "+0y +0m +0w +0d",
         });
 
          $(document).ready(function (){

@@ -112,33 +112,48 @@ class RegistrationController extends Controller
         $registration = new Registration();
         $registration->student_id = Auth::user()->id;
         $registration->course_id = $request->course_id;
-        $registration->course_slot_id = $request->course_slot_id;
+        $registration->course_slot_id = $request->courseslot_id;
         $registration->status = "1";
     
         $registration->registration_no = 'RG-'.$this->generateRandomString()."".$registration->student_id;
         
-        $count_registrations = Auth::user()->Registrations->count();
-        if($count_registrations < 2){
-            if($registration->save()){
-                
-                $mailcontent = ['user_name'=>Auth::user()->name,
-                                'course_name' => $registration->Course->name,
-                                'documents'=>DocumentList::all()->pluck('name')->toArray() 
-                            ];
+        
+        $all_registration_course_id = Auth::user()->Registrations
+                                        ->where('status','!=','3')
+                                        ->pluck(['course_id'])->toArray();
+        
+        if(count($all_registration_course_id) < 2){
 
-
-                MailController::sendCourseEnrollmentEmail(Auth::user()->email,$mailcontent);
-                return response()->json(['status' => 'success','msg' => 'You have successfully enrolled for a course',]);
+            if(in_array($registration->course_id,$all_registration_course_id)){
+                return response()->json(['status' => 'restricted','msg' => 'You cant register for the same course twice please choose another one',]);
             }
-            else
-                return response()->json(['status' => 'error','msg' => 'Something Went Wrong',]);
+            else{
+                if($registration->save()){
+                    
+                    $mailcontent = ['user_name'=>Auth::user()->name,
+                                    'course_name' => $registration->Course->name,
+                                    'documents'=>DocumentList::all()->pluck('name')->toArray() 
+                                ];
+                    MailController::sendCourseEnrollmentEmail(Auth::user()->email,$mailcontent);
+                    return response()->json(['status' => 'success','msg' => 'You have successfully enrolled for a course',]);
+                }
+                else{
+                    return response()->json(['status' => 'error','msg' => 'Something Went Wrong',]);
+                }
+            }
         }
         else
         {    
-            return response()->json(['status' => 'restricted','msg' => 'You cant register for more than two courses , redirecting back to dashboard',]);
+            return response()->json(['status' => 'restricted','msg' => 'You cant register for more than two courses',]);
         }
     }
 
+    function getRegFormData($id)
+    {
+        $course = Course::find($id);
+        $course_slots = $course->CourseSlots;  
+        return response()->json(['course_duration'=>$course->Duration,'course_slots'=>$course_slots]);
+    }
     /**
      * Show the specified resource.
      * @param int $id
@@ -178,6 +193,25 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
         //
+        $registration = Registration::find($id);
+        if($registration->student_id == Auth::user()->id){
+           $registration->status = '3';
+           $registration->save();
+            return json_encode(array('data'=>'success'));
+        }
+        else{
+            return json_encode(array('data'=>'unauthorized'));
+        }
+
     }
 
+    function generateRandomString($length = 6) {
+        $characters = '0123456789876543210';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 }

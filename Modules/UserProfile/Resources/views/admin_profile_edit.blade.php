@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">First Name</label>
+                                                <label class="form-label">First Name <sup class="text-danger">*</sup></label>
 
                                                 <input required type="text" class="form-control form-control-sm" name="firstname"
                                                     value="{{$userprofile->firstname}}">
@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Last Name</label>
+                                                <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
 
                                                 <input required type="text" class="form-control form-control-sm" name="lastname"
                                                     value="{{$userprofile->lastname}}">
@@ -408,6 +408,7 @@
             format: 'yy/mm/dd',
             autoclose: true,
             todayHighlight: true,
+            maxDate: "+0y +0m +0w +0d",
         });
          $(document).ready(function (){
         $('#edit_profile').validate({

@@ -27,16 +27,16 @@
         <div style = " box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; margin-top: -30px; background-color: white; margin-left: 5%; margin-right: 5%;">
             <div>
                 <div style = "width: 100%; text-align: center;">
-                    <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px" />
+                    <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width="280" />
                 </div>
                 <div>
-                    <div style = "padding: 5%;">
-                        <p>Dear {{$content}}, </p><br>
-                        <p><b>Greetings from ASDC, (Tag line comes here!)</b></p>
+                    <div style = "padding: 1% 0 0 5%">
+                        <p style="text-transform: capitalize">Dear {{$content}}, </p>
+                        <p><b>Greetings from ASDC,</b></p>
                         <p>ASDC is formed to help the students who could not continue their education with the required skills necessary for employment.</p>
                     </div>
-                    <div style = "margin-top: 200px; text-align: center; padding: 5%">
-                        <p>By pressing the button below, please let us know something something.....</p>
+                    <div style = "margin-top: 50px; text-align: center; padding: 1% 0 0 5%">
+                        <p>Verify your email by pressing below, by pressing the button below,</p>
                     </div>
                     <div style = "text-align: center;">
                         <button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 200px; height: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>

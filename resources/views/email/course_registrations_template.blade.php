@@ -26,21 +26,21 @@
     <div class = "container">
         <div style = " box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; margin-top: -30px; background-color: white; margin-left: 5%; margin-right: 5%;">
             <div>
-                <div style = "width: 100%; text-align: center;">
-                    <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "300px" />
+                <div style = "width: 100%; text-align: center;" class="logo">
+                    <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width="280" />
                 </div>
                 <div>
-                    <div style = "padding: 5%;">
-                        <p>Dear {{$content['user_name']}}, </p><br>
-                        <p><b>Greetings from ASDC, (Tag line comes here!)</b></p>
+                    <div style = "padding: 1% 0 0 5%">
+                        <p style="text-transform: capitalize">Dear {{$content['user_name']}}, </p>
+                        <p><b>Greetings from ASDC,</b></p>
                         <p>Thankyou for joining us in your academic journey!</p>
                     </div>
-                    <div style = "margin-top: 100px;">
-                        <p>You have successfully registered for {{$content['course_name']}} course</p>
+                    <div style = "padding: 1% 0 0 5%">
+                        <p>You have successfully registered for <b>{{$content['course_name']}}</b> course</p>
                     </div>
-                    <div style = "padding: 5%">
-                         Please visit the academic center for completing your enrollment.
-                        Please bring the following documents while coming to the center.<br>
+                    <div style = "padding: 1% 0 0 5%">
+                        Please visit our academic center for completing your enrollment.
+                        Please bring all the documents that are available from below while coming to the center.<br>
                         <ul>
                             @foreach ($content['documents'] as $item)
                                 <li>{{$item}}</li>
