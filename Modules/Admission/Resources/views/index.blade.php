@@ -20,11 +20,11 @@
                          <table class="table table-hover" id="admissions">
                     <thead>
                         <tr>
-                            <th>Roll no.</th>
                             <th>Student Name</th>
+                            <th>Roll no.</th>
                             <th>Course Name</th>
-                            <th>Admitted By</th>
-                            <th>Admitted On</th>
+                            <th>Course Slot</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -32,11 +32,11 @@
                     </tbody>
                      <tfoot>
                         <tr>
-                            <th>Roll no.</th>
                             <th>Student Name</th>
+                            <th>Roll no.</th>
                             <th>Course Name</th>
-                            <th>Admitted By</th>
-                            <th>Admitted On</th>
+                            <th>Course Slot</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                      </tfoot>
@@ -93,23 +93,39 @@
         @endif
     
     $(document).ready( function () {
-    $('#admissions').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{route('all_admissions')}}",
-        columns:[
-            {data: 'roll_no', name: 'roll_no'},
-            {data: 'student_name',render:function(data,type,row){
-                return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
-                }, name: 'student_name'},
-            {data: 'course_name',name:"course_name"},
-            {data: 'admitted_by',name:"admitted_by"},
-            {data: 'date',name:"date"},
-            {data:'Action',render:function(type,data,row){
-                    return "<a href='admission/edit/"+row.id+"' class='badge badge-primary badge-pill'>Edit</a>"
-                },name:'action'}
-        ]
-    });
+        $('#admissions').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{route('all_admissions')}}",
+            columns:[
+                {data: 'student_name',render:function(data,type,row){
+                    return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
+                    }, name: 'student_name'},
+                {data: 'roll_no', name: 'roll_no'},
+                {data: 'course_slot',name:"course_slot"},
+                {data: 'date',name:"date"},
+                {data:'status',render:function(data,type,row){
+                    if(row.status == '1'){
+                        return '<p class="badge badge-pill badge-primary px-3">Admitted</p>'
+                    }
+                    else if(row.status == '2'){
+                        return '<p class="badge badge-pill badge-info px-3">Completed</p>'
+                    }
+                    else if(row.status == '3'){
+                        return '<p class="badge badge-pill badge-success px-3">Employed</p>'
+                    }
+                    else if(row.status == '4'){
+                        return '<p class="badge badge-pill badge-warning px-3">Cancelled</p>'
+                    }
+                    else{
+                        return '<p class="badge badge-pill badge-danger">Terminated</p>'
+                    }
+                },name:'status'},
+                {data:'Action',render:function(type,data,row){
+                        return "<a href='admission/edit/"+row.id+"' class='badge badge-primary badge-pill'>Edit</a>"
+                },name:'action'},
+            ]
+        });
 } );
 </script>
 @endsection

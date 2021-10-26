@@ -27,39 +27,34 @@
                 <form id="add_security_permission_form" action="{{route('set_security_permissions')}}" method="POST">
                     <input type="hidden" name="user_id" value="{{$user_details->id}}">
                     @csrf
-            
-                    <div class="row">
+             
+                    <div class="row align-items-stretch">
                         @foreach($permission_arr as $module => $permissions)
-                            <div class="col-md-12 col-sm-12">
-                                <div class="card">
-                                    <div class="card-header p-1">
-                                        <h3 class="card-title my-2">{{$module}}</h3>
+                            <div class="col-md-6 col-sm-12 ">
+                                <div class="form-group p-3">
+                                    <div>
+                                        <h5 class="form-label">{{$module}}</h5>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                @foreach($permissions as $key => $permission)
-                                                    <div class="col-md-2">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input name="permissions[]"
-                                                                    @if(count($user_permission) > 0 && in_array($permission['id'], $user_permission)) checked @endif
-                                                                    value="{{$permission['id']}}"
-                                                                    type="checkbox"> {{$permission['name']}}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                                    <div class="row m-0">
+                                        @foreach($permissions as $key => $permission)
+                                            <div class="col-md-6 p-1">
+                                                    <div class="form-check form-check-primary">
+                                                    <label class="form-check-label">
+                                                    <input type="checkbox" @if(count($user_permission) > 0 && in_array($permission['id'], $user_permission)) checked @endif
+                                                        class="form-check-input" name="permissions[]"  value="{{$permission['id']}}">
+                                                        {{$permission['name']}}
+                                                    <i class="input-helper"></i></label>
+                                                </div> 
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 <div class="p-2">            
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
                 </div>
 
                 </form>

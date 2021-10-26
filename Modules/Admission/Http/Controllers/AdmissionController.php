@@ -65,6 +65,9 @@ class AdmissionController extends Controller
             ->addColumn('course_name',function($admission){
                 return $admission->Course->name;
             })
+            ->addColumn('course_slot',function($admission){
+                return $admission->CourseSlot->name;
+            })
             ->addColumn('date',function($admission){
                 $time = strtotime(($admission->created_at));
                 return date('d M Y',$time) ;
@@ -117,7 +120,7 @@ class AdmissionController extends Controller
         $admission->coursebatch_id = $request->coursebatch_id;
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->admission_remarks = $request->admission_remarks;
-        $admission->status = "2";
+        $admission->status = "1";
         $admission->student_id = $request->student_id;
 
         if($admission->course_id == $request->registered_course_id){
@@ -134,10 +137,9 @@ class AdmissionController extends Controller
         //Create new Admission Numbers using that 
         $course_slug = Course::find($request->course_id)->slug;
         
-        $admission->admission_form_number = "asdc/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
+        $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
         
-        $coursebatch = CourseBatch::where('id',$request->coursebatch_id)->first();
-        $admission->roll_no =  $course_slug . date("y") .$coursebatch->batch_number."-". $current_numbers->currentRollNumber;
+        $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber;
         if($admission->save()){                
 
             //Incrrement Numbers if data saves
@@ -190,6 +192,38 @@ class AdmissionController extends Controller
         return response()->json(['course_slots'=>$course_slots,'course_batches'=>$course_batches]);
     }
 
+    function cancelAdmission(Request $request)
+    {
+        $admission = Admission::find($request->admission_id);
+        $admission->cancellation_reason = $request->cancellation_reason;
+        $admission->status = '4';
+        if($admission->save()){
+            return redirect()->route('admission_show',[$admission->id])->with('cancelled','created');
+        }
+        else{
+            return redirect('/admission')->with('error','Something Went Wrong');
+        }
+
+    }
+
+    function terminateAdmission(Request $request)
+    {
+        $admission = Admission::find($request->admission_id);
+        $admission->cancellation_reason = $request->cancellation_reason;
+        $admission->status = '5';
+        if($admission->save()){
+
+            $student = $admission->Student->UserProfile;
+            $student->is_suspended = true;
+            $student->suspended_till = date('y-m-d', strtotime('+1 year'));
+            $student->save();
+            return redirect()->route('admission_show',[$admission->id])->with('terminated','created');
+        }
+        else{
+            return redirect('/admission')->with('error','Something Went Wrong');
+        }
+
+    }
 
     function PrintForm($id)
     {

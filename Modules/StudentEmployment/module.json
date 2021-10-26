@@ -1,0 +1,13 @@
+{
+    "name": "StudentEmployment",
+    "alias": "studentemployment",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\StudentEmployment\\Providers\\StudentEmploymentServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

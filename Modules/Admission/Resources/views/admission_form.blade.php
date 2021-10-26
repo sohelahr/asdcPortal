@@ -133,10 +133,10 @@
             </table>
             <table style = "width: 100%">
                 <tr>
-                    <td style="width: 30%">
+                    <td style="width: 25%">
                         <p>School/College Name:</p>
                     </td>
-                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:70%">
+                    <td  style="border-bottom: 1px solid black; padding-bottom: 0%;width:75%">
                             <p style = "padding-bottom: 0%; ">{{$data['school_name']}}</p>
                     </td>
                 </tr>
@@ -209,25 +209,20 @@
                     <td style="width: 20%;padding-bottom:0;">
                         <p>Attached:</p>
                     </td>
-                </tr>
-                <tr>    
-                    <td style="width: 20%;padding-bottom:0;">
-                        <p>&nbsp;</p>
-                    </td>
                 <td style="width:80%;padding-bottom:0;">
                         @php
                             $i = 1;
                         @endphp
                         <table style="width: 100%;padding-bottom:0;">
-                            @foreach ($data['documents'] as $document)
+                            @foreach ($data['documents_name'] as $document)
                                 @if ($i==1)
                                     <tr>
                                 @endif
-                                        <td style="width:30vw">
-                                            <input type="checkbox" @if(in_array($document->id,$data['documents_submitted'])) checked=""  @endif>
+                                        <td style="width:15vw">
+                                            <input type="checkbox" checked="">
                                                 {{$document->name}}, 
                                         </td>
-                                @if ($i%2==0)
+                                @if ($i%3==0)
                                     </tr>
                                     <tr>
                                 @endif
@@ -239,10 +234,10 @@
             </table>
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 10%">
+                    <td style="width: 5%">
                         <p>Date:</p>
                     </td>
-                    <td style="width: 40%">
+                    <td style="width: 45%">
                         <div style = " padding-bottom: 0%;">
                             <p style = "padding-bottom: 0%;">{{$data['current_date']}}</p>
                         </div>
@@ -402,7 +397,7 @@
                 </table>
                 <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 15%">
+                        <td style="width: 20%">
                             <p>Original Documents Submitted:</p>
                         </td>
                         <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;"> 
@@ -428,7 +423,7 @@
                 <table>
                 <tr>
                     <td style="text-align: center"> 
-                        <p>Note:This acknowledgement is compulsory at the time of withdrawal of original certificate. </p>
+                        <p>Note : This acknowledgement is compulsory at the time of withdrawal of original certificate. </p>
                     </td>
                 </tr>
                 </table>
@@ -495,7 +490,7 @@
                 </table>
                 <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 15%">
+                        <td style="width: 20%">
                             <p>Original Documents Submitted:</p>
                         </td>
                         <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;"> 

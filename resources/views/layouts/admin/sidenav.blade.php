@@ -32,11 +32,18 @@
                         @if(\App\Http\Helpers\CheckPermission::hasPermission('view.courses'))
                             <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('course_list')}}">Courses</a></li>
                         @endif
-                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('coursebatch_list')}}">Course Batches</a></li>
-                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('document_list')}}">Documents Required</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="{{route('occupations')}}">Occupation</a></li>
-                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('qualifications')}}">Qualification</a></li>
-                        
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('view.coursebatch'))
+                            <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('coursebatch_list')}}">Course Batches</a></li>
+                        @endif
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('view.documents'))
+                            <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('document_list')}}">Documents Required</a></li>
+                        @endif
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('view.occupations'))
+                            <li class="nav-item"> <a class="nav-link" href="{{route('occupations')}}">Occupation</a></li>
+                        @endif    
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('view.qualifications'))
+                            <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('qualifications')}}">Qualification</a></li>
+                        @endif
                     </ul>
                 </div>
             </li>
@@ -48,9 +55,11 @@
             </a>
             <div class="collapse" id="users">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('user_profile_list')}}">Profiles</a></li>
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.profiles'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('user_profile_list')}}">Students</a></li>
+                    @endif
                     @if(Auth::user()->user_type=='1')
-                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('subadmin_list')}}">Sub Admins</a></li>
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{route('subadmin_list')}}">Staff</a></li>
                     @endif
                 </ul>
             </div>
@@ -64,9 +73,12 @@
             </a>
             <div class="collapse" id="admission">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('registration/')}}">Registrations</a></li>
-                    <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('admission/')}}">Admissions</a></li>
-
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('view.registrations'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('registration/')}}">Registrations</a></li>
+                    @endif
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('admission/')}}">Admissions</a></li>
+                    @endif
                 </ul>
             </div>
         </li>

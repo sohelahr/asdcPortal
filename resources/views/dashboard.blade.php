@@ -26,7 +26,33 @@
                     <h5>To enroll in a course, please complete your profile.</h5>
                 </div>
                 <div class="modal-footer">
+                    <form method="POST" action="{{ route('logout') }}" class="px-2">
+                        @csrf
+                        <input type="submit" value="Logout" class="btn btn-info">
+                    </form>
                     <a class="btn btn-warning" href="{{route('profile_update')}}">Complete Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile_suspended" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-danger" id="my-modal-title">Notice : </h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Your Profile has been suspended</h5>
+                    <p>You wont be able to enroll in any of the courses till
+                        {{date('d M Y',strtotime($profile->suspended_till))}}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" action="{{ route('logout') }}" class="px-2">
+                        @csrf
+                        <input type="submit" value="Logout" class="btn btn-info">
+                    </form>
                 </div>
             </div>
         </div>
@@ -128,13 +154,22 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        @if(! Auth::User()->UserProfile->is_profile_completed)
+        @if(! $profile->is_profile_completed)
             $("#complete_profile").modal({
                 backdrop: 'static',
                 keyboard: false,
                 show:true,
             })
         @endif
+
+        @if($profile->is_suspended)
+            $("#profile_suspended").modal({
+                backdrop: 'static',
+                keyboard: false,
+                show:true,
+            })
+        @endif
+
         @if(\Illuminate\Support\Facades\Session::has('profile_complete'))    
                 $.toast({
                     heading: 'Profile Complete',
@@ -258,12 +293,12 @@
                                 return `<button type="button" class="btn btn-warning btn-rounded py-2" 
                                             onclick='deleteRegistration(${row.id})'
                                             >
-                                            <i class="fas fa-times"></i>                          
+                                            <i class="fas fa-times"></i>                    
                                         </button>`
                             }
                             else if(row.status == "2"){
                                 return `<button type="button" class="btn btn-primary btn-rounded py-2">
-                                            <i class="fa fa-id-card"></i>                          
+                                            <i class="fa fa-id-card" style="font-size: 0.9rem;"></i>                          
                                         </button>`
                             }
                             else{

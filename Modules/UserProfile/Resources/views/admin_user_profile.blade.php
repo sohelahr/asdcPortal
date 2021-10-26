@@ -49,9 +49,23 @@
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            Active
+                            @if($profile->is_suspended)
+                              Suspended
+                            @else
+                              Active
+                            @endif
                           </span>
                         </p>
+                        @if($profile->is_suspended)
+                          <p class="clearfix">
+                            <span class="float-left">
+                              Suspended Till
+                            </span>
+                            <span class="float-right text-muted">
+                                {{date('d M Y',strtotime($profile->suspended_till))}}
+                            </span>
+                          </p>
+                        @endif
                         <p class="clearfix">
                           <span class="float-left">
                             Phone

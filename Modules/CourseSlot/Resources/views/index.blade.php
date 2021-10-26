@@ -28,12 +28,13 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#timing-create">
-                   + Create
-                </button>
-            </div>    
-            
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursesslot'))
+                <div class="float-right my-2">
+                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#timing-create">
+                    + Create
+                    </button>
+                </div>    
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -53,15 +54,19 @@
                                 <td>{{$timing->TotalCapacity}}</td>
                                 <td>{{$timing->CurrentCapacity}}</td>        
                                 <td class="d-flex p-1">
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot'))      
                                         <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditTiming({{$timing->id}})">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
-                                    <form action="{{url('courseslot/delete/'.$timing->id)}}" method="post" class="ml-2">
-                                        @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @endif
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot'))    
+                                        <form action="{{url('courseslot/delete/'.$timing->id)}}" method="post" class="ml-2">
+                                            @csrf
+                                            <button type=submit class="btn btn-danger btn-rounded p-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

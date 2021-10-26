@@ -27,12 +27,13 @@
             </div>
         </div>
         <div class="card-body">
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.courses'))
             <div class="float-right my-2">
                 <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
                      + Create
                 </button>
             </div>    
-            
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -40,7 +41,9 @@
                             <th>Name</th>
                             <th>Duration</th>
                             <th>Slug</th>
-                            <th>Timings</th>
+                            @if(\App\Http\Helpers\CheckPermission::hasPermission('view_courses_slots.courses'))      
+                                <th>Timings</th>
+                            @endif
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -51,18 +54,24 @@
                                     {{$course->name}}
                                 </td>
                                 <td>{{$course->Duration}}</td>
-                                <td>{{$course->slug}}</td>        
-                                <td><a class="nav-link p-0" href="{{route('courseslot',$course->id)}}">View</a></td>
+                                <td>{{$course->slug}}</td>
+                                @if(\App\Http\Helpers\CheckPermission::hasPermission('view_courses_slots.courses'))      
+                                    <td><a class="nav-link p-0" href="{{route('courseslot',$course->id)}}">View</a></td>
+                                @endif
                                 <td class="d-flex p-1">
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.courses'))
                                         <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditCourse({{$course->id}})">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
+                                    @endif
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.courses'))
                                     <form action="{{url('course/delete/'.$course->id)}}" method="post" class="ml-2">
                                         @csrf
                                         <button type=submit class="btn btn-danger btn-rounded p-2">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

@@ -12,6 +12,7 @@ use Modules\Course\Entities\Course;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\DocumentList\Entities\DocumentList;
 use Modules\Registration\Entities\Registration;
+use Modules\SerialNumberConfigurations\Http\Controllers\SerialNumberConfigurationsController;
 use Modules\UserProfile\Entities\UserProfile;
 use Yajra\Datatables\Datatables;
 class RegistrationController extends Controller
@@ -61,6 +62,9 @@ class RegistrationController extends Controller
                 ->addColumn('date',function($registration){
                     $time = strtotime(($registration->created_at));
                     return date('d M Y',$time) ;
+                })
+                ->addColumn('action',function($registration){
+                    return \App\Http\Helpers\CheckPermission::hasPermission('create.admissions');
                 })
                 ->make();
     }
@@ -115,8 +119,8 @@ class RegistrationController extends Controller
         $registration->course_slot_id = $request->courseslot_id;
         $registration->status = "1";
     
-        $registration->registration_no = 'RG-'.$this->generateRandomString()."".$registration->student_id;
-        
+       // $registration->registration_no = 'RG-'.$this->generateRandomString()."".$registration->student_id;
+        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();   
         
         $all_registration_course_id = Auth::user()->Registrations
                                         ->where('status','!=','3')
@@ -129,8 +133,9 @@ class RegistrationController extends Controller
             }
             else{
                 if($registration->save()){
-                    
+                    SerialNumberConfigurationsController::incrementRegistrationNumber();
                     $mailcontent = ['user_name'=>Auth::user()->name,
+                                    'registration_no' => $registration->registration_no,
                                     'course_name' => $registration->Course->name,
                                     'documents'=>DocumentList::all()->pluck('name')->toArray() 
                                 ];

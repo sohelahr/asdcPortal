@@ -113,7 +113,12 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'name',render:function(data,type,row){
                 //this will be rendered from server just for demo here
-                return "<a href='userprofile/admin/"+row.id+"/view'>"+row.name+"</a>"
+                if(data['perm']){
+                    return "<a href='userprofile/admin/"+row.id+"/view'>"+data['name']+"</a>"
+                }
+                else{
+                    return "<p class='mb-0'>"+data['name']+"</p>"
+                }
                 },
             name:"name"
             },
@@ -129,8 +134,11 @@
                 },
             name:'type'
             },
-            {data: 'edit',render:function(type,data,row){
-                return "<a href='userprofile/admin/"+row.id+"/edit/' class='btn btn-dark btn-rounded p-2 mr-2'><i class='fas fa-pencil-alt'></i></a>"
+            {data: 'edit',render:function(data,type,row){
+                if(data)
+                    return "<a href='userprofile/admin/"+row.id+"/edit/' class='btn btn-dark btn-rounded p-2 mr-2'><i class='fas fa-pencil-alt'></i></a>"
+                else
+                    return "<a href='#' class='btn btn-dark btn-rounded p-2 mr-2'><i class='fas fa-frown'></i></a>"
                 },
             },
         ]

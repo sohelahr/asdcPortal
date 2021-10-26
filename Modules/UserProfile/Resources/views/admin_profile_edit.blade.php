@@ -14,6 +14,15 @@
     </div>
     <div class="card">
         <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{route('user_profile_edit',$userprofile->id)}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -71,7 +80,7 @@
                                     
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
+                                                <label class="form-label">Date of Birth {{-- <sup class="text-danger">*</sup> --}}</label>
 
                                                 <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                                     <input required type="text" class="form-control form-control-sm" name="dob"
@@ -104,7 +113,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
-                                                <input required type="text" class="form-control form-control-sm" name="blood_group"
+                                                <input type="text" class="form-control form-control-sm" name="blood_group"
                                                     value="{{$userprofile->blood_group}}">
                                             </div>
                                         </div>
@@ -372,7 +381,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="form-label">Any Comments <sup class="text-danger">*</sup></label>
+                                            <label class="form-label">Any Comments {{-- <sup class="text-danger">*</sup> --}}</label>
 
                                             <textarea class="form-control" rows="7" name="comments">{{$userprofile->comments}}</textarea>
                                         </div>
@@ -456,9 +465,9 @@
                         minlength: 0,
                         maxlength: 12,
                     },
-                    blood_group: {
+                    /* blood_group: {
                         required: true,
-                    },
+                    }, */
                     marital_status: {
                         required: true,
                     },
@@ -566,9 +575,9 @@
                     aadhaar: {
                         required: "Please enter your adhaar number",
                     },
-                    blood_group: {
+                    /* blood_group: {
                         required: "Please enter yor blood group",
-                    },
+                    }, */
                     marital_status: {
                         required: "Please select your marital status",
                     },

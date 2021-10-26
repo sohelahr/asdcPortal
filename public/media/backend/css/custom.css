@@ -8,3 +8,12 @@ th{
 .action{
     text-align: center;
 }
+
+i{
+    font-size: 14px!important;
+}
+.header-buttons button{
+ color: rgb(94, 93, 93);
+ font-weight: 100;
+ font-size: small;
+}

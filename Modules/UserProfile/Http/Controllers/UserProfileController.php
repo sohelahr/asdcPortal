@@ -29,7 +29,12 @@ class UserProfileController extends Controller
         return Datatables::of($userprofiles)
                 ->addIndexColumn()
                 ->addColumn('name',function($profile){
-                    return $profile->firstname." ".$profile->lastname;
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('view.profiles')){
+                        return ['perm'=>true,'name'=> $profile->firstname." ".$profile->lastname];
+                    }
+                    else{
+                       return ["perm"=>false,'name' => $profile->firstname." ".$profile->lastname];
+                    }
                 })
                 ->addColumn('qualification',function($profile){
                     return $profile->Qualification->name;
@@ -39,6 +44,9 @@ class UserProfileController extends Controller
                         return "True";
                     else
                         return "FALSE";
+                })
+                ->addColumn('edit',function($registration){
+                    return \App\Http\Helpers\CheckPermission::hasPermission('update.profiles');
                 })
                 ->make();
     }
@@ -105,6 +113,11 @@ class UserProfileController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'mobile' => ['required', 'max:10', 'unique:user_profiles'],
+            'aadhaar' => ['required', 'unique:user_profiles'],            
+        ]);
+
         $userprofile =  Auth::User()->UserProfile;
         $userprofile->firstname = $request->firstname;
         $userprofile->lastname = $request->lastname;
@@ -121,7 +134,7 @@ class UserProfileController extends Controller
         $userprofile->street = $request->street;
         $userprofile->landmark = $request->landmark;
         $userprofile->city = $request->city;
-        $userprofile->state = $request->state; 
+        $userprofile->state = $request->state;   
         $userprofile->pincode = $request->pincode;
         $userprofile->how_know_us = $request->how_know_us;
         $userprofile->father_name = $request->father_name; 

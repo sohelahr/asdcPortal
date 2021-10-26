@@ -66,9 +66,13 @@
             {data: 'course_name',name:"course_name"},
             {data: 'course_slot',name:"course_slot"},
             {data: 'date',name:"date"},
-            {data:'Action',render:function(type,data,row){
-                    return "<a class='badge badge-success badge-pill' href='admission/create/"+row.id+"'>Admit</a>"
-                },name:'action'}
+            {data:'action',render:function(data,type,row){
+                    if(data === true)
+                        return "<a class='badge badge-success badge-pill' href='admission/create/"+row.id+"'>Admit</a>"
+                    else
+                        return "<a class='badge badge-success badge-pill' href='#'><i class='fa fa-frown'></i></a>"
+
+            },name:'action'}
         ]
     });
 } );

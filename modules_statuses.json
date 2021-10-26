@@ -15,5 +15,7 @@
     "Seeder": true,
     "InitialSeeder": true,
     "SubAdmin": true,
-    "Security": true
+    "Security": true,
+    "Employee": true,
+    "StudentEmployment": true
 }

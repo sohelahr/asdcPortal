@@ -27,12 +27,13 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#document-create">
-                    + Create
-                </button>
-            </div>       
-            
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.documents'))      
+                <div class="float-right my-2">
+                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#document-create">
+                        + Create
+                    </button>
+                </div>       
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -46,15 +47,19 @@
                             <tr>
                                 <td>{{$document->name}}</td>
                                 <td class="d-flex p-1">
-                                    <button class="btn btn-dark btn-rounded p-2" onclick="Editdocumentlist({{$document->id}})">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <form action="{{url('documentlist/delete/'.$document->id)}}" method="post" class="ml-2" id = "document">
-                                        @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2">
-                                            <i class="fas fa-trash"></i>
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.documents'))      
+                                        <button class="btn btn-dark btn-rounded p-2" onclick="Editdocumentlist({{$document->id}})">
+                                            <i class="fas fa-pencil-alt"></i>
                                         </button>
-                                    </form>
+                                    @endif
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.documents'))      
+                                        <form action="{{url('documentlist/delete/'.$document->id)}}" method="post" class="ml-2" id = "document">
+                                            @csrf
+                                            <button type=submit class="btn btn-danger btn-rounded p-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

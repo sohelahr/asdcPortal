@@ -25,4 +25,7 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/edit/{id}','AdmissionController@edit')->name('user_admission_edit');
     Route::post('/edit/{id}','AdmissionController@update')->name('user_admission_edit');
 
+    Route::post('/cancel','AdmissionController@cancelAdmission')->name('cancel_admission');
+    Route::post('/terminate','AdmissionController@terminateAdmission')->name('terminate_admission');
+
 });

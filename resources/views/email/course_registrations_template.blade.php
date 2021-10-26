@@ -9,14 +9,16 @@
     <title>asdc</title>
 </head>
 <style>
-    @media (max-width: 768px){
-       /*  .tqf{
-            padding-bottom: 200px !important;
+    @media (max-width:400px){
+        .tqf{
+            width: 50px!important;
         }
- */
-       /*  .contact{
-            margin-right: -120px !important;
-        } */
+        .seed{
+            width: 50px!important;
+        }
+        .logo{
+            width: 150px!important;
+        }
     }
 </style>
 <body>
@@ -26,9 +28,17 @@
     <div class = "container">
         <div style = " box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; margin-top: -30px; background-color: white; margin-left: 5%; margin-right: 5%;">
             <div>
-                <div style = "width: 100%; text-align: center;" class="logo">
-                    <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width="280" />
-                </div>
+                 <table style = "width: 100%;padding:3%">
+                    <td style = "width:20%">
+                        <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "100px" style = "padding: 4%;" class="seed" />
+                    </td>        
+                    <td style = "text-align:center;width:60%;">
+                        <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width="275px" class="logo" />
+                    </td>
+                    <td style = "text-align: right;width:20%" class = "tqf">
+                        <img src = "{{url('/public/images/TQF_Logo.jpg')}}" class = "tqf" width = "100px" style = "padding: 4%; " />
+                    </td>
+                 </table>
                 <div>
                     <div style = "padding: 1% 0 0 5%">
                         <p style="text-transform: capitalize">Dear {{$content['user_name']}}, </p>
@@ -38,7 +48,7 @@
                     <div style = "padding: 1% 0 0 5%">
                         <p>You have successfully registered for <b>{{$content['course_name']}}</b> course</p>
                     </div>
-                    <div style = "padding: 1% 0 0 5%">
+                    <div style = "padding: 1% 0 5% 5%">
                         Please visit our academic center for completing your enrollment.
                         Please bring all the documents that are available from below while coming to the center.<br>
                         <ul>
@@ -46,15 +56,6 @@
                                 <li>{{$item}}</li>
                             @endforeach
                         </ul>
-                    </div>
-                    
-                    <div style = "width: 100%">
-                        <div style = "display: inline-block; padding: 3%">
-                            <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "100px" style = "padding: 4%;" />
-                        </div>
-                        <div style = "float: right; display: inline-block; padding: 3%; margin-top: 20px;" class = "tqf">
-                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" class = "tqf" width = "100px" style = "padding: 4%; " />
-                        </div>
                     </div>
                 </div>
             </div>
@@ -67,16 +68,13 @@
                 </div>
                 <div style = "text-align: center; padding: 3%;">
                     <div>
-                        <p><i class = "fa fa-home"></i><b>&nbsp;Address:</b></p>
-                        <p>1st floor, Above LEE Chinese Restaurant, Shah Ali Banda Road, Hyderabad</p>
+                        <p><i class = "fa fa-home"></i><b>&nbsp;Address:</b> 1st floor, Above LEE Chinese Restaurant, Shah Ali Banda Road, Hyderabad</p>
                     </div>
                     <div>
-                        <p><i class = "fa fa-phone"></i><b>&nbsp;Phone:</b></p>
-                        <p>+91 7207084178</p>
+                        <p><i class = "fa fa-phone"></i><b>&nbsp;Phone:</b> +91 7207084178</p>
                     </div>
                     <div>
-                        <p><i class = "fa fa-envelope"></i><b>&nbsp;Email:</b></p>
-                        <p>contact@asdc-india.com</p>
+                        <p><i class = "fa fa-envelope"></i><b>&nbsp;Email:</b> contact@asdc-india.com</p>
                     </div>
                 </div>
             </div>

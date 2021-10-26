@@ -27,12 +27,13 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#occupation-create">
-                    + Create
-                </button>
-            </div>    
-            
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.occupations'))
+                <div class="float-right my-2">
+                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#occupation-create">
+                        + Create
+                    </button>
+                </div>    
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -46,15 +47,19 @@
                             <tr>
                                 <td>{{$occupation->name}}</td>
                                 <td class="d-flex p-1">
-                                    <button class="btn btn-dark btn-rounded p-2" onclick="Editoccupation({{$occupation->id}})">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <form action="{{url('occupation/delete/'.$occupation->id)}}" method="post" class="ml-2">
-                                        @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2">
-                                            <i class="fas fa-trash"></i>
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.occupations'))      
+                                        <button class="btn btn-dark btn-rounded p-2" onclick="Editoccupation({{$occupation->id}})">
+                                            <i class="fas fa-pencil-alt"></i>
                                         </button>
-                                    </form>
+                                    @endif
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.occupations'))      
+                                        <form action="{{url('occupation/delete/'.$occupation->id)}}" method="post" class="ml-2">
+                                            @csrf
+                                            <button type=submit class="btn btn-danger btn-rounded p-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

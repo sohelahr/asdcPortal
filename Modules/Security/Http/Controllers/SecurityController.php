@@ -15,7 +15,7 @@ class SecurityController extends Controller
     function setPermission($id)
     {
         $user_details = User::find($id);
-        $permissions = Permission::where('status','1')->orderBy('module')->get(['id','name','module'])->toArray();
+        $permissions = Permission::where('status','1')->orderBy('id')->get(['id','name','module'])->toArray();
         $user_permission = UserPermission::where('user_id',$id)->get()->pluck('permission_id')->toArray();
         $permission_arr = $this->arrayGroupBy($permissions,'module');
         return view('security::permissions',compact('permission_arr','user_details','user_permission'));

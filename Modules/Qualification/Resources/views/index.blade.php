@@ -28,9 +28,11 @@
         </div>
         <div class="card-body">
             <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#qualification-create">
-                     + Create
-                </button>
+                @if(\App\Http\Helpers\CheckPermission::hasPermission('create.qualifications'))      
+                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#qualification-create">
+                        + Create
+                    </button>
+                @endif
             </div>    
             
             <div class="table-responsive">
@@ -46,15 +48,19 @@
                             <tr>
                                 <td>{{$qualification->name}}</td>
                                 <td class="d-flex p-1">
+                                @if(\App\Http\Helpers\CheckPermission::hasPermission('update.qualifciations'))      
                                     <button class="btn btn-dark btn-rounded p-2" onclick="Editqualification({{$qualification->id}})">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
+                                @endif
+                                @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.qualifications'))      
                                     <form action="{{url('qualification/delete/'.$qualification->id)}}" method="post" class="ml-2 mb-0">
                                         @csrf
                                         <button type=submit class="btn btn-danger btn-rounded p-2 mb-0">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach

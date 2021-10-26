@@ -98,8 +98,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="blood_group"
+                                        <label class="form-label">Blood Group {{-- <sup class="text-danger">*</sup> --}}</label>
+                                        <input type="text" class="form-control form-control-sm" name="blood_group"
                                             value="{{$userprofile->blood_group}}">
                                     </div>
                                 </div>
@@ -367,7 +367,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Any Comments <sup class="text-danger">*</sup></label>
+                                    <label class="form-label">Any Comments {{-- <sup class="text-danger">*</sup> --}}</label>
                                     <textarea class="form-control" rows="7" name="comments">{{$userprofile->comments}}</textarea>
                                 </div>
                             </div>
@@ -401,7 +401,7 @@
         $('#datepicker-popup').datepicker({
             format: 'yy/mm/dd',
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
             maxDate: "+0y +0m +0w +0d",
         });
 
@@ -451,9 +451,9 @@
                         minlength: 0,
                         maxlength: 12
                     },
-                    blood_group: {
+                    /* blood_group: {
                         required: true,
-                    },
+                    }, */
                     marital_status: {
                         required: true,
                     },
@@ -531,9 +531,9 @@
                         required: true,
                     },
 
-                    comments: {
+                    /* comments: {
                         required: true,
-                    },
+                    }, */
                 },
 
                 messages: {
@@ -564,9 +564,9 @@
                     aadhaar: {
                         required: "Please enter your adhaar number",
                     },
-                    blood_group: {
+                    /* blood_group: {
                         required: "Please enter yor blood group",
-                    },
+                    }, */
                     marital_status: {
                         required: "Please select your marital status",
                     },
@@ -641,9 +641,9 @@
                         required: "Please tell us something",
                     },
 
-                    comments: {
+                    /* comments: {
                         required: "Please give us a feedback",
-                    },
+                    }, */
                 }
 
 

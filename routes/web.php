@@ -21,12 +21,12 @@ Route::get('/', function () {
 });
 
 /* Route::get('/mail', function () {
-    //$content['user_name'] = 'Naseem';
-    //$content['course_name'] = 'BCA';
-    $content = 'Naseem';
-    //$content['documents'] = ['1'=>'asdnas'];
-    //return view('email.course_registrations_template',compact('content'));
-    return view('email.user_registration_mail',compact('content'));
+    $content['user_name'] = 'Naseem';
+    $content['course_name'] = 'BCA';
+    //$content = 'Naseem';
+    $content['documents'] = ['1'=>'asdnas'];
+    return view('email.course_registrations_template',compact('content'));
+    //return view('email.user_registration_mail',compact('content'));
 }); */
 
 
@@ -35,7 +35,8 @@ Route::get('/dashboard', function () {
         return redirect('/admin/dashboard');
     }
     $courses = Course::all();
-    return view('dashboard',compact(('courses')));
+    $profile = Auth::user()->UserProfile;
+    return view('dashboard',compact(['courses','profile']));
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
