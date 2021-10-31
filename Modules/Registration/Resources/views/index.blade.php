@@ -70,7 +70,7 @@
                     if(data === true)
                         return "<a class='badge badge-success badge-pill' href='admission/create/"+row.id+"'>Admit</a>"
                     else
-                        return "<a class='badge badge-success badge-pill' href='#'><i class='fa fa-frown'></i></a>"
+                        return "<a class='badge badge-danger badge-pill ml-2'  href='#'><i class='fa fa-frown'></i></a>"
 
             },name:'action'}
         ]

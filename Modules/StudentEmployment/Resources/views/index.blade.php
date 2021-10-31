@@ -22,8 +22,8 @@
                         <tr>
                             <th>Student Name</th>
                             <th>Course Name</th>
-                            <th>View</th>
-                            <th>Action</th>
+                            <th>Company Name</th>
+                            <th>Location</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,8 +32,8 @@
                         <tr>
                             <th>Student Name</th>
                             <th>Course Name</th>
-                            <th>View</th>
-                            <th>Action</th>
+                            <th>Company Name</th>
+                            <th>Location</th>
                         </tr>
                      </tfoot>
                 </table>
@@ -46,9 +46,7 @@
 
 @endsection
 @section('jcontent')
-<script>
-    
-        
+<script> 
         @if(\Illuminate\Support\Facades\Session::has('created'))    
             $.toast({
                 heading: 'Created',
@@ -92,15 +90,16 @@
         $('#admissions').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{route('all_admissions')}}",
+            ajax: "{{route('all_student_employements')}}",
             columns:[
                 {data: 'student_name',render:function(data,type,row){
-                    return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
+                    return "<a href='studentemployment/view/"+row.id+"'>"+data+"</a>"
                     }, name: 'student_name'},
-                {data: 'roll_no', name: 'roll_no'},
-                {data: 'course_slot',name:"course_slot"},
-                {data: 'date',name:"date"},
-                {data:'status',render:function(data,type,row){
+                {data: 'course_name', name: 'course_name'},
+                {data: 'company_name',name:"company_name"},
+                {data: 'location',name:"location"},
+                /* {data: 'date',name:"date"},*/
+                /* {data:'type',render:function(data,type,row){
                     if(row.status == '1'){
                         return '<p class="badge badge-pill badge-primary">admitted</p>'
                     }
@@ -116,10 +115,10 @@
                     else{
                         return '<p class="badge badge-pill badge-danger">terminated</p>'
                     }
-                },name:'status'},
-                {data:'Action',render:function(type,data,row){
+                },name:'status'}, */
+                /* {data:'Action',render:function(type,data,row){
                         return "<a href='admission/edit/"+row.id+"' class='badge badge-primary badge-pill'>Edit</a>"
-                },name:'action'},
+                },name:'action'}, */
             ]
         });
 } );

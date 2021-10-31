@@ -58,9 +58,10 @@ class RegisteredUserController extends Controller
         $userprofile->user_id = $user->id;
         $userprofile->save();
 
-        MailController::sendRegistrationEmail($request->email,$user->name);
-        Auth::login($user);
+        MailController::sendRegistrationEmail($request->email,$user->name,$user->id);
+//        Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+//        return redirect(RouteServiceProvider::HOME);
+        return redirect('/login')->with('verify_email','123');
     }
 }

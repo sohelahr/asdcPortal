@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Mail;
 class MailController extends Controller
 {
     //
-    public static function sendRegistrationEmail($reciever,$content){
+    public static function sendRegistrationEmail($reciever,$content,$id){
         $data = [
           'subject' => 'Profile Registration',
           'email' => $reciever,
           'content' =>$content,
+          'user_id' =>$id,
         ];
 
         Mail::send('email.user_registration_mail', $data, function($message) use ($data) {

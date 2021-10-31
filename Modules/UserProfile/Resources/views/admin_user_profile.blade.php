@@ -12,7 +12,7 @@
                         <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile" class="img-lg rounded-circle mb-3">
                         <p>{{$profile->Occupation->name}}</p>
                         <div class="d-flex justify-content-between">
-                          <button class="badge badge-info badge-pill"><i class="fas fa-birthday-cake"></i> {{$profile->dob}}</button>
+                          <button class="badge badge-info badge-pill"><i class="fas fa-birthday-cake"></i> {{date('d M Y',strtotime($profile->dob))}}</button>
                           <button class="badge badge-danger badge-pill"><i class="fas fa-burn"></i> {{$profile->blood_group}}</button>
                         </div>
                       </div>
@@ -49,14 +49,16 @@
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            @if($profile->is_suspended)
+                            @if($profile->status == '2')
                               Suspended
-                            @else
+                            @elseif($profile->status == '1')
+                              Employed
+                            @else  
                               Active
                             @endif
                           </span>
                         </p>
-                        @if($profile->is_suspended)
+                        @if($profile->status == '2')
                           <p class="clearfix">
                             <span class="float-left">
                               Suspended Till
@@ -206,11 +208,11 @@
             {data: 'date',name:"date"},
             {data:'status',render:function(type,data,row){
                 if(row.status == "1")
-                    return "<label class='badge badge-warning badge-pill px-4'>Applied</label>"
+                    return "<label class='badge badge-warning badge-pill status_btns'>Applied</label>"
                 else if(row.status == "2")
-                    return "<label class='badge badge-success badge-pill px-3'>Admitted</label>"
+                    return "<label class='badge badge-success badge-pill status_btns'>Admitted</label>"
                 else if(row.status == "3")
-                    return "<label class='badge badge-danger badge-pill px-3'>Cancelled</label>"
+                    return "<label class='badge badge-danger badge-pill status_btns'>Cancelled</label>"
                 },
             name:'status'
             },

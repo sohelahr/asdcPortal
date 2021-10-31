@@ -24,8 +24,9 @@
                             <th>Roll no.</th>
                             <th>Course Name</th>
                             <th>Course Slot</th>
+                            <th>Date</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -36,8 +37,9 @@
                             <th>Roll no.</th>
                             <th>Course Name</th>
                             <th>Course Slot</th>
+                            <th>Date</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                      </tfoot>
                 </table>
@@ -102,28 +104,29 @@
                     return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
                     }, name: 'student_name'},
                 {data: 'roll_no', name: 'roll_no'},
+                {data: 'course_name',name:"course_name"},
                 {data: 'course_slot',name:"course_slot"},
                 {data: 'date',name:"date"},
                 {data:'status',render:function(data,type,row){
                     if(row.status == '1'){
-                        return '<p class="badge badge-pill badge-primary px-3">Admitted</p>'
+                        return '<p class="badge badge-pill badge-primary status_btns">Admitted</p>'
                     }
                     else if(row.status == '2'){
-                        return '<p class="badge badge-pill badge-info px-3">Completed</p>'
+                        return '<p class="badge badge-pill badge-info status_btns">Completed</p>'
                     }
                     else if(row.status == '3'){
-                        return '<p class="badge badge-pill badge-success px-3">Employed</p>'
+                        return '<p class="badge badge-pill badge-success status_btns">Employed</p>'
                     }
                     else if(row.status == '4'){
-                        return '<p class="badge badge-pill badge-warning px-3">Cancelled</p>'
+                        return '<p class="badge badge-pill badge-warning status_btns">Cancelled</p>'
                     }
                     else{
-                        return '<p class="badge badge-pill badge-danger">Terminated</p>'
+                        return '<p class="badge badge-pill badge-danger status_btns">Terminated</p>'
                     }
                 },name:'status'},
-                {data:'Action',render:function(type,data,row){
+               /*  {data:'Action',render:function(type,data,row){
                         return "<a href='admission/edit/"+row.id+"' class='badge badge-primary badge-pill'>Edit</a>"
-                },name:'action'},
+                },name:'action'}, */
             ]
         });
 } );

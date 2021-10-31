@@ -22,17 +22,27 @@
                 </a>
             </div>
             <div>
-                <button class="btn bg-white " type="button" @if($admission->status != '1') 
-                    onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
-                    @else
-                        onclick="changeStatusConfirm('Do you Really Want to Cancel the Admission','cancel');"
-                    @endif>
-                    <i class="fa fa-times-circle btn-icon-prepend"></i>
-                    Cancel
-                </button>
+                @if ($admission->status == '4')
+                    <button class="btn bg-white " type="button" 
+                        onclick="changeStatusConfirm('Do you Really Want to ReAdmit? ','readmit');"
+                    >
+                    <i class="fas fa-sync btn-icon-prepend"></i>
+                        Readmit
+                    </button>
+                @else                    
+                    <button class="btn bg-white " type="button" @if($admission->status != '1') 
+                        onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
+                        @else
+                            onclick="changeStatusConfirm('Do you Really Want to Cancel the Admission','cancel');"
+                        @endif>
+                        <i class="fa fa-times-circle btn-icon-prepend"></i>
+                        Cancel
+                    </button>
+                @endif
+
             </div>
             <div>
-                <button class="btn bg-white" type="button" @if($admission->status != '1') 
+                <button class="btn bg-white" type="button" @if($admission->status != '1' || $admission->status != '2') 
                     onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
                     @else
                         data-toggle="modal" data-target="#employed-modal"
@@ -164,6 +174,9 @@
                 </div>
         </div>
     </div>
+    <form method="GET" action='{{url('admission/readmit/'.$admission->id)}}' id="readmit_form" class="d-none">
+        <input type="submit" value="submit" >
+    </form>
 
     <div id="cancel_admission" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cancetile" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -296,6 +309,9 @@
                         if(category == 'cancel'){
                             $('#cancel_admission').modal('show');
                         }
+                        else if(category == 'readmit'){
+                           $('#readmit_form').submit();
+                        }
                         else{
                             $('#terminate_admission').modal('show');
                         }
@@ -303,7 +319,7 @@
                 });
         }
         
-         @if(\Illuminate\Support\Facades\Session::has('employementcreated'))    
+         @if(\Illuminate\Support\Facades\Session::has('employement_created'))    
             $.toast({
                 heading: 'Employement',
                 text: 'Admission was marked Employed',
@@ -318,6 +334,15 @@
                 text: 'Admission was Cancelled',
                 position:'top-right',
                 icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('readmitted'))
+            $.toast({
+                heading: 'Readmitted',
+                text: 'Admission was Readmitted',
+                position:'top-right',
+                icon: 'success',
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })

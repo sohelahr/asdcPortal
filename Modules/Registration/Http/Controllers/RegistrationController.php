@@ -64,7 +64,13 @@ class RegistrationController extends Controller
                     return date('d M Y',$time) ;
                 })
                 ->addColumn('action',function($registration){
-                    return \App\Http\Helpers\CheckPermission::hasPermission('create.admissions');
+                    $suspeneded = $registration->Student->UserProfile->status;
+                    if (\App\Http\Helpers\CheckPermission::hasPermission('create.admissions') && $suspeneded != '2' ){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
                 })
                 ->make();
     }

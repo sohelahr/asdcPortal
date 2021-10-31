@@ -2,9 +2,11 @@
 
 namespace Modules\StudentEmployment\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Admission\Entities\Admission;
+use Modules\Course\Entities\Course;
 
 class StudentEmployment extends Model
 {

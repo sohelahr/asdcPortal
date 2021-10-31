@@ -38,8 +38,13 @@ class AuthenticatedSessionController extends Controller
                     return redirect()->intended(RouteServiceProvider::ADMINHOME);
 
             case '3':
-                return redirect()->intended(RouteServiceProvider::HOME);
-
+                if(Auth::user()->is_verified){
+                    return redirect()->intended(RouteServiceProvider::HOME);
+                }
+                else{
+                    Auth::logout();
+                    return redirect('/login')->with('verify_email_first','123');
+                }
         }
     }
 

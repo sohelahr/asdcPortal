@@ -82,5 +82,19 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#employments" aria-expanded="false" aria-controls="page-layouts">
+                <i class="fas fa-people-carry menu-icon"></i>
+                <span class="menu-title">Employments</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="employments">
+                <ul class="nav flex-column sub-menu">
+                    {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('view.employments')) --}}
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('studentemployment/')}}">Employments</a></li>
+                    {{-- @endif --}}
+                </ul>
+            </div>
+        </li>
         </ul>
 </nav>

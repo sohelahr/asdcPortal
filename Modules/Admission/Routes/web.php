@@ -28,4 +28,6 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::post('/cancel','AdmissionController@cancelAdmission')->name('cancel_admission');
     Route::post('/terminate','AdmissionController@terminateAdmission')->name('terminate_admission');
 
+    Route::get('/readmit/{id}','AdmissionController@reAdmit')->name('user_admission_readmit');
+
 });

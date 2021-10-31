@@ -14,6 +14,11 @@
                             </div>--}}
                             <h4>Hello! let's get started</h4>
                             <h6 class="font-weight-light">Sign in to continue.</h6>
+
+                            <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                            <!-- Validation Errors -->
+                            <x-auth-validation-errors class="mb-4" :errors="$errors" />
                             <form class="pt-3"  action="{{route('login')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -32,7 +37,7 @@
                                             Keep me signed in
                                         </label>--}}
                                     </div>
-                                    <a href="javascript:void(0);" class="auth-link text-black">Forgot password?</a>
+                                    <a href="{{ route('password.request') }}" class="auth-link text-black">Forgot password?</a>
                                 </div>
                             </form>
                         </div>
@@ -41,4 +46,55 @@
             </div>
         </div>
     </div>
+@endsection
+@section('jcontent')
+    <script>
+         @if(\Illuminate\Support\Facades\Session::has('already_verfied'))    
+                $.toast({
+                    heading: 'Email Already Verified',
+                    text: 'Email already verified please Login to continue',
+                    position:'top-right',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            @elseif(\Illuminate\Support\Facades\Session::has('email_verfied'))
+                $.toast({
+                    heading: 'Email Verfied',
+                    text: 'Email verfied successfully please login to continue',
+                    position:'top-right',
+                    icon: 'success',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            @elseif(\Illuminate\Support\Facades\Session::has('verify_email'))
+                $.toast({
+                    heading: 'Account Created',
+                    text: 'Account created successfully, please verify your email (Check your mail) to continue',
+                    position:'top-right',
+                    icon: 'success',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            @elseif(\Illuminate\Support\Facades\Session::has('verify_email_first'))
+            $.toast({
+                heading: 'Account Created',
+                text: 'Please verify your email first',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+            
+            @elseif(\Illuminate\Support\Facades\Session::has('error'))
+                $.toast({
+                    heading: 'Danger',
+                    text: 'Something went wrong ',
+                    position:'top-right',
+                    icon: 'danger',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            @endif
+    </script>
 @endsection

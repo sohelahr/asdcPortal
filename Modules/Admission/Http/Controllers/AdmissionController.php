@@ -59,9 +59,6 @@ class AdmissionController extends Controller
             ->addColumn('student_name',function($admission){
                 return $admission->Student->name;
             })
-            ->addColumn('admitted_by',function($admission){
-                return $admission->AdmittedBy->name;
-            })
             ->addColumn('course_name',function($admission){
                 return $admission->Course->name;
             })
@@ -102,10 +99,10 @@ class AdmissionController extends Controller
         $courses = Course::all();
         $initial_course_slots = $selected_course->CourseSlots; 
         $initial_course_batches = $selected_course->CourseBatches->where('status','1'); 
-
+        $current_course_batch = $selected_course->CourseBatches->where('is_current','1')->first();
         $documents =    DocumentList::all();
 
-        return view('admission::create',compact('documents','student','registration_id','selected_course','selected_course_slot','courses','initial_course_slots','initial_course_batches'));
+        return view('admission::create',compact('current_course_batch','documents','student','registration_id','selected_course','selected_course_slot','courses','initial_course_slots','initial_course_batches'));
     }
     
     public function store(Request $request)
@@ -206,6 +203,19 @@ class AdmissionController extends Controller
 
     }
 
+    function reAdmit($id)
+    {
+        $admission = Admission::find($id);
+        $admission->status = '1';
+        if($admission->save()){
+            return redirect()->route('admission_show',[$id])->with('readmitted','created');
+        }
+        else{
+            return redirect('/admission')->with('error','Something Went Wrong');
+        }
+
+    }
+
     function terminateAdmission(Request $request)
     {
         $admission = Admission::find($request->admission_id);
@@ -214,7 +224,7 @@ class AdmissionController extends Controller
         if($admission->save()){
 
             $student = $admission->Student->UserProfile;
-            $student->is_suspended = true;
+            $student->status = '2';
             $student->suspended_till = date('y-m-d', strtotime('+1 year'));
             $student->save();
             return redirect()->route('admission_show',[$admission->id])->with('terminated','created');

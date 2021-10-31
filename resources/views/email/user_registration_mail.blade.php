@@ -49,7 +49,7 @@
                         <p>Verify your email by pressing below, by pressing the button below,</p>
                     </div>
                     <div style = "text-align: center;">
-                        <button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 200px; height: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
+                        <a href="{{route('verify_mail',base64_encode($user_id))}}"><button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 150px; height: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
                     </div>
                     {{-- <div style = "width: 100%">
                         <div style = "display: inline-block; padding: 3%">

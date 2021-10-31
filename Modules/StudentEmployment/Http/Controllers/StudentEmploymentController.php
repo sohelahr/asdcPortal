@@ -13,23 +13,28 @@ use Yajra\DataTables\DataTables;
 class StudentEmploymentController extends Controller
 {
 
+    function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+    public function index()
+    {
+        return view('studentemployment::index');
+    }
 
     function AllStudentEmployementData(){
         $employments = StudentEmployment::all();
 
         return DataTables::of($employments)
             ->addColumn('student_name',function($employement){
-                return $employement->Admission->Student->name;
+                return $employement->Student->name;
             })
-            ->addColumn('course_name',function($admission){
-                return $admission->Course->name;
+            ->addColumn('course_name',function($employement){
+                return $employement->Course->name;
             })
-            ->addColumn('course_slot',function($admission){
-                return $admission->CourseSlot->name;
-            })
-            ->addColumn('date',function($admission){
-                $time = strtotime(($admission->created_at));
-                return date('d M Y',$time) ;
+            ->addColumn('company_name',function($employement){
+                return $employement->company_name;
             })
             ->make();
     }
@@ -61,7 +66,7 @@ class StudentEmploymentController extends Controller
             $admission->save();
 
             $profile = User::find($request->user_id)->UserProfile;
-            $profile->after_course_employment_status = '1';
+            $profile->status = '1';
             $profile->save();
             
             return redirect()->route('admission_show',[$request->admission_id])->with('employement_created','created');
@@ -80,7 +85,9 @@ class StudentEmploymentController extends Controller
      */
     public function show($id)
     {
-        return view('studentemployment::show');
+        $employment = StudentEmployment::find($id);
+        $admission = $employment->Admission;
+        return view('studentemployment::view',compact('admission','employment'));
     }
 
     /**
@@ -102,6 +109,21 @@ class StudentEmploymentController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $employement = StudentEmployment::find($id);
+        $employement->company_name = $request->company_name;
+        $employement->designation = $request->designation;
+        $employement->industry = $request->industry;
+        $employement->salary = $request->salary;
+        $employement->location = $request->location;
+        $employement->employment_type = $request->employment_type;
+        if($employement->save())
+        {
+            return redirect()->route('employment_view',[$id])->with('employment_updated','created');
+        }
+        else{
+            return redirect()->route('employment_view',[$id])->with('error','created');
+
+        }
     }
 
     /**

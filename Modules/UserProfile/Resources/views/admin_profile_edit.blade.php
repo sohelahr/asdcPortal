@@ -83,8 +83,8 @@
                                                 <label class="form-label">Date of Birth {{-- <sup class="text-danger">*</sup> --}}</label>
 
                                                 <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                                    <input required type="text" class="form-control form-control-sm" name="dob"
-                                                        value="{{$userprofile->dob}}">
+                                                    <input type="text" readonly class="form-control form-control-sm" name="dob"
+                                                        value="{{$userprofile->dob}}" placeholder="yyyy-mm-dd">
                                                     <span class="input-group-addon input-group-append border-left">
                                                         <i class="far fa-calendar input-group-text py-1 px-2"></i>
                                                     </span>
@@ -453,6 +453,7 @@
 
                     dob: {
                         required: true,
+                        /* date:true, */
                     },
 
                     age: {
@@ -566,6 +567,7 @@
 
                     dob: {
                         required: "Please select date of birth",
+                        /* date:'Please enter correct formatted date' */
                     },
 
                     age: {

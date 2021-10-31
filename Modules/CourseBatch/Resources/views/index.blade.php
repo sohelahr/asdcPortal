@@ -3,12 +3,12 @@
 @section('content')
 <div class="page-header">
         <h3 class="page-title">
-            Courses
+            Course Batches
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Courses</li>
+            <li class="breadcrumb-item active" aria-current="page">Course Batches</li>
             </ol>
         </nav>
     </div>
@@ -54,15 +54,22 @@
                                     @if($coursebatch->Course){{$coursebatch->Course->name}}@else not found @endif
                                 </td>
                                 <td>{{$coursebatch->batch_number}}</td>
-                                <td>{{$coursebatch->start_date}}</td>        
-                                <td>{{$coursebatch->expiry_date}}</td>
+                                <td>{{date('d M Y',strtotime($coursebatch->start_date))}}</td>        
+                                <td>{{date('d M Y',strtotime($coursebatch->expiry_date))}}</td>
                                 <td>
                                     <form action="{{route('batch_change_status',$coursebatch->id)}}" method="get">
                                         @csrf
                                         @if($coursebatch->status == 1)
-                                            <button class="btn btn-sm btn-success badge-pill m-0" type="submit">Active</button>
+                                                @if ($coursebatch->is_current)
+                                                <button class="btn btn-sm btn-success badge-pill m-0 status_btns" type="submit">Active
+                                                    / current
+                                                </button>
+                                                @else                
+                                                <button class="btn btn-sm btn-success badge-pill m-0 status_btns" type="submit">Active
+                                                </button>                
+                                                @endif
                                         @else
-                                            <button class="btn btn-sm badge-pill btn-warning m-0" type="submit">Inactive</button>
+                                            <button class="btn btn-sm badge-pill btn-warning m-0 status_btns" type="submit">Inactive</button>
                                         @endif
                                     </form>
                                 </td>
@@ -74,7 +81,7 @@
                                             </button>
                                         @endif
                                         @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.coursebatch'))
-                                            <form action="{{url('course/delete/'.$coursebatch->id)}}" method="post" class="ml-2">
+                                            <form action="{{url('coursebatch/delete/'.$coursebatch->id)}}" method="post" class="ml-2">
                                                 @csrf
                                                 <button type=submit class="btn btn-danger btn-rounded p-2">
                                                     <i class="fas fa-trash"></i>
@@ -243,6 +250,15 @@
                 text: 'Course Batch Was Successfully Updated',
                 position:'top-right',
                 icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        @elseif(\Illuminate\Support\Facades\Session::has('already'))
+            $.toast({
+                heading: 'Warning',
+                text: 'Course Batch already Present',
+                position:'top-right',
+                icon: 'warning',
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })

@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\MarkCurrentBatches::class,
+        Commands\MarkAdmissionComplete::class,
+        Commands\RemoveSuspension::class,
     ];
 
     /**
@@ -25,6 +28,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('coursebatch:current')->dailyAt('6:00');
+        $schedule->command('coursebatch:training-complete')->dailyAt('1:00');
+        $schedule->command('student:suspension-remove')->dailyAt('00:10');
     }
 
     /**

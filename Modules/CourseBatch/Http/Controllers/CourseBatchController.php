@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Course\Entities\Course;
 use Modules\CourseBatch\Entities\CourseBatch;
+use Modules\CourseSlot\Entities\CourseSlot;
 
 class CourseBatchController extends Controller
 {
@@ -43,9 +44,27 @@ class CourseBatchController extends Controller
         $coursebatch->batch_number = $request->batch_number;
         $coursebatch->start_date = $request->start_date;
         $coursebatch->expiry_date = $request->end_date;
-
         $coursebatch->status = "1";
-        $coursebatch->save();
+
+        $date_now = time();
+        if(strtotime($request->start_date) <= $date_now && $date_now < strtotime($request->end_date) ){
+            $coursebatch->is_current = '1';
+        }
+        
+        $coursebatch->batch_identifier = Date('Y')."-".$request->batch_number;
+        
+        $check_coursebatch = CourseBatch::where('course_id',$request->course_id)
+                            ->where('batch_number',$request->batch_number)    
+                            ->where('start_date',$request->start_date)
+                                ->where('expiry_date',$request->end_date)
+                                ->get();
+
+        if(count($check_coursebatch) == 0){
+            $coursebatch->save();
+        }
+        else{
+            return redirect()->route('coursebatch_list')->with('already','course created successfully');
+        }    
         return redirect()->route('coursebatch_list')->with('created','course created successfully');
     }
 
@@ -94,7 +113,13 @@ class CourseBatchController extends Controller
         $coursebatch->course_id = $request->course_id;
         $coursebatch->batch_number = $request->batch_number;
         $coursebatch->start_date = $request->start_date;
+        $coursebatch->expiry_date = $request->end_date;
         $coursebatch->status = $coursebatch->status;
+        $date_now = time();
+        if(strtotime($request->start_date) <= $date_now && $date_now < strtotime($request->end_date) ){
+            $coursebatch->is_current = '1';
+        }
+        $coursebatch->batch_identifier = Date('Y')."-".$request->batch_number;
         $coursebatch->save();
         return redirect()->route('coursebatch_list')->with('updated','course Updated successfully');
     }

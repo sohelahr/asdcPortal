@@ -78,8 +78,9 @@ class UserProfileController extends Controller
     {
 
         $profile = Auth::user()->UserProfile;
-            if($profile->is_profile_completed)
+            if($profile->is_profile_completed){
                 return view('userprofile::user_profile',compact('profile'));
+            }
         return redirect('/dashboard')->with('profile_not_complete','not complete');
         
     }
@@ -134,7 +135,7 @@ class UserProfileController extends Controller
         $userprofile->street = $request->street;
         $userprofile->landmark = $request->landmark;
         $userprofile->city = $request->city;
-        $userprofile->state = $request->state;   
+        $userprofile->state = $request->state;
         $userprofile->pincode = $request->pincode;
         $userprofile->how_know_us = $request->how_know_us;
         $userprofile->father_name = $request->father_name; 
@@ -147,9 +148,6 @@ class UserProfileController extends Controller
         $userprofile->marital_status = $request->marital_status;
         $userprofile->aadhaar = $request->aadhaar; 
         $userprofile->home_type = $request->home_type;
-        
-        $userprofile->after_course_employment_status = "0";
-        
         
         //saving files
         if($request->file('photo')){
@@ -202,9 +200,6 @@ class UserProfileController extends Controller
             $userprofile->marital_status = $request->marital_status;
             $userprofile->aadhaar = $request->aadhaar; 
             $userprofile->home_type = $request->home_type;
-            
-            $userprofile->after_course_employment_status = "0";
-            
             
             //saving files
             if($request->file('photo')){

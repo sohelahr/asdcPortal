@@ -7,12 +7,19 @@
 
 
         @yield('title')
+
+        <link rel="stylesheet" href="{{ url('public/css/app.css') }}">    
+
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/vendors/iconfonts/font-awesome/css/all.min.css">
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/vendors/css/vendor.bundle.base.css">
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/vendors/css/vendor.bundle.addons.css">
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/style.css">
         <link rel="shortcut icon" href="{{env('BACKEND_CDN_URL')}}/images/favicon.png"/>
+
+        <script src="{{ url('public/js/app.js') }}" defer></script>
+
         <style>
             body {
                 font-family: 'Nunito', sans-serif;

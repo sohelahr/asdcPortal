@@ -65,7 +65,7 @@
                                 @if(count($initial_course_batches) > 0)
                                     @foreach ($initial_course_batches as $coursebatch)
                                         
-                                            <option value="{{$coursebatch->id}}">{{$coursebatch->batch_number}}</option>
+                                            <option value="{{$coursebatch->id}}" @if($current_course_batch->id == $coursebatch->id) @endif>{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
                                     <option value="">No Batches Found</option>
@@ -87,7 +87,7 @@
                                         @endif>{{$courseslot->name}}</option>
                                     @endforeach
                                 @else
-                                    <option value="">No Batches Found</option>
+                                    <option value="">No Timings Found</option>
                                 @endif
                             </select>
 
@@ -157,7 +157,7 @@
                     $.each(response.course_batches, function (index, element) {
                         
                             $("#course_batch").append(`
-                                <option value="${element.id}">${element.batch_number}</option>
+                                <option value="${element.id}"${element.is_current?'selected':''}>${element.batch_number}</option>
                             `);
                     });
                 }

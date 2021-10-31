@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\VerifyMailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Modules\Course\Entities\Course;
@@ -19,6 +20,8 @@ use Modules\Course\Entities\Course;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/verfiy/email/{id}',[VerifyMailController::class,'Verify'])->name('verify_mail');
 
 /* Route::get('/mail', function () {
     $content['user_name'] = 'Naseem';

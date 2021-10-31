@@ -17,3 +17,7 @@ i{
  font-weight: 100;
  font-size: small;
 }
+
+.status_btns{
+    min-width: 130px!important;
+}

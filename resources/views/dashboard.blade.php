@@ -162,7 +162,7 @@
             })
         @endif
 
-        @if($profile->is_suspended)
+        @if($profile->status == "2")
             $("#profile_suspended").modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -277,13 +277,13 @@
                     {data: 'date',name:"date"},
                     {data:'status',render:function(type,data,row){
                         if(row.status == "1"){
-                            return `<label class='badge badge-warning badge-pill px-4'>Applied</label>`
+                            return `<label class='badge badge-warning badge-pill status_btns'>Applied</label>`
                         }
                         else if(row.status == "2"){
-                            return "<label class='badge badge-success badge-pill px-3'>Admitted</label>"
+                            return "<label class='badge badge-success badge-pill status_btns'>Admitted</label>"
                         }
                         else if(row.status == "3"){
-                            return "<label class='badge badge-danger badge-pill px-3'>Cancelled</label>"
+                            return "<label class='badge badge-danger badge-pill status_btns'>Cancelled</label>"
                         }
                     },
                     name:'status'

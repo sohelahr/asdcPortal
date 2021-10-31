@@ -18,7 +18,7 @@
                         </div>
                         <p>{{$profile->Occupation->name}}</p>
                         <div class="d-flex justify-content-between">
-                          <button class="badge badge-info badge-pill"><i class="fas fa-birthday-cake"></i> {{$profile->dob}}</button>
+                          <button class="badge badge-info badge-pill"><i class="fas fa-birthday-cake"></i> {{date('d M Y',strtotime($profile->dob))}}</button>
                           <button class="badge badge-danger badge-pill"><i class="fas fa-burn"></i> {{$profile->blood_group}}</button>
                         </div>
                       </div>
@@ -46,14 +46,16 @@
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            @if($profile->is_suspended)
+                            @if($profile->status == '2')
                               Suspended
-                            @else
+                            @elseif($profile->status == '1')
+                             Employed
+                            @else  
                               Active
                             @endif
                           </span>
                         </p>
-                        @if($profile->is_suspended)
+                        @if($profile->status == '2')
                           <p class="clearfix">
                             <span class="float-left">
                               Suspended Till
