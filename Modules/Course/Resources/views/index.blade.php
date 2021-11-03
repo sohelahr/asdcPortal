@@ -26,6 +26,15 @@
                 </div>
             </div>
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card-body">
             @if(\App\Http\Helpers\CheckPermission::hasPermission('create.courses'))
             <div class="float-right my-2">

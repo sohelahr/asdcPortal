@@ -304,7 +304,7 @@ class AdmissionController extends Controller
         $admission->admitted_by = Auth::user()->id;
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->admission_remarks = $request->admission_remarks;
-        $admission->status = "2";
+        $admission->status = "1";
         $admission->courseslot_id = $request->course_slot_id;
         $admission->coursebatch_id = $request->coursebatch_id;
 
@@ -323,7 +323,7 @@ class AdmissionController extends Controller
             
             //Create new Admission Numbers using that 
             $course_slug = Course::find($request->course_id)->slug;
-            $admission->admission_form_number = "asdc/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
+            $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
 
             $admission->roll_no =  $course_slug . date("y") ."-". $current_numbers->currentRollNumber;
     
