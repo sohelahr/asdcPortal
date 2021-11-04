@@ -41,16 +41,19 @@
                 @endif
 
             </div>
-            <div>
-                <button class="btn bg-white" type="button" @if($admission->status != '1' || $admission->status != '2') 
-                    onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
-                    @else
-                        data-toggle="modal" data-target="#employed-modal"
-                    @endif>
-                    <i class="fas fa-industry btn-icon-prepend"></i>
-                    Mark Employed
-                </button>
-            </div>
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('update.student_employment'))
+                <div>
+                    <button class="btn bg-white" type="button" 
+                        @if($admission->status > 2)
+                            onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
+                        @else
+                            data-toggle="modal" data-target="#employed-modal"
+                        @endif>
+                        <i class="fas fa-industry btn-icon-prepend"></i>
+                        Mark Employed
+                    </button>
+                </div>
+            @endif
             <div>
                 <button class="btn bg-white" type="button" @if($admission->status != '1') 
                     onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"

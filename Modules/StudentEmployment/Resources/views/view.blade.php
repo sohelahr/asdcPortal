@@ -12,14 +12,16 @@
         </nav>
     </div>
     <div class="card">
-        <div class="d-flex p-1 m-0 border header-buttons">
-            <div>
-                <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
+        @if(\App\Http\Helpers\CheckPermission::hasPermission('update.student_employment'))
+            <div class="d-flex p-1 m-0 border header-buttons">
+                <div>
+                    <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
                         <i class="fa fa-edit btn-icon-prepend"></i>
                         Edit
                     </button>
+                </div>
             </div>
-        </div>
+        @endif
         <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">

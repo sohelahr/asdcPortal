@@ -33,7 +33,11 @@
                             <div class="col-md-6 col-sm-12 ">
                                 <div class="form-group p-3">
                                     <div>
-                                        <h5 class="form-label">{{$module}}</h5>
+                                        <h5 class="form-label">
+                                        @php
+                                         echo preg_replace('/([A-Z])/',' $1', $module);   
+                                        @endphp
+                                        </h5>
                                     </div>
                                     <div class="row m-0">
                                         @foreach($permissions as $key => $permission)

@@ -28,7 +28,13 @@ class StudentEmploymentController extends Controller
 
         return DataTables::of($employments)
             ->addColumn('student_name',function($employement){
-                return $employement->Student->name;
+                if(\App\Http\Helpers\CheckPermission::hasPermission('view.student_employment')){
+                        return ['perm'=>true,'student_name' => $employement->Student->name];
+                    }
+                    else{
+                       return ["perm"=>false,'student_name' => $employement->Student->name];
+                    }
+                return ;
             })
             ->addColumn('course_name',function($employement){
                 return $employement->Course->name;

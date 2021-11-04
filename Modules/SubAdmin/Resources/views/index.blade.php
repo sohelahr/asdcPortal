@@ -3,16 +3,24 @@
 @section('content')
     <div class="page-header">
         <h3 class="page-title">
-            Sub Admins
+            Staff
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Sub Admins</li>
+            <li class="breadcrumb-item active" aria-current="page">Staff</li>
             </ol>
         </nav>
     </div>
     <div class="card">
+        <div class="d-flex p-1 m-0 border header-buttons">
+            <div>
+                <button class="btn bg-white" type="button" data-toggle="modal" data-target="#subadmin-create">
+                    <i class="fas fa-plus btn-icon-prepend"></i>
+                    Create Staff
+                </button>
+            </div>
+        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -22,18 +30,13 @@
                 </ul>
             </div>
         @endif
-        <div class="card-body">
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#subadmin-create">
-                     + Create
-                </button>
-            </div>    
-            
+        <div class="card-body"> 
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Designation-Role</th>
                             <th>Email</th>
                             <th>Actions</th>
                         </tr>
@@ -43,6 +46,9 @@
                             <tr>
                                 <td>
                                     {{$subadmin->name}}
+                                </td>
+                                <td>
+                                    {{$subadmin->designation}}
                                 </td>
                                 <td>{{$subadmin->email}}</td>
                                 <td class="d-flex p-1">

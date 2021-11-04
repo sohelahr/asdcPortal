@@ -93,7 +93,12 @@
             ajax: "{{route('all_student_employements')}}",
             columns:[
                 {data: 'student_name',render:function(data,type,row){
-                    return "<a href='studentemployment/view/"+row.id+"'>"+data+"</a>"
+                    if(data['perm']){
+                        return "<a href='studentemployment/view/"+row.id+"'>"+data['student_name']+"</a>"
+                    }
+                    else{
+                        return "<p class='mb-0'>"+data['student_name']+"</p>"
+                    }
                     }, name: 'student_name'},
                 {data: 'course_name', name: 'course_name'},
                 {data: 'company_name',name:"company_name"},
