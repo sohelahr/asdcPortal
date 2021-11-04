@@ -41,6 +41,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
         $name = $request->first_name ." ".$request->last_name;
         $user = User::create([
             'name' => $name,
@@ -48,20 +49,42 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'user_type' => '3',
         ]);
+        if(isset($user))
+        {
+            //event(new Registered($user));
+            $userprofile = new UserProfile();
+            $userprofile->firstname = $request->first_name;
+            $userprofile->lastname = $request->last_name;
+            $userprofile->user_id = $user->id;
+            $userprofile->save();
+            MailController::sendRegistrationEmail($request->email,$user->name,$user->id);
+            return redirect('/register/success/'.base64_encode($user->id));
+            //Auth::login($user);
+            //return redirect(RouteServiceProvider::HOME);
+        }
+        else
+        {
+            return redirect()->back()->with('error','Opps, Something went wrong');
+        }
+    }
 
+    public function confirm($id)
+    {
+        $user = User::find(base64_decode($id));
+        return view('auth.register-confirm',compact('user'));
+    }
 
-        event(new Registered($user));
-    
-        $userprofile = new UserProfile();
-        $userprofile->firstname = $request->first_name;
-        $userprofile->lastname = $request->last_name;
-        $userprofile->user_id = $user->id;
-        $userprofile->save();
-
-        MailController::sendRegistrationEmail($request->email,$user->name,$user->id);
-//        Auth::login($user);
-
-//        return redirect(RouteServiceProvider::HOME);
-        return redirect('/login')->with('verify_email','123');
+    public function resendVerificationEmail($id)
+    {
+        $user = User::find(base64_decode($id));
+        if(isset($user))
+        {
+            MailController::sendRegistrationEmail($user->email,$user->name,$user->id);
+            return redirect()->back()->with('success','Email resend successfully.');
+        }
+        else
+        {
+            return redirect()->back()->with('error','Opps, Something went wrong we are unable to send the email.');
+        }
     }
 }

@@ -9,6 +9,7 @@ class MailController extends Controller
 {
     //
     public static function sendRegistrationEmail($reciever,$content,$id){
+
         $data = [
           'subject' => 'Profile Registration',
           'email' => $reciever,
