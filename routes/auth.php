@@ -17,6 +17,12 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 Route::post('/register', [RegisteredUserController::class, 'store'])
                 ->middleware('guest');
 
+Route::get('/register/success/{id}', [RegisteredUserController::class, 'confirm'])
+    ->middleware('guest');
+
+Route::get('/register/resend-verification-email/{id}', [RegisteredUserController::class, 'resendVerificationEmail'])
+    ->middleware('guest');
+
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
                 ->name('login');
