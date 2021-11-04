@@ -180,6 +180,7 @@ class SubAdminController extends Controller
             'password' => Hash::make($request->password),
             'user_type' => 2,
             'is_verifed' => 1,
+            'designation' => $request->designation,
         ]);
 
 

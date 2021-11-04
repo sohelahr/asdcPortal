@@ -27,6 +27,7 @@ class User extends Authenticatable
         'password',
         'user_type',
         'is_verified',
+        'designation',
     ];
 
     /**

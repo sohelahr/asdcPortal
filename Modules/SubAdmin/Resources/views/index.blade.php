@@ -85,9 +85,20 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label for="name">Name</label>
+                                <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="name">Designation-Role</label>
+                                <select id="designation" class="form-control" name="designation">
+                                    <option value="">Choose an option</option>
+                                    <option value="Additional Director">Additional Director</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Receptionist">Receptionist</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
@@ -97,10 +108,16 @@
                             <div class="form-group col-6">
                                 <label for="slug">Password</label>
                                 <input id="slug" class="form-control form-control-sm" type="password" name="password" >
+                                <div id="pwd_visibility" class="hide">
+                                    <i class="far fa-eye"></i>
+                                </div>
                             </div>
                             <div class="form-group col-6">
                                 <label for="slug">Confirm Password</label>
                                 <input id="slug" class="form-control form-control-sm" type="password" name="password_confirmation" >
+                                <div id="pwd_confirm_visibility" class="hide">
+                                    <i class="far fa-eye"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,9 +142,11 @@
                     </div>
                     <div class="modal-body">
                         <h5 class="text-danger" id="showtext">Please Wait...</h5>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" >
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="name">Name</label>
+                                <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
@@ -222,7 +241,9 @@
                 email: {
                     required: true,
                 },
-
+                designation:{
+                    required:true,
+                },
                 password: {
                     required: true,
                 },
@@ -236,7 +257,9 @@
                     email:{
                         required: "Please enter email",
                     },
-
+                    designation:{
+                        required:'designation is required',
+                    },
                     password:{ 
                         required: "Please enter a password",
                     },
