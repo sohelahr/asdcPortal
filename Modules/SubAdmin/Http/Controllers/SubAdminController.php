@@ -2,6 +2,7 @@
 
 namespace Modules\SubAdmin\Http\Controllers;
 
+use App\Http\Controllers\MailController;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Support\Renderable;
@@ -56,7 +57,7 @@ class SubAdminController extends Controller
         $user = User::create([
             'name' => $name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->first_name.'@asdc'.date('Y')),
             'user_type' => '3',
             'is_verifed' => 1,
         ]);
@@ -65,6 +66,14 @@ class SubAdminController extends Controller
         //Then make user profile
 
         if($user){
+            $content = [
+                'name' =>  $user->name,
+                'mail' =>  $user->email,
+                'pwd' =>   $request->first_name.'@asdc'.date('Y')
+            ];
+
+            MailController::sendAdminCreatedUserEmail($request->email,$content);
+
             $userprofile = new UserProfile();
             $userprofile->firstname = $request->first_name;
             $userprofile->lastname = $request->last_name;
@@ -77,7 +86,12 @@ class SubAdminController extends Controller
             $userprofile->qualification_specilization = $request->qualification_specilization;
             $userprofile->qualification_status = $request->qualification_status;
             $userprofile->gender = $request->gender;
-            $userprofile->comments = $request->comments.'\n Registration Created By '.Auth::user()->name; 
+            if(isset($request->comments)){
+                $userprofile->comments = $request->comments.'\n Registration Created By '.Auth::user()->name; 
+            }
+            else{
+                $userprofile->comments = ' Registration Created By '.Auth::user()->name; 
+            }
             $userprofile->house_details = $request->house_details;  
             $userprofile->street = $request->street;
             $userprofile->landmark = $request->landmark;

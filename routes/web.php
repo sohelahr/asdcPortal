@@ -24,12 +24,18 @@ Route::get('/', function () {
 Route::get('/verfiy/email/{id}',[VerifyMailController::class,'Verify'])->name('verify_mail');
 
 /* Route::get('/mail', function () {
-    $content['user_name'] = 'Naseem';
+    /* $content['user_name'] = 'Naseem';
     $content['course_name'] = 'BCA';
     //$content = 'Naseem';
     $content['documents'] = ['1'=>'asdnas'];
-    return view('email.course_registrations_template',compact('content'));
-    //return view('email.user_registration_mail',compact('content'));
+    return view('email.course_registrations_template',compact('content')); 
+    $content = [
+                'name' =>  'Naseem',
+                'mail' =>  'nk4822805@gmai.com',
+                'pwd' =>   'naseem'.'@asdc'.date('Y')
+            ];
+
+    return view('email.admin_user_registrations_mail',compact('content'));
 }); */
 
 

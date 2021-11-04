@@ -39,4 +39,21 @@ class MailController extends Controller
 
         return true;
     }
+
+    public static function sendAdminCreatedUserEmail($reciever,$content){
+        $data = [
+          'subject' => 'Account Creation on Asdc',
+          'email' => $reciever,
+          'content' =>$content,
+        ];
+
+        Mail::send('email.admin_user_registrations_mail', $data, function($message) use ($data) {
+          $message->to($data['email'])
+          ->subject($data['subject']);
+        });
+
+        return true;
+    }
+
+
 }

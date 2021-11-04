@@ -77,11 +77,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Password<sup class="text-danger">*</sup></label>
-                                    <input type="password" class="form-control form-control-sm" id="password"
-                                        name="password">
+                                    <input type="text" class="form-control form-control-sm" readonly id="password"
+                                        name="password">{{-- 
                                     <div id="pwd_visibility" class="hide">
                                         <i class="far fa-eye"></i>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             {{-- <div class="col-md-3">
@@ -480,7 +480,7 @@
         todayHighlight: true,
         maxDate: "+0y +0m +0w +0d",
     });
-
+    var date = new Date();
     $(document).ready(function () {
         $('#subadmin_student_create').validate({
             errorClass: "text-danger pt-1",
@@ -614,10 +614,6 @@
                 how_know_us: {
                     required: true,
                 },
-
-                comments: {
-                    required: true,
-                },
                 course_id: {
                     required: true,
                 },
@@ -738,10 +734,6 @@
                 how_know_us: {
                     required: "Please tell us something",
                 },
-
-                comments: {
-                    required: "Please give us a feedback",
-                },
                  course_id: {
                     required: "Course is required",
                 },
@@ -752,8 +744,15 @@
 
         });
     });
+    $("#firstname").on('input',function(){
+        let name = $("#firstname").val();
+        $("#password").val(name+"@asdc"+date.getFullYear())
+    })
     $("#registration_course").on('change',function(){
         let course_id = $("#registration_course").val()
+        if(course_id == ""){
+            return null;
+        }
         $.ajax({
             type: "get",
             url: `{{url('registration/getforminputs/${course_id}')}}`,
