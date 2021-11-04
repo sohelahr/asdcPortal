@@ -335,7 +335,6 @@
                 },
                 submitHandler: function (form, event) { 
                     event.preventDefault();
-                    console.log( $(form).serialize());
                     $.ajax({
                         url: form.action,
 	                    type: form.method,

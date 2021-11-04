@@ -26,6 +26,9 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-sm" id="password" placeholder="Password" name="password">
+                                    <div id="pwd_visibility" class="hide">
+                                        <i class="far fa-eye"></i>
+                                    </div>
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium" value="Login">

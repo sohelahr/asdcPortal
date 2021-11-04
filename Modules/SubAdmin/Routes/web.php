@@ -20,4 +20,7 @@ Route::prefix('subadmin')->middleware(['auth'])->group(function() {
 
     Route::post('/delete/{id}', 'SubAdminController@destroy')->name('subadmin_delete');
 
+    Route::get('/student/create', 'SubAdminController@createStudent')->name('subadmin_student_create');
+    Route::post('/student/create', 'SubAdminController@storeStudent')->name('subadmin_student_create');
+
 });

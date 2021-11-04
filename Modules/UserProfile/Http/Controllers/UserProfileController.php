@@ -122,7 +122,7 @@ class UserProfileController extends Controller
         $userprofile =  Auth::User()->UserProfile;
         $userprofile->firstname = $request->firstname;
         $userprofile->lastname = $request->lastname;
-        $userprofile->dob = $request->dob;
+        $userprofile->dob = date('y/m/d',strtotime($request->dob));
         $userprofile->age = $request->age;
         $userprofile->mobile = $request->mobile; 
         $userprofile->occupation_id = $request->occupation_id; 
@@ -174,7 +174,7 @@ class UserProfileController extends Controller
 
             $userprofile->firstname = $request->firstname;
             $userprofile->lastname = $request->lastname;
-            $userprofile->dob = $request->dob;
+            $userprofile->dob = date('y/m/d',strtotime($request->dob));
             $userprofile->age = $request->age;
             $userprofile->mobile = $request->mobile; 
             $userprofile->occupation_id = $request->occupation_id; 
@@ -182,7 +182,7 @@ class UserProfileController extends Controller
             $userprofile->qualification_specilization = $request->qualification_specilization;
             $userprofile->qualification_status = $request->qualification_status;
             $userprofile->gender = $request->gender;
-            $userprofile->comments = $request->comments; 
+            $userprofile->comments = $request->comments.'\n Registration Last Updated By '.Auth::user()->name; 
             $userprofile->house_details = $request->house_details;  
             $userprofile->street = $request->street;
             $userprofile->landmark = $request->landmark;

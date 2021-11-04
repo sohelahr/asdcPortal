@@ -414,7 +414,6 @@
     @section('jcontent')
     <script>
         $('#datepicker-popup').datepicker({
-            format: 'yy/mm/dd',
             autoclose: true,
             todayHighlight: true,
             maxDate: "+0y +0m +0w +0d",
@@ -542,10 +541,6 @@
                     how_know_us: {
                         required: true,
                     },
-
-                    comments: {
-                        required: true,
-                    },
                 },
 
                 messages: {
@@ -572,7 +567,8 @@
 
                     age: {
                         required: "Please enter your age",
-                        number: true,
+                        number: 'Age must be a number',
+
                     },
                     aadhaar: {
                         required: "Please enter your adhaar number",
@@ -651,9 +647,6 @@
                         required: "Please tell us something",
                     },
 
-                    comments: {
-                        required: "Please give us a feedback",
-                    },
                 }
 
 
