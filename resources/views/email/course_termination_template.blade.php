@@ -46,7 +46,7 @@
                             <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "100px" style = "padding: 4%;" />
                         </div>
                         <div style = "float: right; display: inline-block; padding: 3%; margin-top: 20px;" class = "tqf">
-                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" class = "tqf" width = "100px" style = "padding: 4%; " />
+                            <img src = "{{url('/public/images/TQF_Logo.jpg')}}" class = "tqf" width = "100px" style = "padding: 4%; " />
                         </div>
                     </div>
                 </div>

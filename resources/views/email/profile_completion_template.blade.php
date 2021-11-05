@@ -31,22 +31,17 @@
                 </div>
                 <div>
                     <div style = "padding: 5%;">
-                        <p>Dear Naseem, </p><br>
+                        <p>Dear Hamza, </p><br>
                         <p><b>Greetings from ASDC, (Tag line comes here!)</b></p>
-                        <p>Thankyou for joining us in your academic journey!</p>
+                        <p>Your Profile has been generated on our platform by one of our admins.</p>
                     </div>
-                    <div style = "margin-top: 100px; margin-left: 5%; margin-right: 5%;">
-                        <p>You have successfully re-registered for Graphics Designing course, happy to see you again!</p>
+                    <div style = "margin-left: 5%; margin-right: 5%; margin-top: 100px;">
+                        <p>The following is the password for you to use:</p>
+                        <p>password@123</p>
+                        <br><br>
+                        <p><b>We recommend you to change your password and then proceed further.</b></p>
                     </div>
-                    <div style = "padding: 5%">
-                         Please visit the academic center for completing your enrollment.
-                        Please bring the following documents while coming to the center.<br>
-                        <ul>
-                            <li>Adhaar Card</li>
-                            <li>User Identity</li>
-                            
-                        </ul>
-                    </div>
+                    
                     
                     <div style = "width: 100%">
                         <div style = "display: inline-block; padding: 3%">

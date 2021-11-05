@@ -21,6 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/verfiy/email/{id}',[VerifyMailController::class,'Verify'])->name('verify_mail');
 
 /* Route::get('/mail', function () {
@@ -47,5 +48,9 @@ Route::get('/dashboard', function () {
     $profile = Auth::user()->UserProfile;
     return view('dashboard',compact(['courses','profile']));
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/testmail', function () {
+    return view('email.course_readmission_template');
+});
 
 require __DIR__.'/auth.php';
