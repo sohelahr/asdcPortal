@@ -101,8 +101,13 @@
             ajax: "{{route('all_admissions')}}",
             columns:[
                 {data: 'student_name',render:function(data,type,row){
-                    return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
-                    }, name: 'student_name'},
+                    if(data['perm']){
+                        return "<a href='admission/view/"+row.id+"'>"+data['name']+"</a>"
+                    }
+                    else{
+                        return "<p class='mb-0'>"+data['name']+"</p>"
+                    }
+                }, name: 'student_name'},
                 {data: 'roll_no', name: 'roll_no'},
                 {data: 'course_name',name:"course_name"},
                 {data: 'course_slot',name:"course_slot"},

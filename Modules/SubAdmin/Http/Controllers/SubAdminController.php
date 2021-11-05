@@ -226,6 +226,8 @@ class SubAdminController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->is_verifed = 1;
+        $user->designation = $request->designation;
         $user->save();
         return redirect('/subadmin')->with('updated','123');
     }

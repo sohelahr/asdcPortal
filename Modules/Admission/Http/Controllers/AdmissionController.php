@@ -28,7 +28,7 @@ class AdmissionController extends Controller
      */
     function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('getIdCard');
     }
 
     public function index()
@@ -57,7 +57,12 @@ class AdmissionController extends Controller
 
         return Datatables::of($admissions)
             ->addColumn('student_name',function($admission){
-                return $admission->Student->name;
+                if(\App\Http\Helpers\CheckPermission::hasPermission('view.admissions')){
+                        return ['perm'=>true,'name'=> $admission->Student->name ];
+                    }
+                    else{
+                       return ["perm"=>false,'name' =>  $admission->Student->name];
+                    }
             })
             ->addColumn('course_name',function($admission){
                 return $admission->Course->name;
@@ -313,9 +318,12 @@ class AdmissionController extends Controller
         }
         else{
             $admission->is_course_changed = true;
+            //Decrement Numbers if course changed
         }
     
         if($admission->course_id != $request->course_id){
+            
+            SerialNumberConfigurationsController::decrementNumbers($admission->course_id);
         
             $admission->course_id = $request->course_id;
             //get Current Values Of Admission and Roll NUMBERS
@@ -332,7 +340,6 @@ class AdmissionController extends Controller
         }
         if($admission->save()){                
 
-            //Increment Numbers if data saves
 
             $documents = DocumentList::all();
             foreach($documents as $document){
@@ -352,6 +359,22 @@ class AdmissionController extends Controller
             else{
                 return redirect('/admission')->with('error','Something Went Wrong');
             }
+    }
+    public function getIdCard($id){
+        $admission = Registration::find($id)->Admission;
+        $userprofile = $admission->Student->UserProfile;
+        $data = [];
+        $data['name'] = $admission->Student->name;
+        $data['roll_no'] = $admission->roll_no;
+        $data['photo'] = $userprofile->photo;
+        $data['dob'] =  $userprofile->dob;
+        $data['gender'] = $userprofile->gender;
+        $data['mobile'] = $userprofile->mobile;
+        $data['course'] = $admission->Course->name;
+        $data['batch'] = $admission->CourseBatch->batch_number;
+         $pdf = PDF::loadView('admission::id_card',compact('data'),[], [
+                                'format' => [54, 86]]);
+        return $pdf->stream('document.pdf');
     }
 
     /**

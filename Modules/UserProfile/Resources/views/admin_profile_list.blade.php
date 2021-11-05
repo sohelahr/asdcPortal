@@ -13,16 +13,18 @@
         </nav>
     </div>
     <div class="card">
-        <div class="d-flex p-1 m-0 border header-buttons">
-            <div>
-                <a href="{{route('subadmin_student_create')}}">
-                    <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
-                        <i class="fas fa-user-plus btn-icon-prepend"></i>
-                        Register A Student
-                    </button>
-                </a>
+        @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
+            <div class="d-flex p-1 m-0 border header-buttons">
+                <div>
+                    <a href="{{route('subadmin_student_create')}}">
+                        <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
+                            <i class="fas fa-user-plus btn-icon-prepend"></i>
+                            Register A Student
+                        </button>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
         <div class="card-body">
             
             <div class="table-responsive">

@@ -67,4 +67,16 @@ class SerialNumberConfigurationsController extends Controller
         }
         return;
     }
+
+    public static function decrementNumbers($id)
+    {
+        $serial_number = SerialNumberConfiguration::where('course_id',$id)->first();
+        if(isset($serial_number))
+        {
+            $serial_number->currentRollNumber = $serial_number->currentRollNumber - 1;
+            $serial_number->currentAdmissionNumber = $serial_number->currentAdmissionNumber - 1;
+            $serial_number->save();
+        }
+        return;
+    }
 }

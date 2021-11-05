@@ -5,6 +5,7 @@ namespace Modules\Registration\Entities;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admission\Entities\Admission;
 use Modules\Course\Entities\Course;
 use Modules\CourseSlot\Entities\CourseSlot;
 
@@ -29,7 +30,7 @@ class Registration extends Model
         return $this->belongsTo(User::class,'student_id','id');
     }
     
-    public function Registrations(){
-        return $this->hasMany(Registration::class);
+    public function Admission(){
+        return $this->hasOne(Admission::class);
     }
 }

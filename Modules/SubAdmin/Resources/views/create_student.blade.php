@@ -126,7 +126,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label">Date of Birth
-                                            {{-- <sup class="text-danger">*</sup> --}}</label>
+                                            <sup class="text-danger">*</sup></label>
 
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input type="text" readonly class="form-control form-control-sm" name="dob">
@@ -176,7 +176,7 @@
 
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
+                                        <label class="form-label">Blood Group{{--  <sup class="text-danger">*</sup> --}}</label>
                                         <input type="text" class="form-control form-control-sm" name="blood_group">
                                     </div>
                                 </div>

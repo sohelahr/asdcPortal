@@ -43,7 +43,6 @@
                     <div class="col-md-4">
 
                         <div class="form-group">
-
                             <label class="form-label">Course <sup class="text-danger">*</sup></label>
                             <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
                             <select class="form-control" name="course_id" id="admission_course">

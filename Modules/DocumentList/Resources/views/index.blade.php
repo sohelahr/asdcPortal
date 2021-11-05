@@ -47,7 +47,7 @@
                             <tr>
                                 <td>{{$document->name}}</td>
                                 <td class="d-flex p-1">
-                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.documents'))      
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.documents'))      
                                         <button class="btn btn-dark btn-rounded p-2" onclick="Editdocumentlist({{$document->id}})">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>

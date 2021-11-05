@@ -145,13 +145,24 @@
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <label for="name">Name</label>
-                                <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                                <input id="edit-name" class="form-control form-control-sm" type="text" name="name" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <label for="email">Email</label>
                                 <input id="edit-email" class="form-control form-control-sm" type="text" name="email">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="name">Designation-Role</label>
+                                <select id="edit-designation" class="form-control" name="designation">
+                                    <option value="">Choose an option</option>
+                                    <option value="Additional Director">Additional Director</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Receptionist">Receptionist</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -219,9 +230,15 @@
                 },
                 success: function (response) {
                     data = JSON.parse(response);
+                    console.log(data)
                     $("#edit-form").attr("action", `{{url('subadmin/edit/${course_id}')}}`);
                     $("#edit-name").val(data.name);
                     $("#edit-email").val(data.email);
+                    $("#edit-designation").empty().html(`
+                        <option value="Additional Director" ${(data.designation == "Additional Director" ) ? 'selected' : null }>Additional Director</option>
+                        <option value="Administrator" ${(data.designation == "Administrator" ) ? 'selected' : null }>Administrator</option>
+                        <option value="Receptionist" ${(data.designation == "Receptionist" ) ? 'selected' : null }>Receptionist</option>
+                    `);
                 },
                 complete: function () {
                     $('#showtext').hide();
@@ -233,6 +250,41 @@
 
         $(document).ready(function (){
         $('#subadmin').validate({
+            errorClass: "text-danger pt-1",
+            rules: {     
+                name: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                },
+                designation:{
+                    required:true,
+                },
+                password: {
+                    required: true,
+                },
+            },
+
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
+
+                    email:{
+                        required: "Please enter email",
+                    },
+                    designation:{
+                        required:'designation is required',
+                    },
+                    password:{ 
+                        required: "Please enter a password",
+                    },
+
+                } 
+
+        });
+        $('#edit-form').validate({
             errorClass: "text-danger pt-1",
             rules: {     
                 name: {
