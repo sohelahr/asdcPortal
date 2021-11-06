@@ -34,7 +34,7 @@
                             <th style="width: 30px">No</th>
                             <th>Name</th>
                             <th>Mobile</th>
-                            <th>Qualification</th>
+                            <th>Email</th>
                             <th>Type</th>
                             <th>Edit</th>
                         </tr>
@@ -46,7 +46,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Mobile</th>
-                            <th>Qualification</th>
+                            <th>Email</th>
                             <th>Type</th>
                             <th>Edit</th>
                         </tr>
@@ -144,7 +144,7 @@
             name:"name"
             },
             {data: 'mobile',name:"mobile"},
-            {data: 'qualification',name:"qualification"},
+            {data: 'email',name:"email"},
             {data:'type',render:function(data,type,row){
                 //this will be rendered from server just for demo here
                 console.log(data)

@@ -25,6 +25,6 @@ class CourseSlot extends Model
         return $this->hasMany(Registration::class);
     }
     public function Admissions(){
-        return $this->hasMany(Admission::class);
+        return $this->hasMany(Admission::class,'courseslot_id');
     }
 }

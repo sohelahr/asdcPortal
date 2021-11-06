@@ -2,6 +2,7 @@
 
 namespace Modules\UserProfile\Http\Controllers;
 
+use App\Http\Helpers\GetLocation;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -36,8 +37,11 @@ class UserProfileController extends Controller
                        return ["perm"=>false,'name' => $profile->firstname." ".$profile->lastname];
                     }
                 })
-                ->addColumn('qualification',function($profile){
+                /* ->addColumn('qualification',function($profile){
                     return $profile->Qualification->name;
+                }) */
+                ->addColumn('email',function($profile){
+                    return $profile->User->email;
                 })
                 ->addColumn('type',function($profile){
                     if($profile->User->Registrations->count() > 0)
@@ -115,7 +119,7 @@ class UserProfileController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'mobile' => ['required', 'max:10', 'unique:user_profiles'],
+            /* 'mobile' => ['required', 'max:10', 'unique:user_profiles'], */
             'aadhaar' => ['required', 'unique:user_profiles'],            
         ]);
 
@@ -218,6 +222,10 @@ class UserProfileController extends Controller
         }
     }
 
+    public function GetCity($stateid){
+        $cities = GetLocation::getCities($stateid);
+        return response()->json(['cities'=>$cities]);
+    }
     /**
      * Remove the specified resource from storage.
      * @param int $id

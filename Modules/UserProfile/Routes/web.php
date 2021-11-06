@@ -23,4 +23,7 @@ Route::prefix('userprofile')->middleware(['auth'])->group(function() {
     Route::get('/admin/{id}/edit', 'UserProfileController@AdminEdit')->name('user_profile_edit');
     Route::post('/admin/{id}/edit', 'UserProfileController@AdminEdit')->name('user_profile_edit');
 
+    Route::get('/get-city/{id}', 'UserProfileController@GetCity')->name('getcities');
+
+
 });
