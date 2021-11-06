@@ -105,9 +105,12 @@ class AdmissionController extends Controller
         $initial_course_slots = $selected_course->CourseSlots; 
         $initial_course_batches = $selected_course->CourseBatches->where('status','1'); 
         $current_course_batch = $selected_course->CourseBatches->where('is_current','1')->first();
-        $documents =    DocumentList::all();
+        $documents = DocumentList::all();
+        $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($selected_course->id);
+        $admission_form_number = "ASDC/". $selected_course->slug . date("y")."-". $current_numbers->currentAdmissionNumber;
+        $roll_no =  $selected_course->slug . date("y")."-". $current_numbers->currentRollNumber;
 
-        return view('admission::create',compact('current_course_batch','documents','student','registration_id','selected_course','selected_course_slot','courses','initial_course_slots','initial_course_batches'));
+        return view('admission::create',compact('roll_no','admission_form_number','current_course_batch','documents','student','registration_id','selected_course','selected_course_slot','courses','initial_course_slots','initial_course_batches'));
     }
     
     public function store(Request $request)
@@ -134,14 +137,17 @@ class AdmissionController extends Controller
 
 
         //get Current Values Of Admission and Roll NUMBERS
-        $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
+        // $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
         
         //Create new Admission Numbers using that 
+        /* 
         $course_slug = Course::find($request->course_id)->slug;
-        
         $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
         
-        $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber;
+        $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber; */
+        $admission->admission_form_number = $request->roll_no;
+        
+        $admission->roll_no =  $request->admission_form_number;
         if($admission->save()){                
 
             //Incrrement Numbers if data saves
@@ -191,7 +197,12 @@ class AdmissionController extends Controller
         $course_slots = $course->CourseSlots;
         $course_batches = $course->CourseBatches->where('status','1');
         
-        return response()->json(['course_slots'=>$course_slots,'course_batches'=>$course_batches]);
+        $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($course->id);
+        
+        $admission_form_number = "ASDC/". $course->slug . date("y")."-". $current_numbers->currentAdmissionNumber;
+        
+        $roll_no =  $course->slug . date("y")."-". $current_numbers->currentRollNumber;
+        return response()->json(['course_slots'=>$course_slots,'course_batches'=>$course_batches,'roll_no' => $roll_no,'admission_form_number'=>$admission_form_number]);
     }
 
     function cancelAdmission(Request $request)
@@ -324,16 +335,20 @@ class AdmissionController extends Controller
         if($admission->course_id != $request->course_id){
             
             SerialNumberConfigurationsController::decrementNumbers($admission->course_id);
+            $admission->admission_form_number = $request->roll_no;
+        
+            $admission->roll_no =  $request->admission_form_number;
         
             $admission->course_id = $request->course_id;
             //get Current Values Of Admission and Roll NUMBERS
+            /* 
             $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
             
             //Create new Admission Numbers using that 
             $course_slug = Course::find($request->course_id)->slug;
             $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
 
-            $admission->roll_no =  $course_slug . date("y") ."-". $current_numbers->currentRollNumber;
+            $admission->roll_no =  $course_slug . date("y") ."-". $current_numbers->currentRollNumber; */
     
             SerialNumberConfigurationsController::incrementNumbers($request->course_id);
             

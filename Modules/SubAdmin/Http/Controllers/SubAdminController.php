@@ -41,7 +41,6 @@ class SubAdminController extends Controller
 
     public function storeStudent(Request $request)
     {
-        
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -126,6 +125,7 @@ class SubAdminController extends Controller
             //if profile saves then move forward
             if($userprofile->save()){
 
+                //first registration
                 $registration = new Registration();
                 $registration->student_id = $user->id;
                 $registration->course_id = $request->course_id;
@@ -136,6 +136,24 @@ class SubAdminController extends Controller
                 
                 if($registration->save()){
                     SerialNumberConfigurationsController::incrementRegistrationNumber();
+                    //move to second registration if and pnly if the first registration is saved()
+                    if(isset($request->sec_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->sec_course_id;
+                        $registration->course_slot_id = $request->sec_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                            return redirect()->route('user_profile_list')->with('created','0');
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
                     return redirect()->route('user_profile_list')->with('created','0');
                 }
                 else{

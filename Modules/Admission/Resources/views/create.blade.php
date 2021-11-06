@@ -107,14 +107,28 @@
                     
             
                     <div class="col-md-8">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p>These are system generated values , you can change them if you want till manual entries are finished</p>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Roll No </label>
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$roll_no}}" id="roll_no" >
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Admission Form Number </label>
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission_form_number}} >
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="form-label">Admission Remarks <sup class="text-danger">*</sup></label>
                             <textarea class="form-control" rows="14" name="admission_remarks"></textarea>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                         
-                      </div>
                 </div>                                                         
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
@@ -165,6 +179,13 @@
                     $("#course_batch").append(`
                             <option value="">Not Found</option>
                         `);
+                }
+                if(response.roll_no){
+                    $('#roll_no').val(response.roll_no);
+                }
+                console.log(response)
+                if(response.admission_form_number){
+                    $('#admission_form_no').val(response.admission_form_number);
                 }
             },
              complete: function () {

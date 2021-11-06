@@ -38,16 +38,24 @@
                                 <input type="hidden" name="registered_course_id" value="{{$selected_course_id}}">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Roll No</label>
-                            <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Admission Form Number</label>
-                            <input class="form-control form-control-sm" type="text" name="admission_form_number" value={{$admission->admission_form_number}} disabled>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <p>WARNING : If you change the course now then custom entries for earlier 
+                                course will be lost, although you can redit them, please proceed with caution</p>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Roll No</label>
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Admission Form Number</label>
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}}>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -171,6 +179,13 @@
                     $("#course_batch").append(`
                             <option value="">Not Found</option>
                         `);
+                }
+                if(response.roll_no){
+                    $('#roll_no').val(response.roll_no);
+                }
+                console.log(response)
+                if(response.admission_form_number){
+                    $('#admission_form_no').val(response.admission_form_number);
                 }
                 
             },

@@ -201,6 +201,7 @@
                                         <select class="form-control" name="home_type">
                                             <option value="rented">Rented</option>
                                             <option value="owned">Owned</option>
+                                            <option value="other">Other</option>
                                         </select>
 
                                     </div>
@@ -428,9 +429,10 @@
                         <div class="p-5 bg-white border-b border-gray-200">
 
                             <p class="card-description text-black-50">
-                                Enroll in a course (You can later admit him/her via the admission tab.)
+                                Enroll in a course (You can later admit him/her via the admission tab.)<br>
+                                First Registration is necessary , Second is optional.
                             </p>
-                            <div class="row justify-content-start">
+                            <div class="row justify-content-between">
                                 <div class="form-row col-5">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -455,6 +457,35 @@
                                             <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
                                             <select class="form-control" name="courseslot_id" id="course_slot">
                                                 <option value="">Choose Course Timing</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Second Registration Form --}}
+                                <div class="form-row col-5">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course II <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="sec_course_id" id="sec_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="sec_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="sec_courseslot_id" id="sec_course_slot">
+                                                <option value="blank">Choose Course First</option>
                                             </select>
                                         </div>
                                     </div>
@@ -619,7 +650,10 @@
                 },
                 courseslot_id: {
                     required: true,
-                },  
+                },
+                courseslot_id_2: {
+                    required: true,
+                }, 
             },
 
             messages: {
@@ -740,13 +774,17 @@
                 courseslot_id: {
                     required: "Please select a timing",
                 }, 
+                courseslot_id_2: {
+                    required: "Please Select a timing",
+                }, 
             }
 
         });
     });
     $("#firstname").on('input',function(){
-        let name = $("#firstname").val();
-        $("#password").val(name+"@asdc"+date.getFullYear())
+        let name = $("#firstname").val()
+        let val = name+"@asdc"+date.getFullYear();
+        $("#password").val(val.replace(/ /g, ""));
     })
     $("#registration_course").on('change',function(){
         let course_id = $("#registration_course").val()
@@ -773,6 +811,41 @@
                 else
                 {
                     $("#course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#sec_registration_course").on('change',function(){
+        let course_id = $("#sec_registration_course").val()
+        if(course_id == ""){
+            $("#sec_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#sec_course_slot").empty();
+                $("#sec_course_duration").val(response.course_duration);;
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#sec_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#sec_course_slot").append(`
                             <option value="">Not Found</option>
                     `);
                 }

@@ -163,6 +163,9 @@
                                                     <option value="owned" @if ($userprofile->home_type == "owned")
                                                         selected
                                                         @endif>Owned</option>
+                                                    <option value="other"  @if ($userprofile->home_type == "other")
+                                                        selected
+                                                        @endif>Other</option>
                                                 </select>
 
                                             </div>
