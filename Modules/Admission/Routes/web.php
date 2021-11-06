@@ -30,4 +30,6 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
 
     Route::get('/readmit/{id}','AdmissionController@reAdmit')->name('user_admission_readmit');
 
+    Route::get('/id-card/{id}','AdmissionController@getIdCard')->name('admission_id_card');
+
 });

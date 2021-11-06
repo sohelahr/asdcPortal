@@ -3,16 +3,24 @@
 @section('content')
     <div class="page-header">
         <h3 class="page-title">
-            Sub Admins
+            Staff
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Sub Admins</li>
+            <li class="breadcrumb-item active" aria-current="page">Staff</li>
             </ol>
         </nav>
     </div>
     <div class="card">
+        <div class="d-flex p-1 m-0 border header-buttons">
+            <div>
+                <button class="btn bg-white" type="button" data-toggle="modal" data-target="#subadmin-create">
+                    <i class="fas fa-plus btn-icon-prepend"></i>
+                    Create Staff
+                </button>
+            </div>
+        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -22,18 +30,13 @@
                 </ul>
             </div>
         @endif
-        <div class="card-body">
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#subadmin-create">
-                     + Create
-                </button>
-            </div>    
-            
+        <div class="card-body"> 
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Designation-Role</th>
                             <th>Email</th>
                             <th>Actions</th>
                         </tr>
@@ -43,6 +46,9 @@
                             <tr>
                                 <td>
                                     {{$subadmin->name}}
+                                </td>
+                                <td>
+                                    {{$subadmin->designation}}
                                 </td>
                                 <td>{{$subadmin->email}}</td>
                                 <td class="d-flex p-1">
@@ -79,9 +85,20 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label for="name">Name</label>
+                                <input id="name" class="form-control form-control-sm" type="text" name="name" >
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="name">Designation-Role</label>
+                                <select id="designation" class="form-control" name="designation">
+                                    <option value="">Choose an option</option>
+                                    <option value="Additional Director">Additional Director</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Receptionist">Receptionist</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
@@ -91,10 +108,16 @@
                             <div class="form-group col-6">
                                 <label for="slug">Password</label>
                                 <input id="slug" class="form-control form-control-sm" type="password" name="password" >
+                                <div id="pwd_visibility" class="hide">
+                                    <i class="far fa-eye"></i>
+                                </div>
                             </div>
                             <div class="form-group col-6">
                                 <label for="slug">Confirm Password</label>
                                 <input id="slug" class="form-control form-control-sm" type="password" name="password_confirmation" >
+                                <div id="pwd_confirm_visibility" class="hide">
+                                    <i class="far fa-eye"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,14 +142,27 @@
                     </div>
                     <div class="modal-body">
                         <h5 class="text-danger" id="showtext">Please Wait...</h5>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" >
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="name">Name</label>
+                                <input id="edit-name" class="form-control form-control-sm" type="text" name="name" >
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <label for="email">Email</label>
                                 <input id="edit-email" class="form-control form-control-sm" type="text" name="email">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="name">Designation-Role</label>
+                                <select id="edit-designation" class="form-control" name="designation">
+                                    <option value="">Choose an option</option>
+                                    <option value="Additional Director">Additional Director</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Receptionist">Receptionist</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -194,9 +230,15 @@
                 },
                 success: function (response) {
                     data = JSON.parse(response);
+                    console.log(data)
                     $("#edit-form").attr("action", `{{url('subadmin/edit/${course_id}')}}`);
                     $("#edit-name").val(data.name);
                     $("#edit-email").val(data.email);
+                    $("#edit-designation").empty().html(`
+                        <option value="Additional Director" ${(data.designation == "Additional Director" ) ? 'selected' : null }>Additional Director</option>
+                        <option value="Administrator" ${(data.designation == "Administrator" ) ? 'selected' : null }>Administrator</option>
+                        <option value="Receptionist" ${(data.designation == "Receptionist" ) ? 'selected' : null }>Receptionist</option>
+                    `);
                 },
                 complete: function () {
                     $('#showtext').hide();
@@ -216,7 +258,9 @@
                 email: {
                     required: true,
                 },
-
+                designation:{
+                    required:true,
+                },
                 password: {
                     required: true,
                 },
@@ -230,7 +274,44 @@
                     email:{
                         required: "Please enter email",
                     },
+                    designation:{
+                        required:'designation is required',
+                    },
+                    password:{ 
+                        required: "Please enter a password",
+                    },
 
+                } 
+
+        });
+        $('#edit-form').validate({
+            errorClass: "text-danger pt-1",
+            rules: {     
+                name: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                },
+                designation:{
+                    required:true,
+                },
+                password: {
+                    required: true,
+                },
+            },
+
+                messages: {
+                    name:{
+                        required: "Please enter your name",
+                    },
+
+                    email:{
+                        required: "Please enter email",
+                    },
+                    designation:{
+                        required:'designation is required',
+                    },
                     password:{ 
                         required: "Please enter a password",
                     },

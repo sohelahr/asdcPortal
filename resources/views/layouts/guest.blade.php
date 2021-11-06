@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/vendors/css/vendor.bundle.addons.css">
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/style.css">
         <link rel="shortcut icon" href="{{env('BACKEND_CDN_URL')}}/images/favicon.png"/>
+        <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/custom.css">
 
         <script src="{{ url('public/js/app.js') }}" defer></script>
 
@@ -35,6 +36,7 @@
         <script src="{{env('BACKEND_CDN_URL')}}/js/misc.js"></script>
         <script src="{{env('BACKEND_CDN_URL')}}/js/settings.js"></script>
         <script src="{{env('BACKEND_CDN_URL')}}/js/todolist.js"></script>
+        <script src="{{ url('public/js/custom.js') }}"></script>
         @yield('jcontent')
     </body>
 </html>

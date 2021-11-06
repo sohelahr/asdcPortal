@@ -13,7 +13,18 @@
         </nav>
     </div>
     <div class="card">
-        
+        @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
+            <div class="d-flex p-1 m-0 border header-buttons">
+                <div>
+                    <a href="{{route('subadmin_student_create')}}">
+                        <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
+                            <i class="fas fa-user-plus btn-icon-prepend"></i>
+                            Register A Student
+                        </button>
+                    </a>
+                </div>
+            </div>
+        @endif
         <div class="card-body">
             
             <div class="table-responsive">
@@ -85,23 +96,33 @@
 @endsection
 @section('jcontent')
 <script>
-        @if(\Illuminate\Support\Facades\Session::has('updated'))
+        @if(\Illuminate\ Support\ Facades\ Session::has('created'))
+            $.toast({
+                heading: 'Created',
+                text: 'Student Was Successfully Created',
+                position: 'top-right',
+                icon: 'success',
+                loader: true, // Change it to false to disable loader
+                loaderBg: '#9EC600' // To change the background
+            })
+        @elseif(\Illuminate\ Support\ Facades\ Session::has('updated'))
             $.toast({
                 heading: 'Updated',
-                text: 'Profile Was Successfully Updated',
-                position:'top-right',
+                text: 'Student Was Successfully Updated',
+                position: 'top-right',
                 icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
+                loader: true, // Change it to false to disable loader
+                loaderBg: '#9EC600' // To change the background
             })
-        @elseif(\Illuminate\Support\Facades\Session::has('error'))
+
+        @elseif(\Illuminate\ Support\ Facades\ Session::has('error'))
             $.toast({
                 heading: 'Danger',
                 text: 'Something Went Wrong ',
-                position:'top-right',
+                position: 'top-right',
                 icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
+                loader: true, // Change it to false to disable loader
+                loaderBg: '#9EC600' // To change the background
             })
         @endif
     $(document).ready( function () {

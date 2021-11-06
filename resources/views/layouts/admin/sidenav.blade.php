@@ -90,9 +90,9 @@
             </a>
             <div class="collapse" id="employments">
                 <ul class="nav flex-column sub-menu">
-                    {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('view.employments')) --}}
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.student_employment'))
                         <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('studentemployment/')}}">Employments</a></li>
-                    {{-- @endif --}}
+                    @endif
                 </ul>
             </div>
         </li>

@@ -21,3 +21,15 @@ i{
 .status_btns{
     min-width: 130px!important;
 }
+#pwd_visibility{
+    float: right;
+    cursor: pointer;
+    margin-right: 30px;
+    margin-top: -30px;
+}
+#pwd_confirm_visibility{
+    float: right;
+    cursor: pointer;
+    margin-right: 30px;
+    margin-top: -30px;
+}

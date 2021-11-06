@@ -43,12 +43,18 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-sm" id="password"
-                                           placeholder="Password" name="password">
+                                        placeholder="Password" name="password">
+                                    <div id="pwd_visibility" class="hide">
+                                        <i class="far fa-eye"></i>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <input id="password_confirmation" class="form-control form-control-sm"
-                                           type="password"
-                                           name="password_confirmation" required placeholder="Confirm Password"/>
+                                        type="password" name="password_confirmation" 
+                                        placeholder="Confirm Password" />
+                                    <div id="pwd_confirm_visibility" class="hide">
+                                        <i class="far fa-eye"></i>
+                                    </div>
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium"

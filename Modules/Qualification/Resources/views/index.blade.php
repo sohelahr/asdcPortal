@@ -48,7 +48,7 @@
                             <tr>
                                 <td>{{$qualification->name}}</td>
                                 <td class="d-flex p-1">
-                                @if(\App\Http\Helpers\CheckPermission::hasPermission('update.qualifciations'))      
+                                @if(\App\Http\Helpers\CheckPermission::hasPermission('update.qualifications'))      
                                     <button class="btn btn-dark btn-rounded p-2" onclick="Editqualification({{$qualification->id}})">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>

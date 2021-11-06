@@ -13,14 +13,17 @@
     </div>
     <div class="card">
         <div class="d-flex p-1 m-0 border header-buttons">
-            <div>
-                <a href="{{url('admission/edit/'.$admission->id)}}">
-                    <button class="btn bg-white" type="button">
-                    <i class="fa fa-edit btn-icon-prepend"></i>
-                        Edit
-                    </button>
-                </a>
-            </div>
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('update.admissions'))
+                <div>
+                    <a href="{{url('admission/edit/'.$admission->id)}}">
+                        <button class="btn bg-white" type="button">
+                        <i class="fa fa-edit btn-icon-prepend"></i>
+                            Edit
+                        </button>
+                    </a>
+                </div>
+            @endif
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
             <div>
                 @if ($admission->status == '4')
                     <button class="btn bg-white " type="button" 
@@ -41,16 +44,21 @@
                 @endif
 
             </div>
-            <div>
-                <button class="btn bg-white" type="button" @if($admission->status != '1' || $admission->status != '2') 
-                    onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
-                    @else
-                        data-toggle="modal" data-target="#employed-modal"
-                    @endif>
-                    <i class="fas fa-industry btn-icon-prepend"></i>
-                    Mark Employed
-                </button>
-            </div>
+            @endif
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.student_employment'))
+                <div>
+                    <button class="btn bg-white" type="button" 
+                        @if($admission->status > 2)
+                            onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
+                        @else
+                            data-toggle="modal" data-target="#employed-modal"
+                        @endif>
+                        <i class="fas fa-industry btn-icon-prepend"></i>
+                        Mark Employed
+                    </button>
+                </div>
+            @endif
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
             <div>
                 <button class="btn bg-white" type="button" @if($admission->status != '1') 
                     onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
@@ -61,6 +69,7 @@
                     Terminate
                 </button>
             </div>
+            @endif
             <div>
                 <a href="{{route('print_admission_form',$admission->id)}}" target="_blank">
                     <button class="btn bg-white">

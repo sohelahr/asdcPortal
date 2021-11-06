@@ -21,15 +21,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/verfiy/email/{id}',[VerifyMailController::class,'Verify'])->name('verify_mail');
 
 /* Route::get('/mail', function () {
-    $content['user_name'] = 'Naseem';
+    /* $content['user_name'] = 'Naseem';
     $content['course_name'] = 'BCA';
     //$content = 'Naseem';
     $content['documents'] = ['1'=>'asdnas'];
-    return view('email.course_registrations_template',compact('content'));
-    //return view('email.user_registration_mail',compact('content'));
+    return view('email.course_registrations_template',compact('content')); 
+    $content = [
+                'name' =>  'Naseem',
+                'mail' =>  'nk4822805@gmai.com',
+                'pwd' =>   'naseem'.'@asdc'.date('Y')
+            ];
+
+    return view('email.admin_user_registrations_mail',compact('content'));
 }); */
 
 
@@ -41,5 +48,9 @@ Route::get('/dashboard', function () {
     $profile = Auth::user()->UserProfile;
     return view('dashboard',compact(['courses','profile']));
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/testmail', function () {
+    return view('email.course_readmission_template');
+});
 
 require __DIR__.'/auth.php';

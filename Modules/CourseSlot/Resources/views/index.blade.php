@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="card-body">
-            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursesslot'))
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursesslots'))
                 <div class="float-right my-2">
                     <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#timing-create">
                     + Create
@@ -59,7 +59,7 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
                                     @endif
-                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot'))    
+                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.coursesslots'))    
                                         <form action="{{url('courseslot/delete/'.$timing->id)}}" method="post" class="ml-2">
                                             @csrf
                                             <button type=submit class="btn btn-danger btn-rounded p-2">

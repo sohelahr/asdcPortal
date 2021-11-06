@@ -399,7 +399,6 @@
 
     <script>
         $('#datepicker-popup').datepicker({
-            format: 'yy/mm/dd',
             autoclose: true,
             todayHighlight: true,
             maxDate: "+0y +0m +0w +0d",
@@ -559,7 +558,8 @@
 
                     age: {
                         required: "Please enter your age",
-                        number: true,
+                        number: 'Age must be a number',
+
                     },
                     aadhaar: {
                         required: "Please enter your adhaar number",

@@ -53,6 +53,7 @@
     <script src="{{env('BACKEND_CDN_URL')}}/js/misc.js"></script>
     <script src="{{env('BACKEND_CDN_URL')}}/js/settings.js"></script>
     <script src="{{env('BACKEND_CDN_URL')}}/js/todolist.js"></script>
+    <script src="{{ url('public/js/custom.js') }}"></script>
 
     @yield('jcontent')
 </body>
