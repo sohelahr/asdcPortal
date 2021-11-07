@@ -54,6 +54,7 @@
     <script src="{{env('BACKEND_CDN_URL')}}/js/settings.js"></script>
     <script src="{{env('BACKEND_CDN_URL')}}/js/todolist.js"></script>
     <script src="{{ url('public/js/custom.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
     @yield('jcontent')
 </body>

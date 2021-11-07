@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\ChartJsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,3 +15,7 @@
 Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::get('/dashboard', 'AdminController@index');
 });
+
+Route::get('chartjs', [ChartJsController::class, 'index'])->name('chartjs.index');
+
+
