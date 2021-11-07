@@ -377,7 +377,12 @@ class AdmissionController extends Controller
     }
     public function getIdCard($id){
         $admission = Registration::find($id)->Admission;
-        $userprofile = $admission->Student->UserProfile;
+
+        $user = $admission->Student;
+        if($user->id !== Auth::user()->id && Auth::user()->user_type == 3){
+            return redirect('/dashboard')->with('unauthorized','123');
+        }
+        $userprofile = $user->UserProfile;
         $data = [];
         $data['name'] = $admission->Student->name;
         $data['roll_no'] = $admission->roll_no;
@@ -388,7 +393,7 @@ class AdmissionController extends Controller
         $data['course'] = $admission->Course->name;
         $data['batch'] = $admission->CourseBatch->batch_number;
          $pdf = PDF::loadView('admission::id_card',compact('data'),[], [
-                                'format' => [54, 86]]);
+                                'format' => [64, 86]]);
         return $pdf->stream('document.pdf');
     }
 

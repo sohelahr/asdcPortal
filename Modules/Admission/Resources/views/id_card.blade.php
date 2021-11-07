@@ -28,42 +28,49 @@
         }
 
         .image {
-            width: 60px;
-            height: 80px;
-            border-radius: 12px;
+            overflow: hidden!important;
+            margin-left: 80px;
+            width: 80px;
+            height: 90px;/* 
+            border-radius: 8px; */
             border: 1px solid #618c9f;
+            margin-bottom: -30px;z-index:999;
         }
         .header{
-            margin-top: 120px;
+            margin-top: -10px;
+            margin-bottom:5px;
         }
         table{
-            width: 90%;
-            margin-top: 40px;
-            margin-left: 20px;
-            margin-bottom: 10px;
+            width: 80%;
+            margin-left: 40px;
             border-collapse: collapse
         }
+        td{
+            border-bottom: 1px solid #2c525b ;
+        }
         tr td {
+            font-size: 7px;
             margin: 0 auto;
             text-align: left;
             margin-bottom:2px; 
-            border-bottom: 1px solid #2c525b ;
         }
 
     </style>
 </head>
 
 <body>
-    <img src = "{{url('/public/images/id_Card_top.svg')}}" width = "100px">
+    <img src = "{{url('/public/images/id-card-top.png')}}">
     <div class="card">
         <div class="header">
-            <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "100px">
+            <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "150px">
         </div>
-        <div style="margin-bottom: -30px;z-index:999">
-            <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" class="image">
-            <h5>{{$data['name']}}</h5>
+        <div style="margin: auto;text-align:center;">
+            <div class="image">
+                <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" width= "80px" height="90px">
+            </div>
+            <h2>{{$data['name']}}</h2>
         </div>
-        <div style="bottom:5;background-color: #d6e9f0;width:100%;">
+        <div style="margin-top:-90px;padding-top:90px;padding-bottom:17px;background-color: #d6e9f0;width:100%;text-align:center">
             <table>
                 <tr>
                     <td style="color: #2c525b">Course Name:</td>
@@ -91,6 +98,28 @@
     </div>
     <div style="width:100%;height: 5px;background-color:red;position:fixed;bottom:0;"></div>
     <div class="pagebreak"></div>
+
+
+    {{-- Second page --}}
+    <img src = "{{url('/public/images/id-card-top.png')}}">
+    <div class="card">
+        <div class="header">
+            <p style="font-size: 8px;letter-spacing:1px">If found please return to:</p>
+            <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "150px">
+        </div>
+        <div style="padding:22px 5px;background-color: #d6e9f0;width:100%;text-align:center;line-height:2px">
+            <h2>#23-5-392, 1<sup>st</sup> Floor,</h2>
+            <h2>Above LEE's Chinese Restaurant,</h2>
+            <h2>Shah Ali Banda Road, Hyd.</h2>
+            <h2>Ph: +91 7207084178</h2>
+            <div style="margin-top:20px">
+                <h2>www.asdc-india.com</h2>
+            </div>
+        </div>
+    </div>
+    <div style="width:100%;height: 5px;background-color:red;position:fixed;bottom:0;"></div>
+
+
 </body>
 
 </html>
