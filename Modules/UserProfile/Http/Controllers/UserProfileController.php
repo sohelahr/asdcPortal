@@ -103,11 +103,12 @@ class UserProfileController extends Controller
     {
         $userprofile =  Auth::User()->UserProfile;
         $occupations = Occupation::all();
+        $states = GetLocation::getStates(101);
         $qualifications = Qualification::all();
         if($userprofile->is_profile_completed && Auth::user()->user_type == "3"){
             return redirect('/dashboard')->with('profile_complete','user profile already completed');
         }
-        return view('userprofile::edit',compact('userprofile','occupations','qualifications'));
+        return view('userprofile::edit',compact('states','userprofile','occupations','qualifications'));
     }
 
     /**
@@ -170,8 +171,14 @@ class UserProfileController extends Controller
         $occupations = Occupation::all();
         $qualifications = Qualification::all();
         if($request->method() == "GET"){
-
-            return view('userprofile::admin_profile_edit',compact('userprofile','occupations','qualifications'));
+            $states = GetLocation::getStates(101);
+            if(!preg_match('/^[0-9]*$/',$userprofile->state)){
+                $cities = null;
+            }
+            else{
+                $cities = GetLocation::getCities($userprofile->state);
+            }
+            return view('userprofile::admin_profile_edit',compact('states','cities','userprofile','occupations','qualifications'));
         }
 
         else{

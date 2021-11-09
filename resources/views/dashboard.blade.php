@@ -226,7 +226,6 @@
                     loader: true,        // Change it to false to disable loader
                     loaderBg: '#9EC600'  // To change the background
                 })
-            @endif    
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
                 $.toast({
                     heading: 'Danger',

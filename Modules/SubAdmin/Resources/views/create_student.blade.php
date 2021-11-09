@@ -440,7 +440,7 @@
                                 First Registration is necessary , Rest are optional.
                             </p>
                             <div class="row justify-content-between">
-                                <div class="form-row col-5 p-3 m-1">
+                                <div class="form-row col-5 p-3 m-1 border border-dark rounded m-1">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">Course <sup class="text-danger">*</sup></label>
@@ -675,7 +675,7 @@
                                 <div class="form-row col-5 p-3 border border-dark rounded m-1">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Course XI <span class="text-black-50">(optional)</span></label>
+                                            <label class="form-label">Course IX <span class="text-black-50">(optional)</span></label>
                                             <select class="form-control" name="ninth_course_id" id="ninth_registration_course">
                                                 <option value="">Choose A Course</option>
                                                 @foreach ($courses as $course)

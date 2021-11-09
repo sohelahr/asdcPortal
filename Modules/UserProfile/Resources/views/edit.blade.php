@@ -84,7 +84,7 @@
                                         <label class="form-label">Age <sup class="text-danger">*</sup></label>
 
                                         <input required type="text" class="form-control form-control-sm" name="age"
-                                            value="{{$userprofile->age}}">
+                                            value="{{$userprofile->age}}" id="age" readonly>
 
                                     </div>
                                 </div>
@@ -192,18 +192,22 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm" name="city"
-                                            value="{{$userprofile->city}}">
+                                        <label class="form-label">State<sup class="text-danger">*</sup></label>
+                                        <select class="form-control " name="state" id="state">
+                                            <option value="">Choose State</option>
+                                            @foreach ($states as $state)
+                                            <option value="{{$state->id}}">{{$state->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">State <sup class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="state"
-                                            value="{{$userprofile->state}}">
+                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
+                                        <select class="form-control " name="city" id="cities">
+                                            <option value="">Not found</option>
+                                        </select>
                                     </div>
 
                                 </div>
@@ -395,264 +399,296 @@
     </form>
     
 </x-app-layout>
+<script >
+    var date = new Date();
 
+$('#datepicker-popup').datepicker({
+    autoclose: true,
+    todayHighlight: true,
+    maxDate: "+0y +0m +0w +0d",
+}).on('changeDate', function (e) {
+    let that_year = new Date(e.date);
+    let val = date.getFullYear() - that_year.getFullYear();
+    $("#age").val(val);
+});
+$(document).ready(function () {
+    $('#edit_profile').validate({
+        errorClass: "text-danger pt-1",
+        errorPlacement: function (error, element) {
+            if (element.attr("name") == "dob") {
+                error.insertAfter($("#datepicker-popup"));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        rules: {
 
-    <script>
-        $('#datepicker-popup').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            maxDate: "+0y +0m +0w +0d",
-        });
-
-         $(document).ready(function (){
-        $('#edit_profile').validate({
-            errorClass: "text-danger pt-1",
-            errorPlacement: function(error, element) {
-                if (element.attr("name") == "dob") {
-                    error.insertAfter($("#datepicker-popup"));
-                }
-                else {
-                    error.insertAfter(element);
-                }          
+            firstname: {
+                required: true,
             },
-            rules: {
 
-                    firstname: {
-                        required: true,
-                    },
+            lastname: {
+                required: true,
+            },
 
-                    lastname: {
-                        required: true,
-                    },
+            mobile: {
+                required: true,
+                digits: true,
+                minlength: 0,
+                maxlength: 10
+            },
 
-                    mobile: {
-                        required: true,
-                        digits: true,
-                        minlength: 0,
-                        maxlength: 10
-                    },
+            gender: {
+                required: true,
+            },
 
-                    gender: {
-                        required: true,
-                    },
+            dob: {
+                required: true,
+            },
 
-                    dob: {
-                        required: true,
-                    },
+            age: {
+                required: true,
+                number: true,
+            },
+            aadhaar: {
+                required: true,
+                digits: true,
+                minlength: 0,
+                maxlength: 12
+            },
+            /* blood_group: {
+                required: true,
+            }, */
+            marital_status: {
+                required: true,
+            },
+            photo: {
+                required: true,
+            },
 
-                    age: {
-                        required: true,
-                        number: true,
-                    },
-                    aadhaar: {
-                        required: true,
-                        digits: true,
-                        minlength: 0,
-                        maxlength: 12
-                    },
-                    /* blood_group: {
-                        required: true,
-                    }, */
-                    marital_status: {
-                        required: true,
-                    },
-                    photo: {
-                        required: true,
-                    },
+            address: {
+                required: true,
+            },
 
-                    address: {
-                        required: true,
-                    },
+            home_type: {
+                required: true,
+            },
 
-                    home_type: {
-                        required: true,
-                    },
+            house_details: {
+                required: true,
+            },
 
-                    house_details: {
-                        required: true,
-                    },
+            street: {
+                required: true,
+            },
 
-                    street: {
-                        required: true,
-                    },
+            landmark: {
+                required: true,
+            },
 
-                    landmark: {
-                        required: true,
-                    },
+            pincode: {
+                required: true,
+            },
 
-                    pincode: {
-                        required: true,
-                    },
+            city: {
+                required: true,
+            },
 
-                    city: {
-                        required: true,
-                    },
+            state: {
+                required: true,
+            },
+            qualification_id: {
+                required: true,
+            },
+            qualification_specilization: {
+                required: true,
+            },
+            school_name: {
+                required: true,
+            },
 
-                    state: {
-                        required: true,
-                    },
-                    qualification_id: {
-                        required: true,
-                    },
-                    qualification_specilization: {
-                        required: true,
-                    },
-                    school_name: {
-                        required: true,
-                    },
+            qualification_status: {
+                required: true,
+            },
+            occupation_id: {
+                required: true,
+            },
+            father_name: {
+                required: true,
+            },
 
-                    qualification_status: {
-                        required: true,
-                    },
-                    occupation_id: {
-                        required: true,
-                    },
-                    father_name: {
-                        required: true,
-                    },
+            fathers_mobile: {
+                required: true,
+                digits: true,
+                minlength: 0,
+                maxlength: 10
+            },
 
-                    fathers_mobile: {
-                        required: true,
-                        digits: true,
-                        minlength: 0,
-                        maxlength: 10
-                    },
+            father_occupation: {
+                required: true,
+            },
 
-                    father_occupation: {
-                        required: true,
-                    },
+            fathers_income: {
+                required: true,
+            },
 
-                    fathers_income: {
-                        required: true,
-                    },
+            how_know_us: {
+                required: true,
+            },
 
-                    how_know_us: {
-                        required: true,
-                    },
+            /* comments: {
+                required: true,
+            }, */
+        },
 
-                    /* comments: {
-                        required: true,
-                    }, */
-                },
+        messages: {
+            firstname: {
+                required: "Please enter your first name",
+            },
 
-                messages: {
-                    firstname: {
-                        required: "Please enter your first name",
-                    },
+            lastname: {
+                required: "Please enter your second name",
+            },
 
-                    lastname: {
-                        required: "Please enter your second name",
-                    },
+            mobile: {
+                required: "Please enter your mobile number",
+            },
 
-                    mobile: {
-                        required: "Please enter your mobile number",
-                    },
+            gender: {
+                required: "Please select your gender",
+            },
 
-                    gender: {
-                        required: "Please select your gender",
-                    },
+            dob: {
+                required: "Please select date of birth",
+            },
 
-                    dob: {
-                        required: "Please select date of birth",
-                    },
+            age: {
+                required: "Please enter your age",
+                number: 'Age must be a number',
 
-                    age: {
-                        required: "Please enter your age",
-                        number: 'Age must be a number',
+            },
+            aadhaar: {
+                required: "Please enter your adhaar number",
+            },
+            /* blood_group: {
+                required: "Please enter yor blood group",
+            }, */
+            marital_status: {
+                required: "Please select your marital status",
+            },
+            photo: {
+                required: "Please choose a file",
+            },
 
-                    },
-                    aadhaar: {
-                        required: "Please enter your adhaar number",
-                    },
-                    /* blood_group: {
-                        required: "Please enter yor blood group",
-                    }, */
-                    marital_status: {
-                        required: "Please select your marital status",
-                    },
-                    photo: {
-                        required: "Please choose a file",
-                    },
+            address: {
+                required: "Please enter your address",
+            },
 
-                    address: {
-                        required: "Please enter your address",
-                    },
+            home_type: {
+                required: "Please select home type",
+            },
 
-                    home_type: {
-                        required: "Please select home type",
-                    },
+            house_details: {
+                required: "Please enter your house details",
+            },
 
-                    house_details: {
-                        required: "Please enter your house details",
-                    },
+            street: {
+                required: "Please enter street name",
+            },
 
-                    street: {
-                        required: "Please enter street name",
-                    },
+            landmark: {
+                required: "Please enter landmark",
+            },
 
-                    landmark: {
-                        required: "Please enter landmark",
-                    },
+            pincode: {
+                required: "Please enter landmark",
+            },
 
-                    pincode: {
-                        required: "Please enter landmark",
-                    },
+            city: {
+                required: "Please enter city",
+            },
 
-                    city: {
-                        required: "Please enter city",
-                    },
+            state: {
+                required: "Please enter state",
+            },
+            qualification_id: {
+                required: "Please enter qualification",
+            },
+            qualification_specilization: {
+                required: "Please enter specialization",
+            },
+            school_name: {
+                required: "Please enter school name",
+            },
 
-                    state: {
-                        required: "Please enter state",
-                    },
-                    qualification_id: {
-                        required: "Please enter qualification",
-                    },
-                    qualification_specilization: {
-                        required: "Please enter specialization",
-                    },
-                    school_name: {
-                        required: "Please enter school name",
-                    },
+            qualification_status: {
+                required: "Please enter qualification status",
+            },
+            occupation_id: {
+                required: "Please enter your occupation",
+            },
+            father_name: {
+                required: "Please enter father's name",
+            },
 
-                    qualification_status: {
-                        required: "Please enter qualification status",
-                    },
-                    occupation_id: {
-                        required: "Please enter your occupation",
-                    },
-                    father_name: {
-                        required: "Please enter father's name",
-                    },
+            fathers_mobile: {
+                required: "Please enter father's mobile number",
+            },
 
-                    fathers_mobile: {
-                        required: "Please enter father's mobile number",
-                    },
+            father_occupation: {
+                required: "Please enter father's occupation",
+            },
 
-                    father_occupation: {
-                        required: "Please enter father's occupation",
-                    },
+            fathers_income: {
+                required: "Please enter father's income",
+            },
 
-                    fathers_income: {
-                        required: "Please enter father's income",
-                    },
+            how_know_us: {
+                required: "Please tell us something",
+            },
 
-                    how_know_us: {
-                        required: "Please tell us something",
-                    },
-
-                    /* comments: {
-                        required: "Please give us a feedback",
-                    }, */
-                }
+            /* comments: {
+                required: "Please give us a feedback",
+            }, */
+        }
 
 
 
-        });
     });
+});
+$("#state").on('change', function () {
+    let state_id = $("#state").val()
+    if (state_id == "") {
+        return null;
+    }
+    console.log(state_id)
+    $.ajax({
+        type: "get",
+        url: `{{url('userprofile/get-city/${state_id}')}}`,
+        beforeSend: function () {
+            $('#overlay-loader').removeClass('d-none');
+            $('#overlay-loader').show();
+        },
+        success: function (response) {
+            console.log(response);
+            $("#cities").empty();
+            if (response.cities.length > 0) {
+                $.each(response.cities, function (index, element) {
+                    $("#cities").append(`
+                            <option value="${element.id}">${element.city_name}</option>
+                        `);
+                });
+            } else {
+                $("#cities").append(`
+                            <option value="">Not Found</option>
+                    `);
+            }
+            $('#overlay-loader').hide();
+        },
+    });
+});
 
-
-    </script>
+</script>
 
 
     
