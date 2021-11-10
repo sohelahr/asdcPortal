@@ -1,13 +1,13 @@
 @extends('layouts.admin.app')
 @section('content')
     
-    <div class="content-wrapper">
+    <div class="">
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                       <div class="border-bottom text-center pb-4">
                         <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile" class="img-lg rounded-circle mb-3">
                         <p>{{$profile->Occupation->name}}</p>
@@ -102,8 +102,8 @@
                         <p class="text-muted">{{$profile->comments}}</p>
                     </div>
                   </div>
-                    <div class="col-lg-8 pl-lg-5">
-                      <div class="d-flex justify-content-between">
+                    <div class="col-lg-8 col-md-8 pl-lg-5">
+                      <div class=" justify-content-between">
                         <div>
                           <h3>{{$profile->firstname}} {{$profile->lastname}}</h3>
                           <div class="d-flex align-items-center">
@@ -116,7 +116,7 @@
                                 <h5>
                                 Address
                                 </h5>
-                                <p class=" text-muted mt-2 mb-0" style="width: 80vh">
+                                <p class=" text-muted mt-2 mb-0">
                                     {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>{{$profile->city}},
                                     {{$profile->state}}, {{$profile->pincode}}
                                 </p>
@@ -168,8 +168,8 @@
                               <div>
                                 <h5>User Registrations</h5>
                                 <div class="row ">
-                                  <div class="col-12">
-                                  <table class="table" id="userregistration">
+                                  <div >
+                                  <table class="table table-responsive" id="userregistration">
                                       <thead>
                                           <tr>
                                               <th>Course Name</th>
@@ -201,6 +201,7 @@
     $('#userregistration').DataTable({
         processing: true,
         serverSide: true,
+       
         ajax: "{{route('profile_registrations',$profile->id)}}",
         columns:[
             {data: 'course_name',name:"course_name"},
