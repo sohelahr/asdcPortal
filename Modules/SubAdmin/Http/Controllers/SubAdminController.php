@@ -60,7 +60,7 @@ class SubAdminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->first_name.'@asdc'.date('Y')),
             'user_type' => '3',
-            'is_verifed' => 1,
+            'is_verified' => 1,
         ]);
         
         event(new Registered($user));

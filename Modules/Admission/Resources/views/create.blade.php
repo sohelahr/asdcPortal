@@ -64,7 +64,7 @@
                                 @if(count($initial_course_batches) > 0)
                                     @foreach ($initial_course_batches as $coursebatch)
                                         
-                                            <option value="{{$coursebatch->id}}" @if($current_course_batch->id == $coursebatch->id) @endif>{{$coursebatch->batch_number}}</option>
+                                            <option value="{{$coursebatch->id}}"@if(isset($current_course_batch)) @if($current_course_batch->id == $coursebatch->id) @endif @endif>{{$coursebatch->batch_number}}</option>
                                     @endforeach
                                 @else
                                     <option value="">No Batches Found</option>

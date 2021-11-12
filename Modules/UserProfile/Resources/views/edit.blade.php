@@ -71,7 +71,7 @@
                                         <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                             <input required type="text" class="form-control form-control-sm" name="dob"
-                                                value="{{$userprofile->dob}}" readonly>
+                                                {{-- value="{{date('d/m/Y',strtotime($userprofile->dob))}}" --}} readonly>
                                             <span class="input-group-addon input-group-append border-left">
                                                 <i class="far fa-calendar input-group-text py-1 px-2"></i>
                                             </span>
@@ -401,16 +401,15 @@
 </x-app-layout>
 <script >
     var date = new Date();
-
-$('#datepicker-popup').datepicker({
-    autoclose: true,
-    todayHighlight: true,
-    maxDate: "+0y +0m +0w +0d",
-}).on('changeDate', function (e) {
-    let that_year = new Date(e.date);
-    let val = date.getFullYear() - that_year.getFullYear();
-    $("#age").val(val);
-});
+    $('#datepicker-popup').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        maxDate: "+0y +0m +0w +0d",
+    }).on('changeDate', function (e) {
+        let that_year = new Date(e.date);
+        let val = date.getFullYear() - that_year.getFullYear();
+        $("#age").val(val);
+    });
 $(document).ready(function () {
     $('#edit_profile').validate({
         errorClass: "text-danger pt-1",

@@ -69,30 +69,36 @@
                         </button>
                     </div>
                     <div class="pt-5 mt-6">
-                        <table class="table table-hover" id="registrations">
-                        <thead>
-                            <tr>
-                                <th>Registration Number</th>
-                                <th>Course Name</th>
-                                <th>Course Timing</th>
-                                <th>Registered On</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        {{-- <tfoot>
-                            <tr>
-                                <th>Registration Number</th>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="registrations">
+                                        <thead>
+                                            <tr>
+                                                <th>Registration Number</th>
+                                                <th>Course Name</th>
+                                                <th>Course Timing</th>
+                                                <th>Registered On</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        {{-- <tfoot>
+                                            <tr>
+                                                <th>Registration Number</th>
 
-                                <th>Course Name</th>
-                                <th>Course Timing</th>
-                                <th>Registered On</th>
-                                <th>Status</th>
-                            </tr>
-                        </tfoot> --}}
-                    </table>
+                                                <th>Course Name</th>
+                                                <th>Course Timing</th>
+                                                <th>Registered On</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </tfoot> --}}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

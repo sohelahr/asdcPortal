@@ -22,12 +22,18 @@
                 width: 100%;
                 height: 100vh;
             }
+            @media(max-width:450px){
+                .landing_page_logo {
+                    width: 100vw;
+                    height:40vh;
+                    margin-top: 12rem;
+                }
+            }
         </style>
     </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+    <body>
+        @if (Route::has('login'))
+                <div class=" fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                     @else
@@ -38,7 +44,6 @@
                     @endauth
                 </div>
             @endif
-            <img class="landing_page_logo" src="{{url('/public/images/Asdc_Cover_Image.png')}}" />
-        </div>
+        <img class="landing_page_logo" src="{{url('/public/images/Asdc_Cover_Image.png')}}"/>
     </body>
 </html>
