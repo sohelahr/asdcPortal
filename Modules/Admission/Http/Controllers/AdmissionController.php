@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Node\Block\Document;
 use Modules\Admission\Entities\Admission;
 use Modules\Course\Entities\Course;
+use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\DocumentList\Entities\Admission_DocumentList;
@@ -110,12 +111,24 @@ class AdmissionController extends Controller
         $admission_form_number = "ASDC/". $selected_course->slug . date("y")."-". $current_numbers->currentAdmissionNumber;
         $roll_no =  $selected_course->slug . date("y")."-". $current_numbers->currentRollNumber;
 
-        return view('admission::create',compact('roll_no','admission_form_number','current_course_batch','documents','student','registration_id','selected_course','selected_course_slot','courses','initial_course_slots','initial_course_batches'));
+        //get first slot transaction
+        $transaction = null;
+        //get first slot transaction
+        if($current_course_batch){
+            $transaction = BatchSlotTransaction::where('slot_id',$selected_course_slot->id)
+                                ->where('batch_id',$current_course_batch->id)->first();
+        }
+
+
+        return view('admission::create',compact('transaction','roll_no','admission_form_number',
+                'current_course_batch','documents','student',
+                'registration_id','selected_course','selected_course_slot',
+                'courses','initial_course_slots','initial_course_batches'));
     }
     
     public function store(Request $request)
     {
-        //
+        
         $admission = new Admission();
 
         $admission->course_id = $request->course_id;
@@ -127,6 +140,15 @@ class AdmissionController extends Controller
         $admission->admission_remarks = $request->admission_remarks;
         $admission->status = "1";
         $admission->student_id = $request->student_id;
+
+        //check if capacity of course full
+        $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                ->where('slot_id',$admission->courseslot_id)->first();
+        if(isset($batch_slot_transaction)){
+                if($batch_slot_transaction->current_capacity == 0){
+                    return redirect('admission/create/'.$admission->registration_id)->with('capacity_full','123');
+                }
+        }
 
         if($admission->course_id == $request->registered_course_id){
             $admission->is_course_changed = false;
@@ -145,9 +167,12 @@ class AdmissionController extends Controller
         $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
         
         $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber; */
-        $admission->admission_form_number = $request->roll_no;
         
-        $admission->roll_no =  $request->admission_form_number;
+        $admission->admission_form_number = $request->admission_form_number;
+        
+        $admission->roll_no =  $request->roll_no;
+        
+        
         if($admission->save()){                
 
             //Incrrement Numbers if data saves
@@ -166,9 +191,15 @@ class AdmissionController extends Controller
             $registration->status = "2";
             $registration->save();
 
-            $course_slot = CourseSlot::find($request->course_slot_id);
+            /* $course_slot = CourseSlot::find($request->course_slot_id);
             $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
-            $course_slot->save();
+            $course_slot->save(); *//* 
+            $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                ->where('slot_id',$admission->courseslot_id)->first(); */
+            if(isset($batch_slot_transaction)){
+                $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;
+                $batch_slot_transaction->save(); 
+            }
 
             return redirect()->route('admission_show',[$admission->id])->with('created','created');
             }
@@ -195,14 +226,25 @@ class AdmissionController extends Controller
     {
         $course = Course::find($id);
         $course_slots = $course->CourseSlots;
-        $course_batches = $course->CourseBatches->where('status','1');
+        $course_batches = $course->CourseBatches;
         
         $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($course->id);
         
         $admission_form_number = "ASDC/". $course->slug . date("y")."-". $current_numbers->currentAdmissionNumber;
         
         $roll_no =  $course->slug . date("y")."-". $current_numbers->currentRollNumber;
-        return response()->json(['course_slots'=>$course_slots,'course_batches'=>$course_batches,'roll_no' => $roll_no,'admission_form_number'=>$admission_form_number]);
+
+        return response()->json(['course_slots'=>$course_slots,
+                                'course_batches'=>$course_batches,
+                                'roll_no' => $roll_no,
+                                'admission_form_number'=>$admission_form_number,
+                                ]);
+    }
+
+    function getTransaction($slot,$batch){
+        $transaction = BatchSlotTransaction::where('slot_id',$slot)
+                                    ->where('batch_id',$batch)->first();
+        return response()->json(['transaction'=>$transaction]);
     }
 
     function cancelAdmission(Request $request)
@@ -210,6 +252,15 @@ class AdmissionController extends Controller
         $admission = Admission::find($request->admission_id);
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->status = '4';
+
+        //Increase capacity of batch if terminated
+        $batch_slot_transaction_old = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                            ->where('slot_id',$admission->courseslot_id)->first();
+        if(isset($batch_slot_transaction_old)){
+            $batch_slot_transaction_old->current_capacity = $batch_slot_transaction_old->current_capacity + 1;
+            $batch_slot_transaction_old->save(); 
+        }
+
         if($admission->save()){
             return redirect()->route('admission_show',[$admission->id])->with('cancelled','created');
         }
@@ -223,6 +274,23 @@ class AdmissionController extends Controller
     {
         $admission = Admission::find($id);
         $admission->status = '1';
+        
+        //first check if capacity for that batch is 0 if yes then dont admit again instead make a new admission
+
+        $batch_slot_transaction_new = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                ->where('slot_id',$admission->course_slot_id)->first();
+
+        if(isset($batch_slot_transaction_new)){
+                ($batch_slot_transaction_new->current_capacity == 0);
+                return redirect('admission/edit/'.$admission->id)->with('capacity_readmission_full','123');
+        }
+        
+        //now increase capacity if not 0
+        if(isset($batch_slot_transaction_new)){
+            $batch_slot_transaction_new->current_capacity = $batch_slot_transaction_new->current_capacity - 1;
+            $batch_slot_transaction_new->save(); 
+        }
+
         if($admission->save()){
             return redirect()->route('admission_show',[$id])->with('readmitted','created');
         }
@@ -238,6 +306,14 @@ class AdmissionController extends Controller
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->status = '5';
         if($admission->save()){
+
+            //Increase capacity of batch if terminated
+            $batch_slot_transaction_old = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                ->where('slot_id',$admission->courseslot_id)->first();
+            if(isset($batch_slot_transaction_old)){
+                $batch_slot_transaction_old->current_capacity = $batch_slot_transaction_old->current_capacity + 1;
+                $batch_slot_transaction_old->save(); 
+            }
 
             $student = $admission->Student->UserProfile;
             $student->status = '2';
@@ -256,7 +332,7 @@ class AdmissionController extends Controller
         $admission = Admission::find($id);
         $userprofile = $admission->Student->UserProfile;
         $data = [];
-        $data['name'] = $admission->Student->name;
+        $data['name'] = $userprofile->firstname . " ". $userprofile->lastname;
         $data['photo'] = $userprofile->photo;
         $data['dob'] =  $userprofile->dob;
         $data['email'] = $userprofile->User->email;
@@ -284,6 +360,25 @@ class AdmissionController extends Controller
                                 'format' => [216, 280]]);
         return $pdf->stream('document.pdf');
     }
+
+    function generateCertificate($id){
+        $admission = Admission::find($id);
+        $userprofile = $admission->Student->UserProfile;
+        $data = [];
+        $data['name'] = $userprofile->firstname . " ". $userprofile->lastname;
+        $data['father_name'] = $userprofile->father_name;
+        $data['course'] = $admission->Course->name;
+        $data['roll_number'] = $admission->roll_no;
+        $data['batch_start_date'] = $admission->CourseBatch->start_date;
+        $data['batch_end_date'] = $admission->CourseBatch->expiry_date;
+        //$data['grade'] = $admission->grade;
+        return $data;
+        $pdf = PDF::loadView('admission::course_completion_certificate',compact('data'),[], [
+                                'format' => [216, 280]]);
+        return $pdf->stream('document.pdf');
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -303,8 +398,13 @@ class AdmissionController extends Controller
         
         $initial_course_slots = $admission->Course->CourseSlots; 
         $initial_course_batches = $admission->Course->CourseBatches; 
+
         
-        return view('admission::edit',compact('selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
+        //get first slot transaction
+        $transaction = BatchSlotTransaction::where('slot_id',$admission->courseslot_id)
+                                    ->where('batch_id',$admission->coursebatch_id)->first();
+        
+        return view('admission::edit',compact('transaction','selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
     }
 
     /**
@@ -321,8 +421,6 @@ class AdmissionController extends Controller
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->admission_remarks = $request->admission_remarks;
         $admission->status = "1";
-        $admission->courseslot_id = $request->course_slot_id;
-        $admission->coursebatch_id = $request->coursebatch_id;
 
         if($admission->course_id == $request->registered_course_id){
             $admission->is_course_changed = false;
@@ -335,26 +433,48 @@ class AdmissionController extends Controller
         if($admission->course_id != $request->course_id){
             
             SerialNumberConfigurationsController::decrementNumbers($admission->course_id);
-            $admission->admission_form_number = $request->roll_no;
+            
+            $admission->roll_no = $request->roll_no;
         
-            $admission->roll_no =  $request->admission_form_number;
+            $admission->admission_form_number =  $request->admission_form_number;
         
             $admission->course_id = $request->course_id;
-            //get Current Values Of Admission and Roll NUMBERS
-            /* 
-            $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
-            
-            //Create new Admission Numbers using that 
-            $course_slug = Course::find($request->course_id)->slug;
-            $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
-
-            $admission->roll_no =  $course_slug . date("y") ."-". $current_numbers->currentRollNumber; */
     
             SerialNumberConfigurationsController::incrementNumbers($request->course_id);
             
+            
         }
-        if($admission->save()){                
+        //if timing or batch change decrement transaction
+        if($request->course_slot_id != $admission->courseslot_id || $request->coursebatch_id != $admission->coursebatch_id){
+            
+            //first check if the capacity isnt 0 then proceed
+            $batch_slot_transaction_new = BatchSlotTransaction::where('batch_id',$request->coursebatch_id)
+                                                ->where('slot_id',$request->course_slot_id)->first();
 
+            if(isset($batch_slot_transaction_new)){
+                    if($batch_slot_transaction_new->current_capacity == 0){
+                        return redirect('admission/edit/'.$admission->id)->with('capacity_full','123');
+                    }
+            }
+            //now move is capacity isnt zero
+            $batch_slot_transaction_old = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                ->where('slot_id',$admission->courseslot_id)->first();
+            if(isset($batch_slot_transaction_old)){
+                $batch_slot_transaction_old->current_capacity = $batch_slot_transaction_old->current_capacity + 1;
+                $batch_slot_transaction_old->save(); 
+            }
+
+            if(isset($batch_slot_transaction_new)){
+                $batch_slot_transaction_new->current_capacity = $batch_slot_transaction_new->current_capacity - 1;
+                $batch_slot_transaction_new->save(); 
+            }
+        }
+        
+        
+        $admission->courseslot_id = $request->course_slot_id;
+        $admission->coursebatch_id = $request->coursebatch_id;
+
+        if($admission->save()){                
 
             $documents = DocumentList::all();
             foreach($documents as $document){
@@ -365,11 +485,11 @@ class AdmissionController extends Controller
                 }
             }
 
-            $course_slot = CourseSlot::find($request->course_slot_id);
+            /* $course_slot = CourseSlot::find($request->course_slot_id);
             $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
-            $course_slot->save();
+            $course_slot->save(); */
 
-            return redirect()->route('admission_show',[$admission->id])->with('created','created');
+            return redirect()->route('admission_show',[$admission->id])->with('updated','created');
             }
             else{
                 return redirect('/admission')->with('error','Something Went Wrong');
@@ -393,7 +513,7 @@ class AdmissionController extends Controller
         $data['course'] = $admission->Course->name;
         $data['batch'] = $admission->CourseBatch->batch_number;
          $pdf = PDF::loadView('admission::id_card',compact('data'),[], [
-                                'format' => [64, 86]]);
+                                'format' => [53, 84]]);
         return $pdf->stream('document.pdf');
     }
 

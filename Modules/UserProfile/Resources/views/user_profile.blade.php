@@ -116,8 +116,15 @@
                                 Address
                                 </h5>
                                 <h6 class=" text-muted mt-2 mb-0">
-                                    {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>{{$profile->city}},
-                                    {{$profile->state}}, {{$profile->pincode}}
+                                    {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>
+                                    @if($state_name !== "")
+                                        {{$city_name}},
+                                        {{$state_name}},
+                                    @else
+                                        {{$profile->city}},
+                                        {{$profile->state}},
+                                    @endif,   
+                                    {{$profile->pincode}}
                                 </h6>
                             </div>
                             </div>

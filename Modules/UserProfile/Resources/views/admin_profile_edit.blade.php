@@ -693,7 +693,7 @@
                 if(response.cities.length > 0){
                     $.each(response.cities, function (index, element) { 
                         $("#cities").append(`
-                            <option value="${element.id}">${element.city_name}</option>
+                            <option value="${element.city_id}">${element.city_name}</option>
                         `);
                     });
                 }

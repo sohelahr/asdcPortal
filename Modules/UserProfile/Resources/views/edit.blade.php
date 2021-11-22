@@ -205,7 +205,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label">City <sup class="text-danger">*</sup></label>
-                                        <select class="form-control " name="city" id="cities">
+                                        <select class="form-control" name="city" id="cities">
                                             <option value="">Not found</option>
                                         </select>
                                     </div>
@@ -659,7 +659,7 @@ $("#state").on('change', function () {
     let state_id = $("#state").val()
     if (state_id == "") {
         return null;
-    }
+    } 
     console.log(state_id)
     $.ajax({
         type: "get",
@@ -674,7 +674,7 @@ $("#state").on('change', function () {
             if (response.cities.length > 0) {
                 $.each(response.cities, function (index, element) {
                     $("#cities").append(`
-                            <option value="${element.id}">${element.city_name}</option>
+                            <option value="${element.city_id}">${element.city_name}</option>
                         `);
                 });
             } else {

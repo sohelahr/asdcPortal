@@ -19,4 +19,6 @@ Route::prefix('coursebatch')->middleware(['auth'])->group(function() {
     Route::post('/edit/{id}','CourseBatchController@update');
     Route::post('/delete/{id}','CourseBatchController@destroy');
     Route::get('/changestatus/{id}','CourseBatchController@changeStatus')->name('batch_change_status');
+
+    Route::get('/course-batch-data','CourseBatchController@CourseBatchData')->name('course_batch_data');
 });

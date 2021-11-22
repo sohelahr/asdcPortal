@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\Course\Entities\Course;
+use Modules\CourseBatch\Entities\BatchSlotTransaction;
+use Modules\CourseBatch\Entities\CourseBatch;
+
 class CourseSlotController extends Controller
 {
     function __construct()
@@ -45,10 +48,30 @@ class CourseSlotController extends Controller
         $courseslot = new CourseSlot();
         $courseslot->course_id = $request->course_id;
         $courseslot->name = $request->name;
-        $courseslot->TotalCapacity = $request->TotalCapacity;
-        $courseslot->CurrentCapacity = $request->CurrentCapacity;
+        $courseslot->TotalCapacity = $request->TotalCapacity;/* 
+        $courseslot->CurrentCapacity = $request->CurrentCapacity; */
         $courseslot->save();
-        return redirect()->route('courseslot',$courseslot->course_id)->with('created','courseSlot created successfully');
+
+        //add batch slot transaction if any
+        $batches = CourseBatch::where('course_id',$request->course_id)->get();
+        if(count($batches) > 0){
+            foreach($batches as $batch){
+                if($batch->status == '1'){
+                    $slotbatch = new BatchSlotTransaction();
+                    $slotbatch->course_id = $courseslot->course_id;
+                    $slotbatch->batch_id = $batch->id;
+                    $slotbatch->slot_id = $courseslot->id;
+                    $slotbatch->is_current = $batch->is_current ? '1':'0';
+                    $slotbatch->status = $batch->status == '1' ? '1':'0';
+                    $slotbatch->total_capacity = $courseslot->TotalCapacity;
+                    $slotbatch->current_capacity = $courseslot->TotalCapacity;
+                    $slotbatch->save();
+                }
+            }
+        }
+
+
+        return redirect()->route('courseslot',$request->course_id)->with('created','courseSlot created successfully');
     }
 
     /**
@@ -88,12 +111,23 @@ class CourseSlotController extends Controller
     {
         //
         $courseslot = CourseSlot::find($id);
-        $courseslot->course_id = $request->id;
+        $courseslot->course_id = $request->course_id;
         $courseslot->name = $request->name;
-        $courseslot->TotalCapacity = $request->TotalCapacity;
-        $courseslot->CurrentCapacity = $request->CurrentCapacity;
+        $courseslot->TotalCapacity = $request->TotalCapacity;/* 
+        $courseslot->CurrentCapacity = $request->CurrentCapacity; */
         $courseslot->save();
-        return redirect()->route('courseslot',$courseslot->course_id)->with('updated','course_Slot updated successfully');
+        $transactions = BatchSlotTransaction::where('slot_id',$courseslot->id)
+                        ->where('status','1')
+                        ->get();
+        if(count($transactions)){
+            foreach ($transactions as $transaction) {
+                //change current capacity according to new total capacity
+                $transaction->current_capacity = $transaction->current_capacity + ( $courseslot->TotalCapacity - $transaction->total_capacity);
+                $transaction->total_capacity = $courseslot->TotalCapacity;
+                $transaction->save();
+            }
+        }
+        return redirect()->route('courseslot',$request->course_id)->with('updated','course_Slot updated successfully');
     }
 
     /**
@@ -109,8 +143,11 @@ class CourseSlotController extends Controller
            return redirect()->route('courseslot',$courseslot->course_id)->With('prohibited','123'); 
         }
 
-        if($courseslot->delete())
+        if($courseslot->delete()){
+            $transaction = BatchSlotTransaction::where('slot_id',$courseslot->id);
+            $transaction->delete();
             return redirect()->route('courseslot',$courseslot->course_id)->with('deleted','courseSlot deleted successfully');
+        }
         else
             return redirect()->route('courseslot',$courseslot->course_id)->with('error','Something went Wrong');
     }

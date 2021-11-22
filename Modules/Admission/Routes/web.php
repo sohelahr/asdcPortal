@@ -22,6 +22,8 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/view/{id}','AdmissionController@show')->name('admission_show');
     Route::get('/print/{id}','AdmissionController@PrintForm')->name('print_admission_form');
 
+    Route::get('/getransaction/{slotid}/{batchid}','AdmissionController@getTransaction')->name('getTransaction');
+    
     Route::get('/edit/{id}','AdmissionController@edit')->name('user_admission_edit');
     Route::post('/edit/{id}','AdmissionController@update')->name('user_admission_edit');
 
@@ -31,5 +33,6 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/readmit/{id}','AdmissionController@reAdmit')->name('user_admission_readmit');
 
     Route::get('/id-card/{id}','AdmissionController@getIdCard')->name('admission_id_card');
+    Route::get('/certificate/{id}','AdmissionController@generateCertificate')->name('completion_certificate');
 
 });

@@ -9,15 +9,15 @@
     <title>asdc</title>
 </head>
 <style>
-    @media (max-width:400px){
+    @media (max-width:500px){
         .tqf{
-            width: 50px!important;
+            width: 40px!important;
         }
         .seed{
-            width: 50px!important;
+            width: 40px!important;
         }
         .logo{
-            width: 150px!important;
+            width: 100px!important;
         }
     }
 </style>
@@ -48,8 +48,11 @@
                     <div style = "margin-top: 50px; text-align: center; padding: 1% 0 0 5%">
                         <p>Verify your email by pressing below, by pressing the button below,</p>
                     </div>
-                    <div style = "text-align: center;">
-                        <a href="{{route('verify_mail',base64_encode($user_id))}}"><button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 150px; height: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
+                    <div style = "text-align: center;margin-bottom:1%">
+                        <a href="{{route('verify_mail',base64_encode($user_id))}}"><button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 80px; height: 40px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
+                    </div>
+                    <div style="margin:4%;text-align: center;">
+                        Click <a href="{{route('verify_mail',base64_encode($user_id))}}">here</a> if the button doesn't work.
                     </div>
                     {{-- <div style = "width: 100%">
                         <div style = "display: inline-block; padding: 3%">

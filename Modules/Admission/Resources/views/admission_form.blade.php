@@ -43,7 +43,7 @@
                 </td>
                 <td style = "width: 20%;">
                     <div style=" padding-left: 15%; padding-top: 3%;">
-                        <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                        <img src = "{{url('/public/images/TQF_Logo.jpg')}}" width = "100px">
                     </div>
                 </td>
             </tr>
@@ -57,7 +57,11 @@
         </div>
         
         <div style = "margin-top:-95px;margin-right:30px;">
-                <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">
+            @if($data['photo'])
+                <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" alt = "" height = "100px" width = "100px" style = "float: right">                
+            @else
+                <img src = "{{asset('/storage/app/profile_photos/blankimage.png')}}" alt = "" height = "100px" width = "100px" style = "float: right">
+            @endif
         </div>
         <div style="margin:20px;margin-top:0">
             <table style = "width:100%;">
@@ -350,7 +354,7 @@
                     </td>
                     <td style = "width: 20%;">
                         <div style=" padding-left: 15%; padding-top: 3%;">
-                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                            <img src = "{{url('/public/images/TQF_Logo.jpg')}}" width = "100px">
                         </div>
                     </td>
                 </tr>
@@ -397,7 +401,7 @@
                 </table>
                 <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 20%">
+                        <td style="width: 21%">
                             <p>Original Documents Submitted:</p>
                         </td>
                         <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;"> 
@@ -409,13 +413,13 @@
                 </table>
                 <table style="width: 100%;margin-bottom:0px;">
                     <tr>
-                        <td style = "padding-top: 40px; text-align: center">
+                        <td style = "padding-top: 30px; text-align: center">
                             <p><b>Student Signature</b></p>
                         </td>
-                        <td style = "padding-top: 40px; text-align: center">
+                        <td style = "padding-top: 30px; text-align: center">
                             <p><b>Admin Signature</b></p>
                         </td>
-                        <td style = "padding-top: 40px; text-align: center" colspan = "2">
+                        <td style = "padding-top: 30px; text-align: center" colspan = "2">
                             <p><b>Director Signature</b></p>
                         </td>
                     </tr>
@@ -442,7 +446,7 @@
                     </td>
                     <td style = "width: 20%;">
                         <div style=" padding-left: 15%; padding-top: 3%;">
-                            <img src = "{{url('/public/images/TQF Logo.jpg')}}" width = "100px">
+                            <img src = "{{url('/public/images/TQF_Logo.jpg')}}" width = "100px">
                         </div>
                     </td>
                 </tr>
@@ -452,10 +456,10 @@
             </div>
             <div>
                 <h4 style = "text-align: center"><u>ACKNOWLEDGEMENT OF CERTIFICATE RECEIVED</u></h4>
-                
+                <h5 style = "text-align: center;"><u>Institute Copy</u></h5>
             </div>
             
-            <div style = "margin:10px;">
+            <div>
                 <table style = "width:100%;margin-bottom:0px;">
                     <tr>
                         <td  style = "width:20%">
@@ -490,7 +494,7 @@
                 </table>
                 <table style = "width:100%;;margin-bottom:0px;">
                     <tr >
-                        <td style="width: 20%">
+                        <td style="width: 21%">
                             <p>Original Documents Submitted:</p>
                         </td>
                         <td   style="width:80%;border-bottom: 1px solid black; padding-bottom: 0%;"> 
@@ -502,13 +506,13 @@
                 </table>
                 <table style="width: 100%;margin-bottom:0px;">
                     <tr>
-                        <td style = "padding-top: 40px; text-align: center">
+                        <td style = "padding-top: 30px; text-align: center">
                             <p><b>Student Signature</b></p>
                         </td>
-                        <td style = "padding-top: 40px; text-align: center">
+                        <td style = "padding-top: 30px; text-align: center">
                             <p><b>Admin Signature</b></p>
                         </td>
-                        <td style = "padding-top: 40px; text-align: center" colspan = "2">
+                        <td style = "padding-top: 30px; text-align: center" colspan = "2">
                             <p><b>Director Signature</b></p>
                         </td>
                     </tr>

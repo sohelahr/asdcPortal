@@ -49,7 +49,7 @@ class MarkCurrentBatches extends Command
             }
             $coursebatch->save();
             $this->info('Course batch '.$coursebatch->batch_number. ' marked '.$coursebatch->is_current);
-        }
+        } 
 
     }
 }

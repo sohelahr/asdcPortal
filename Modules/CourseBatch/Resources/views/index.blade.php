@@ -14,6 +14,17 @@
     </div>
 
     <div class="card">
+        
+            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursebatch'))
+            <div class="d-flex p-1 m-0 border header-buttons">
+                <div>
+                        <button class="btn bg-white" type="button" data-toggle="modal" data-target="#course-create">
+                            <i class="fas fa-plus btn-icon-prepend"></i>
+                            Create
+                        </button>
+                </div>
+            </div>
+            @endif
         <div id="overlay-loader" class="d-none">
             <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
                 <div >  
@@ -28,70 +39,22 @@
             </div>
         </div>
         <div class="card-body">
-            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursebatch'))
-            <div class="float-right my-2">
-                <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#course-create">
-                    + Create
-                </button>
-            </div>
-            @endif
+            
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="coursebatchtable">
                     <thead>
                         <tr>
-                            <th>Course Name</th>
-                            <th>Batch Number</th>
+                            <th style="width: 30px">Sr no</th>
+                            <th>Course</th>
+                            <th>Batch Name</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Status</th>
+                            <th style="max-width: 150px">Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($coursebatches as $coursebatch)
-                            <tr>
-                                <td>
-                                    @if($coursebatch->Course){{$coursebatch->Course->name}}@else not found @endif
-                                </td>
-                                <td>{{$coursebatch->batch_number}}</td>
-                                <td>{{date('d M Y',strtotime($coursebatch->start_date))}}</td>        
-                                <td>{{date('d M Y',strtotime($coursebatch->expiry_date))}}</td>
-                                <td>
-                                    <form action="{{route('batch_change_status',$coursebatch->id)}}" method="get">
-                                        @csrf
-                                        @if($coursebatch->status == 1)
-                                                @if ($coursebatch->is_current)
-                                                <button class="btn btn-sm btn-success badge-pill m-0 status_btns" type="submit">Active
-                                                    / current
-                                                </button>
-                                                @else                
-                                                <button class="btn btn-sm btn-success badge-pill m-0 status_btns" type="submit">Active
-                                                </button>                
-                                                @endif
-                                        @else
-                                            <button class="btn btn-sm badge-pill btn-warning m-0 status_btns" type="submit">Inactive</button>
-                                        @endif
-                                    </form>
-                                </td>
-                                <td>
-                                    <div  class="d-flex p-0 m-0">
-                                        @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursebatch'))
-                                            <button class="btn btn-dark btn-rounded p-2 mr-2 my-0" onclick="EditCourseBatch({{$coursebatch->id}})">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                        @endif
-                                        @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.coursebatch'))
-                                            <form action="{{url('coursebatch/delete/'.$coursebatch->id)}}" method="post" class="ml-2">
-                                                @csrf
-                                                <button type=submit class="btn btn-danger btn-rounded p-2">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                        
                     </tbody>
                 </table>
             </div>
@@ -228,7 +191,21 @@
         function closeModal(){
             $('#coursebatch-edit').modal('hide');
         }
-
+        function deleteBatchConfirm(id){
+            swal({
+                title: "Warning",
+                text: 'You sure want to delete',
+                icon:'warning',
+                buttons: ['Back','Yes I\'m Sure'],
+                dangerMode: true,
+                }).then((yes_delete) => {
+                    if (yes_delete) {
+                           $('#delete_form_'+id).submit();    
+                    }
+                    else
+                    return null;
+                });
+        }
         
         $('.datepicker').datepicker({
             autoclose: true,
@@ -335,56 +312,106 @@
         }
 
         $(document).ready(function (){
-        $('#coursebatch-create').validate({
-            errorClass: "text-danger pt-1",
-            errorPlacement: function(error, element) {
-                if (element.attr("name") == "start_date" ) {
-                    error.insertAfter($("#datepicker-popup"));
-                }
-                else if (element.attr("name") == "end_date"){
-                    error.insertAfter(element.parent());
+            $('#coursebatchtable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{route('course_batch_data')}}",
+                columns:[
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'course_name',name:"course_name"},
+                    {data: 'batch_number',name:"batch_number"},
+                    {data: 'start_date',name:"start_date"},
+                    {data: 'expiry_date',name:"expiry_date"},
+                    {data:'status',render:function(data,type,row){
+                        return ` <form action="coursebatch/changestatus/${row.id}" method="get">
+                                        @csrf
+                                        ${row.status == 1 ? 
+                                                `${row.is_current ? 
+                                                    `<input class="btn btn-sm btn-success badge-pill status_btns" 
+                                                    type="submit" value="Active / Current">`
+                                                    :
+                                                    `<input class="btn btn-sm btn-success badge-pill status_btns" 
+                                                    type="submit" value="Active">`
+                                                }`
+                                                :
+                                            `<input class="btn btn-sm badge-pill btn-warning status_btns" type="submit" value="Inactive"></input>`
+                                        }
+                                    </form>`
+                    },name:'status'},
+                    {data: 'action',render:function(data,type,row){
+                        return ` <div  class="d-flex p-0 m-0">
+                                        ${data.edit_perm ? 
+                                        `<button class="btn btn-dark btn-rounded p-2 mr-2 my-0" onclick="EditCourseBatch(${row.id})">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>` 
+                                        : null}
+                                        ${data.delete_perm ? 
+                                        
+                                        `<div class="ml-2">
+                                                    <button type=submit class="btn btn-danger btn-rounded p-2" onclick="deleteBatchConfirm(${row.id})">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                            </div>        
+                                                <form action='coursebatch/delete/${row.id}' id='delete_form_${row.id}' method="post" class="d-none">
+                                                    @csrf
+                                                </form>
+                                        `: null}
+                                        </div>`
+                    },name:'action'}
+                ]
+            });
 
-                }
-                else {
-                    error.insertAfter(element);
-                }          
-            },
-            rules: {     
-                course_id: {
-                    required: true,
-                },
-                batch_number:{
-                    required:true,
-                },
-                start_date: {
+
+            $('#coursebatch-create').validate({
+                errorClass: "text-danger pt-1",
+                errorPlacement: function(error, element) {
+                    if (element.attr("name") == "start_date" ) {
+                        error.insertAfter($("#datepicker-popup"));
+                    }
+                    else if (element.attr("name") == "end_date"){
+                        error.insertAfter(element.parent());
+
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }          
+                },          
+                rules: {     
+                    course_id: {
+                        required: true,
+                    },
+                    batch_number:{
+                        required:true,
+                    },
+                    start_date: {
+                        required: true,                    
                     required: true,                    
+                        required: true,                    
+                    },
+
+                    end_date: {
+                        required: true,
+                    },
+
                 },
 
-                end_date: {
-                    required: true,
-                },
+                messages: {
+                    course_id:{
+                        required: "Please select course",
+                    },
+                    batch_number:{
+                        required:"Enter Batch Number",
+                    },
+                    start_date:{
+                        required: "Please enter batch start date",
+                    },
+                    end_date:{ 
+                        required: "Please enter batch end date",
+                    },
 
-            },
-
-            messages: {
-                course_id:{
-                    required: "Please select course",
-                },
-                batch_number:{
-                    required:"Enter Batch Number",
-                },
-                start_date:{
-                    required: "Please enter batch start date",
-                },
-
-                end_date:{ 
-                    required: "Please enter batch end date",
-                },
-
-            } 
-
-        });
-        $('#edit-form').validate({
+                } 
+            });
+            $('#edit-form').validate({
             errorClass: "text-danger pt-1",            
             errorPlacement: function(error, element) {
                 if (element.attr("name") == "start_date" ) {

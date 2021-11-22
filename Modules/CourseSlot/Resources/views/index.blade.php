@@ -41,7 +41,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Total Capacity</th>
-                            <th>Current Capacity</th>
+                            {{-- <th>Current Capacity</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -52,7 +52,7 @@
                                     {{$timing->name}}
                                 </td>
                                 <td>{{$timing->TotalCapacity}}</td>
-                                <td>{{$timing->CurrentCapacity}}</td>        
+                                {{-- <td>{{$timing->CurrentCapacity}}</td>  --}}       
                                 <td class="d-flex p-1">
                                     @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot'))      
                                         <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditTiming({{$timing->id}})">
@@ -94,14 +94,14 @@
                         </div>
                         <input type="hidden" name="course_id" value="{{$course->id}}">
                         <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-12">
                                 <label for="Total Capacity">Total Capacity <sup class="text-danger">*</sup></label>
                                 <input id="TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 60">
                             </div>
-                            <div class="form-group col-6">
+                            {{-- <div class="form-group col-6">
                                 <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
                                 <input id="CurrentCapacity" class="form-control form-control-sm" type="text" name="CurrentCapacity" placeholder="eg : 59">
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -121,19 +121,21 @@
                         <h5 class="modal-title" id="timing-edit-title">Edit timing</h5>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" name="course_id" value="{{$course->id}}">
+
                         <div class="form-group">
-                            <label for="name">Timing in hours <sup class="text-danger">*</sup></label>
+                            <label for="name">Timing in hours<sup class="text-danger">*</sup></label>
                             <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-12">
                                 <label for="TotalCapacity">Total Capacity <sup class="text-danger">*</sup></label>
                                 <input id="edit-TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 3 months">
                             </div>
-                            <div class="form-group col-6">
+                            {{-- <div class="form-group col-6">
                                 <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
                                 <input id="edit-CurrentCapacity" class="form-control form-control-sm" type="text" name="CurrentCapacity" placeholder="eg : DM">
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -216,11 +218,11 @@
                 },
                 success: function (response) {
                     data = JSON.parse(response);
-
+                    console.log(timing_id)
                     $("#edit-form").attr("action", `{{url('courseslot/edit/${timing_id}')}}`);
                     $("#edit-name").val(data.name);
-                    $("#edit-TotalCapacity").val(data.TotalCapacity);
-                    $("#edit-CurrentCapacity").val(data.CurrentCapacity);
+                    $("#edit-TotalCapacity").val(data.TotalCapacity);/* 
+                    $("#edit-CurrentCapacity").val(data.CurrentCapacity); */
                     $("#timing-edit").modal('show');
                     
                 },
@@ -239,9 +241,9 @@
                     TotalCapacity:{
                         required:true,
                     },
-                    CurrentCapacity: {
+                    /* CurrentCapacity: {
                         required: true,                    
-                    },
+                    }, */
                 },
 
                 messages: {
@@ -251,9 +253,9 @@
                     TotalCapacity:{
                         required:"Please Add Total Capacity",
                     },
-                    CurrentCapacity:{
+                    /* CurrentCapacity:{
                         required: "Please Add Current Capacity",
-                    },
+                    }, */
                 } 
 
             });
@@ -266,9 +268,9 @@
                     TotalCapacity:{
                         required:true,
                     },
-                    CurrentCapacity: {
+                    /* CurrentCapacity: {
                         required: true,                    
-                    },
+                    }, */
                 },
 
                 messages: {
@@ -278,9 +280,9 @@
                     TotalCapacity:{
                         required:"Please Add Total Capacity",
                     },
-                    CurrentCapacity:{
+                    /* CurrentCapacity:{
                         required: "Please Add Current Capacity",
-                    },
+                    }, */
                 } 
 
             });

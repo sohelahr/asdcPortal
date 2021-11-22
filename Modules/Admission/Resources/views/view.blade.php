@@ -14,7 +14,8 @@
     <div class="card">
         <div class="d-flex p-1 m-0 border header-buttons">
             @if(\App\Http\Helpers\CheckPermission::hasPermission('update.admissions'))
-                <div>
+                @if($admission->status == '1')
+                <div>  
                     <a href="{{url('admission/edit/'.$admission->id)}}">
                         <button class="btn bg-white" type="button">
                         <i class="fa fa-edit btn-icon-prepend"></i>
@@ -22,6 +23,7 @@
                         </button>
                     </a>
                 </div>
+                @endif
             @endif
             @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
             <div>
@@ -78,6 +80,18 @@
                     </button>
                 </a>    
             </div>
+            {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions')) --}}
+            <div>
+                <button class="btn bg-white" type="button" @if($admission->status != '1') 
+                    onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
+                    @else
+                        onclick="changeStatusConfirm('Do you Really Want to Terminate the Admission','terminate');"
+                    @endif>
+                    <i class="fas fa-certificate btn-icon-prepend"></i>
+                    Generate Certificate
+                </button>
+            </div>
+            {{-- @endif --}}
         </div>
         <div class="card-body">
                 <div class="row">
@@ -305,7 +319,7 @@
                 text: message,
                 icon: "warning",
             });
-        }
+        } 
         function changeStatusConfirm(message,category){
             swal({
                 title: "Warning",
@@ -334,6 +348,15 @@
                 text: 'Admission was marked Employed',
                 position:'top-right',
                 icon: 'success',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+            @elseif(\Illuminate\Support\Facades\Session::has('created'))
+            $.toast({
+                heading: 'Created',
+                text: 'Admission was created',
+                position:'top-right',
+                icon: 'warning',
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
             })

@@ -83,6 +83,13 @@ class UserProfileController extends Controller
 
         $profile = Auth::user()->UserProfile;
             if($profile->is_profile_completed){
+                $state_name = "";
+                $city_name = "";
+                if(is_numeric($profile->state)){
+                    $state_name = GetLocation::getOneState($profile->state)->name;
+                    if($profile->city != "undefined")
+                        $city_name = GetLocation::getOneCity($profile->city)->city_name;   
+                }
                 return view('userprofile::user_profile',compact('profile'));
             }
         return redirect('/dashboard')->with('profile_not_complete','not complete');
@@ -91,7 +98,14 @@ class UserProfileController extends Controller
     public function Adminshow($id)
     {
         $profile = UserProfile::find($id);
-        return view('userprofile::admin_user_profile',compact('profile'));
+        $state_name = "";
+        $city_name = "";
+        if(is_numeric($profile->state)){
+            $state_name = GetLocation::getOneState($profile->state)->name;
+            if($profile->city != "undefined")
+                $city_name = GetLocation::getOneCity($profile->city)->city_name;   
+        }
+        return view('userprofile::admin_user_profile',compact('state_name','city_name','profile'));
     }
 
     /**

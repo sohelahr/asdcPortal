@@ -41,6 +41,7 @@
                     <div class="col-md-8">
                         <div class="row">
                             <div class="col-12">
+                                <p>Capacity Left for this batch and slot :-<span id="current_capacity" class={{$transaction->current_capacity > 5 ? "text-sucess" : "text-danger" }}>{{$transaction->current_capacity}}</span>
                                 <p>WARNING : If you change the course now then custom entries for earlier 
                                 course will be lost, although you can redit them, please proceed with caution</p>
                             </div>
@@ -139,10 +140,51 @@
 @endsection
 @section('jcontent')
 <script>
-    $('#wait-text').hide();  
+    
+    @if(\Illuminate\Support\Facades\Session::has('capacity_full'))    
+        $.toast({
+            heading: 'Capacity Full',
+            text: 'Capacity for the following batches and slot is full',
+            position:'top-right',
+            icon: 'warning',
+            loader: true,        // Change it to false to disable loader
+            loaderBg: '#9EC600'  // To change the background
+        })
+    @elseif(\Illuminate\Support\Facades\Session::has('capacity_readmission_full'))    
+        $.toast({
+            heading: 'Capacity Full',
+            text: 'Capacity for the following batch/slot is full, please readmit in other batch/slot.',
+            position:'top-right',
+            icon: 'warning',
+            loader: true,        // Change it to false to disable loader
+            loaderBg: '#9EC600'  // To change the background
+        })
+    @endif
+    $('#wait-text').hide(); 
+
+    $('#course_batch').on('change',function(){
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        if(slot || batch)
+            getTransaction(slot,batch);
+        else
+        return null;
+    });
+    
+    $('#course_slot').on('change',function(){
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        if(slot || batch)
+            getTransaction(slot,batch);
+        else
+        return null;
+    }); 
     
     $("#admission_course").on('change',function(){
         let course_id = $("#admission_course").val()
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        getTransaction(slot,batch);
         $.ajax({
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
@@ -229,5 +271,30 @@
                 } 
             });
     }); 
+
+    function getTransaction(slot,batch){
+        $.ajax({
+            type: "get",
+            url: `{{url('admission/getransaction/${slot}/${batch}')}}`,
+            beforeSend: function() {
+              $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
+            },
+            success: function (response) {
+            
+                if(response.transaction == null){
+                    $('#current_capacity').empty().removeClass('text-success').removeClass('text-danger').addClass('text-danger').text('Not found');
+                }
+                
+                else{
+                    response.transaction.current_capacity > 5 ? $('#current_capacity').addClass('text-success').removeClass('text-danger') : $('#current_capacity').removeClass('text-success').addClass('text-danger')
+                    $('#current_capacity').empty().text(response.transaction.current_capacity);
+                }
+            },
+            complete: function () {
+                $('#overlay-loader').hide();
+            },
+        });
+    }
 </script>
 @endsection

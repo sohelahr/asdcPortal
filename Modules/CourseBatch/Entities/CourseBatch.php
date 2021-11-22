@@ -26,4 +26,7 @@ class CourseBatch extends Model
     public function Admissions(){
         return $this->hasMany(Admission::class,'coursebatch_id');
     }
+    function BatchSlots(){
+        return $this->hasMany(BatchSlotTransaction::class,'batch_id');
+    }
 }
