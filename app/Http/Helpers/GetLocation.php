@@ -11,11 +11,11 @@ class GetLocation
         return $country;
     }
     public static function getOneState($id){
-        $state = DB::table('states')->where('id',$id)->first();
+        $state = DB::table('states')->where('id',$id)->get();
         return $state;
     }
     public static function getOneCity($id){
-        $city = DB::table('cities')->where('city_id',$id)->first();
+        $city = DB::table('cities')->where('city_id',$id)->get();
         return $city;
     }
     public static function getCountries($id){

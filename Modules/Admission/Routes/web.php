@@ -35,4 +35,5 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/id-card/{id}','AdmissionController@getIdCard')->name('admission_id_card');
     Route::get('/certificate/{id}','AdmissionController@generateCertificate')->name('completion_certificate');
 
+    Route::post('/store-grade/','AdmissionController@calculateGrade')->name('calculate_grade');
 });

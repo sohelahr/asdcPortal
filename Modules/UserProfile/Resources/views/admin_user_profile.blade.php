@@ -13,9 +13,23 @@
 </div>
 <div class="">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12">    
             <div class="card">
                 <div class="card-body">
+                    @if($profile->created_by == 3)
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong> User was Imported.</strong> Please confirm all the details of this user and edit them if needed 
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if($profile->dob === "1970/01/01")
+                        <div class="alert alert-danger" role="alert">
+                            This User's <strong> Date of birth was incorrect </strong> has been replaced by default system value : 1970 . 
+                            Please change this first 
+                        </div>
+                    @endif
                   @if(\App\Http\Helpers\CheckPermission::hasPermission('update.profiles'))
                   <div class="float-right" style="margin-top: -10px">
                     <a href="{{url('userprofile/admin/'.$profile->id.'/edit/')}}" class="text-dark">

@@ -24,9 +24,11 @@
                     <div class="card-body">
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <a href="{{url('admin/import-users')}}" onclick="startLoader()" class="btn btn-outline-info my-3">Create Users</a>
-                            <a href="{{url('admin/import-profiles')}}" onclick="startLoader()" class="btn btn-outline-primary my-3">Update Profiles</a>
                             <a href="{{url('admin/import-registrations')}}" onclick="startLoader()" class="btn btn-outline-warning my-3">Create Registrations</a>
-                        </div>
+
+                            
+                            <a href="{{url('admin/import-new-profiles-courses')}}" onclick="startLoader()" class="btn btn-outline-primary my-3">Create registration whose account was present but profile was just created</a>
+                        </div> 
                     </div>
                 </div>
             </div>

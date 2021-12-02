@@ -13,9 +13,10 @@ class CreateCertificateTable extends Migration
      */
     public function up()
     {
-        Schema::create('certificate', function (Blueprint $table) {
+        Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-
+            $table->integer('admission_id');
+            $table->string('grade');
             $table->timestamps();
         });
     }

@@ -10,6 +10,7 @@ use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\DocumentList\Entities\DocumentList;
 use Modules\Registration\Entities\Registration;
+use Modules\Admission\Entities\Certificate;
 
 class Admission extends Model
 {
@@ -46,5 +47,9 @@ class Admission extends Model
     
     function Student(){
         return $this->belongsTo(User::class,'student_id','id');
+    }
+
+    function Certificate(){
+        return $this->hasOne(Certificate::class);
     }
 }

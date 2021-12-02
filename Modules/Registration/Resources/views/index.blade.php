@@ -58,7 +58,19 @@
     $('#registrations').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{route('all_registrations')}}",
+        searching: true,
+        "autoWidth": false,
+        "responsive": true,
+        ajax: {    
+            "url": "{{route('all_registrations')}}",
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}"}
+        },
+         columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }],
         columns:[
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'registration_no', name: 'registration_no'},
