@@ -42,19 +42,19 @@
                         <div class="row">
                             <div class="col-12">
                                 <p>Capacity Left for this batch and slot :-<span id="current_capacity" class={{$transaction->current_capacity > 5 ? "text-sucess" : "text-danger" }}>{{$transaction->current_capacity}}</span>
-                                <p>WARNING : If you change the course now then custom entries for earlier 
-                                course will be lost, although you can redit them, please proceed with caution</p>
+                                <p>WARNING : If you change the course now then if there are custom entries for earlier 
+                                course they will be lost,{{--  although you can redit them, --}} please proceed with caution</p>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Roll No</label>
-                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no">
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no" readonly>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Admission Form Number</label>
-                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}}>
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}} readonly>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +131,14 @@
                         @endforeach
                         </div> 
                       </div>
+                      @if ($grade != "")
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-label">Grade</label>
+                                <input type="text" class="form-control-sm form-control" name="grade" value="{{$grade}}" >
+                            </div>
+                        </div>
+                        @endif
                 </div>                                                         
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>

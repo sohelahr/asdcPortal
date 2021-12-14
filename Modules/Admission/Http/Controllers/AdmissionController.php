@@ -6,8 +6,10 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Block\Document;
 use Modules\Admission\Entities\Admission;
+use Modules\Admission\Entities\Certificate;
 use Modules\Course\Entities\Course;
 use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
@@ -218,8 +220,10 @@ class AdmissionController extends Controller
         $admission = Admission::find($id);
         $documents = DocumentList::all();
         $documents_submitted =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
-        
-        return view('admission::view',compact('admission','documents_submitted','documents'));
+        $grade = "";
+        if($admission->Certificate)
+            $grade = $admission->Certificate->grade;
+        return view('admission::view',compact('admission','documents_submitted','documents','grade'));
     }
 
     function getFormData($id)
@@ -369,13 +373,24 @@ class AdmissionController extends Controller
         $data['father_name'] = $userprofile->father_name;
         $data['course'] = $admission->Course->name;
         $data['roll_number'] = $admission->roll_no;
-        $data['batch_start_date'] = $admission->CourseBatch->start_date;
-        $data['batch_end_date'] = $admission->CourseBatch->expiry_date;
+        $data['batch_start_date'] = date('d M Y',strtotime($admission->CourseBatch->start_date));
+        $data['batch_end_date'] = date('d M Y',strtotime($admission->CourseBatch->expiry_date));
+        $data['grade'] = $admission->Certificate->grade;
         //$data['grade'] = $admission->grade;
-        return $data;
-        $pdf = PDF::loadView('admission::course_completion_certificate',compact('data'),[], [
-                                'format' => [216, 280]]);
+       // return $data;
+        $pdf = PDF::loadView('admission::certificate_of_completion',compact('data'),[], [
+                                'format' => [297, 210]]);
         return $pdf->stream('document.pdf');
+
+    }
+
+    function calculateGrade(Request $request){
+
+        $certificate = new Certificate();
+        $certificate->admission_id = $request->admission_id;
+        $certificate->grade = $request->grade;
+        $certificate->save();
+        return redirect()->route('admission_show',[$request->admission_id])->with('graded','created');
 
     }
 
@@ -399,12 +414,16 @@ class AdmissionController extends Controller
         $initial_course_slots = $admission->Course->CourseSlots; 
         $initial_course_batches = $admission->Course->CourseBatches; 
 
+        $grade = "";
+        if($admission->Certificate){
+            $grade = $admission->Certificate->grade;
+        }
         
         //get first slot transaction
         $transaction = BatchSlotTransaction::where('slot_id',$admission->courseslot_id)
                                     ->where('batch_id',$admission->coursebatch_id)->first();
         
-        return view('admission::edit',compact('transaction','selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
+        return view('admission::edit',compact('grade','transaction','selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
     }
 
     /**
@@ -421,6 +440,14 @@ class AdmissionController extends Controller
         $admission->cancellation_reason = $request->cancellation_reason;
         $admission->admission_remarks = $request->admission_remarks;
         $admission->status = "1";
+
+        if($request->grade){
+            $certificate = $admission->Certificate;
+            $certificate->grade = $request->grade;
+            $certificate->save();
+        }
+
+
 
         if($admission->course_id == $request->registered_course_id){
             $admission->is_course_changed = false;

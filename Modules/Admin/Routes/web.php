@@ -28,7 +28,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
 
     Route::get('/import-index','ImportController@index');
     Route::get('/import-users','ImportController@importUsers');
-    Route::get('/import-profiles','ImportController@importProfiles');
+    Route::get('/import-new-profiles-courses','ImportController@importProfilesCourses');
     Route::get('/import-registrations','ImportController@importUserRegistration');
 
 

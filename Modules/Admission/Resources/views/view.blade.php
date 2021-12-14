@@ -81,16 +81,19 @@
                 </a>    
             </div>
             {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions')) --}}
-            <div>
-                <button class="btn bg-white" type="button" @if($admission->status != '1') 
-                    onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
-                    @else
-                        onclick="changeStatusConfirm('Do you Really Want to Terminate the Admission','terminate');"
-                    @endif>
-                    <i class="fas fa-certificate btn-icon-prepend"></i>
-                    Generate Certificate
-                </button>
-            </div>
+            @if($admission->status == '1') 
+                <div>
+                    <button class="btn bg-white" type="button" @if ($grade == "") onclick="OpenGradesModal()" @else onclick="goToCertificate({{$admission->id}})" @endif>
+                        @if ($grade == "") 
+                            <i class="fas fa-graduation-cap btn-icon-prepend"></i>
+                            Grade Student 
+                        @else 
+                            <i class="fas fa-certificate btn-icon-prepend"></i>
+                            Generate Certificate 
+                        @endif
+                    </button>
+                </div>
+            @endif
             {{-- @endif --}}
         </div>
         <div class="card-body">
@@ -194,12 +197,53 @@
                             </div>
                         </div>
                         @endif
+                        @if ($grade != "")
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-label">Grade</label>
+                                <input type="text" class="form-control-sm form-control" disabled value="{{$grade}}" >
+                            </div>
+                        </div>
+                        @endif
                 </div>
         </div>
     </div>
     <form method="GET" action='{{url('admission/readmit/'.$admission->id)}}' id="readmit_form" class="d-none">
         <input type="submit" value="submit" >
     </form>
+
+    <div id="store_grade" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cancetile" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{route('calculate_grade')}}" method="POST" id="grade_form">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancetile">Grade</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="my-input">Enter Grade</label>
+                            <input type="hidden" name="admission_id" value="{{$admission->id}}">
+                            <select name="grade" id="select_grade" class="form-control">
+                                <option value="">Select an option</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Grade Admission">
+                    </div>
+                </form>        
+            </div>
+        </div>
+    </div>
+
 
     <div id="cancel_admission" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cancetile" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -313,6 +357,12 @@
 @endsection
 @section('jcontent')
     <script>
+        function OpenGradesModal(){
+            $('#store_grade').modal('show');
+        }
+        function goToCertificate(id){
+            window.open(`{{url('admission/certificate/${id}')}}`, '_blank');
+        }
         function changeStatusWarning(message){
             swal({
                 title: "Warning",
@@ -386,7 +436,16 @@
                 icon: 'warning',
                 loader: true,        // Change it to false to disable loader
                 loaderBg: '#9EC600'  // To change the background
-            })            
+            }) 
+        @elseif(\Illuminate\Support\Facades\Session::has('graded'))
+            $.toast({
+                heading: 'Graded',
+                text: 'Admission was Graded,Now you can generate Certificate',
+                position:'top-right',
+                icon: 'warning',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })             
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
             $.toast({
                 heading: 'Danger',
@@ -441,7 +500,7 @@
                     },
                 }
             });
-            $('#cancel_form').validate({
+            $('$grade_form').validate({
                 errorClass: "text-danger pt-1",
                 rules: {
                     cancellation_reason: {
@@ -451,6 +510,19 @@
                 messages:{   
                     cancellation_reason: {
                         required: 'cancellation reason is required',
+                    },
+                }
+            });
+            $('#cancel_form').validate({
+                errorClass: "text-danger pt-1",
+                rules: {
+                    grade: {
+                        required: true,
+                    },
+                },
+                messages:{   
+                    grade: {
+                        required: 'Please choose a grade',
                     },
                 }
             });

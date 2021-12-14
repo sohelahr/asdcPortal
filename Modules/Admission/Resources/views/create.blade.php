@@ -111,7 +111,7 @@
                             <div class="col-12">
                                 
                                     <p>Capacity Left for this batch and slot :- <span id="current_capacity" @if(isset($transaction))class={{$transaction->current_capacity > 5 ? "text-sucess" : "text-danger" }}@endif>@if(isset($transaction)){{$transaction->current_capacity}}@endif</span></p>
-                                <p>These are system generated values , you can change them if you want till manual entries are finished</p>
+                                <p>These are system generated values{{--  , you can change them if you want till manual entries are finished --}}</p>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">

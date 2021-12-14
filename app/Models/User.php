@@ -28,6 +28,7 @@ class User extends Authenticatable
         'user_type',
         'is_verified',
         'designation',
+        'is_imported'
     ];
 
     /**

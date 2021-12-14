@@ -665,7 +665,7 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,
-                                stepSize:40,
+                                stepSize:200,
                             }
                         }]
                     }              

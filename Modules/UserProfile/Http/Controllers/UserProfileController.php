@@ -25,8 +25,41 @@ class UserProfileController extends Controller
         return view('userprofile::admin_profile_list'/*, compact('userprofiles') */);
     }
 
-    function UserProfileData(){
-        $userprofiles = UserProfile::where('is_profile_completed',"1")->get();
+    function UserProfileData(Request $request){
+        //$userprofiles = UserProfile::where('is_profile_completed',"1")->get();
+        $limit = $request->length;
+        $start = $request->start;
+        $search = $request->search['value'];
+
+        $userprofiles = UserProfile::query();
+        
+        $userprofiles = $userprofiles->where('is_profile_completed',"1");
+        
+        //$totalApplicationCount = $userprofiles->count();
+        $totalRegistrationRecord = $userprofiles->count();
+        
+        if(isset($search))
+        {
+            $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%')
+                                ->orWhere('user_id',function($query) use($search) {
+                                    $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
+                                })
+                                ->orWhere('user_id',function($query) use($search) {
+                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                });
+        }
+        $filteredRegistrationCount = $userprofiles->count();
+        $userprofiles = $userprofiles->skip($start)->limit($limit)->get();
+        dd($userprofiles);
+
+        if(isset($search))
+        {
+            $totalFiltered = $filteredRegistrationCount;
+        }
+        else
+        {
+            $totalFiltered = $totalRegistrationRecord;
+        }
         return Datatables::of($userprofiles)
                 ->addIndexColumn()
                 ->addColumn('name',function($profile){
@@ -52,7 +85,10 @@ class UserProfileController extends Controller
                 ->addColumn('edit',function($registration){
                     return \App\Http\Helpers\CheckPermission::hasPermission('update.profiles');
                 })
-                ->make();
+                ->setTotalRecords($totalRegistrationRecord)
+                ->setOffset($start)
+                ->setFilteredRecords($totalFiltered)
+                ->toJson();
     }
     /**
      * Show the form for creating a new resource.
@@ -86,9 +122,9 @@ class UserProfileController extends Controller
                 $state_name = "";
                 $city_name = "";
                 if(is_numeric($profile->state)){
-                    $state_name = GetLocation::getOneState($profile->state)->name;
+                    $state_name = GetLocation::getOneState($profile->state)[0]->name;
                     if($profile->city != "undefined")
-                        $city_name = GetLocation::getOneCity($profile->city)->city_name;   
+                        $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
                 }
                 return view('userprofile::user_profile',compact('profile'));
             }
@@ -101,9 +137,9 @@ class UserProfileController extends Controller
         $state_name = "";
         $city_name = "";
         if(is_numeric($profile->state)){
-            $state_name = GetLocation::getOneState($profile->state)->name;
+            $state_name = GetLocation::getOneState($profile->state)[0]->name;
             if($profile->city != "undefined")
-                $city_name = GetLocation::getOneCity($profile->city)->city_name;   
+                $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
         }
         return view('userprofile::admin_user_profile',compact('state_name','city_name','profile'));
     }
