@@ -48,13 +48,13 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Roll No</label>
-                                    <input class="form-control form-control-sm" disabled name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no" readonly>
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no" readonly>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Admission Form Number</label>
-                                    <input class="form-control form-control-sm" disabled type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}} readonly>
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}} readonly>
                                 </div>
                             </div>
                         </div>
