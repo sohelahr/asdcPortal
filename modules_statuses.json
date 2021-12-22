@@ -17,5 +17,7 @@
     "SubAdmin": true,
     "Security": true,
     "Employee": true,
-    "StudentEmployment": true
+    "StudentEmployment": true,
+    "Attendance": true,
+    "Instructor": true
 }

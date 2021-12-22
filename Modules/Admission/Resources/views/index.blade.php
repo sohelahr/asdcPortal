@@ -98,6 +98,7 @@
         $('#admissions').DataTable({
             processing: true,
             serverSide: true,
+            "pageLength": 50,
             ajax: "{{route('all_admissions')}}",
             columns:[
                 {data: 'student_name',render:function(data,type,row){

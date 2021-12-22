@@ -29,7 +29,7 @@
 
         .image {
             overflow: hidden!important;
-            margin-left: 80px;
+            margin-left: 60px;
             width: 80px;
             height: 90px;/* 
             border-radius: 8px; */
@@ -66,7 +66,11 @@
         </div>
         <div style="margin: auto;text-align:center;">
             <div class="image">
+                @if($data['photo'])
                 <img src = "{{asset('/storage/app/profile_photos/'.$data['photo'])}}" width= "80px" height="90px">
+                @else
+                    <img src = "{{asset('/storage/app/profile_photos/blankimage.png')}}" alt = "" height = "80px" width = "90px">
+                @endif
             </div>
             <h2>{{$data['name']}}</h2>
         </div>
@@ -107,9 +111,9 @@
             <p style="font-size: 8px;letter-spacing:1px">If found please return to:</p>
             <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width = "150px">
         </div>
-        <div style="padding:22px 5px;background-color: #d6e9f0;width:100%;text-align:center;line-height:2px">
+        <div style="padding:20px 5px;background-color: #d6e9f0;width:100%;text-align:center;line-height:3px">
             <h2>#23-5-392, 1<sup>st</sup> Floor,</h2>
-            <h2>Above LEE's Chinese Restaurant,</h2>
+            <h2>Above LEE's Chinese </h2><h2> Restaurant,</h2>
             <h2>Shah Ali Banda Road, Hyd.</h2>
             <h2>Ph: +91 7207084178</h2>
             <div style="margin-top:20px">

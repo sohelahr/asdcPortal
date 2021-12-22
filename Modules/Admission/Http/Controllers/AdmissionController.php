@@ -523,7 +523,12 @@ class AdmissionController extends Controller
             }
     }
     public function getIdCard($id){
-        $admission = Registration::find($id)->Admission;
+        if(Auth::user()->user_type == 3){
+            $admission = Registration::find($id)->Admission;
+        }
+        else{
+            $admission = Admission::find($id);
+        }
 
         $user = $admission->Student;
         if($user->id !== Auth::user()->id && Auth::user()->user_type == 3){

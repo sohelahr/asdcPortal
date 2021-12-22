@@ -58,6 +58,7 @@
     $('#registrations').DataTable({
         processing: true,
         serverSide: true,
+        "pageLength": 50,
         searching: true,
         "autoWidth": false,
         "responsive": true,

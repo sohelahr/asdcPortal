@@ -81,6 +81,15 @@
                 </a>    
             </div>
             {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions')) --}}
+            <div>
+                <a type="button" href="{{url('admission/id-card/'.$admission->id)}}">
+                    <button class="btn bg-white" type="button" >
+                            <i class="fa fa-id-card" style="font-size: 0.9rem;"></i> 
+                            Get ID-Card                         
+                    </button>
+                </a>        
+            </div>
+           
             @if($admission->status == '1') 
                 <div>
                     <button class="btn bg-white" type="button" @if ($grade == "") onclick="OpenGradesModal()" @else onclick="goToCertificate({{$admission->id}})" @endif>

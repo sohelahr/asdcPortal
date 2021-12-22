@@ -85,7 +85,7 @@ class CourseBatchController extends Controller
 
         $date_now = time();
         if(strtotime($request->start_date) <= $date_now && $date_now < strtotime($request->end_date) ){
-            $coursebatch->is_current = '1';
+            $coursebatch->is_current = 1;
         }
         
         $coursebatch->batch_identifier = Date('Y')."-".$request->batch_number;
@@ -201,7 +201,7 @@ class CourseBatchController extends Controller
         $coursebatch->status = $coursebatch->status;
         $date_now = time();
         if(strtotime($request->start_date) <= $date_now && $date_now < strtotime($request->end_date) ){
-            $coursebatch->is_current = '1';
+            $coursebatch->is_current = 1;
         }
         $coursebatch->batch_identifier = Date('Y')."-".$request->batch_number;
         $coursebatch->save();

@@ -332,7 +332,7 @@ class ImportController extends Controller
             //get all the temp data from the temp table
             foreach($imported_users as $imported_user){
                 $temp_data = DB::table('temp_import')->where('Email',$imported_user->email)->get();
-                            return $imported_user->name;
+                            //return $imported_user->name;
                 
                 if(count($temp_data) > 0){
                     foreach($temp_data as $data){
@@ -351,28 +351,44 @@ class ImportController extends Controller
                                                     ->where('name',$config_course_slot[$data->Preferred_Timings])
                                                     ->get();                        
                             $course_slot = $course_slot[0];
-                            try{        
-                                $registration = new Registration();
-                                $registration->student_id = $imported_user->id;
-                                $registration->course_id = $courses[$data->Courses_Offered];
-                                $registration->course_slot_id = $course_slot->id;
-                                $registration->status = "1";
-                                $registration->is_imported = 1;
-                                $registration->created_at = $data->Timestamp;
-                                
-                                $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
-                                $registration->save();
-                                SerialNumberConfigurationsController::incrementRegistrationNumber();
-
-                            }
-                            catch(\Illuminate\Database\QueryException $exception){
+                            
+                            //Check if registration already exists
+                             if(Registration::where('student_id',$imported_user->id)
+                                    ->where('course_id', $courses[$data->Courses_Offered])->count() > 0){
+                                            
                                 DB::table('error_logger')->insert([
                                     'email' =>  $data->Email,
                                     'name' => $data->Name,
                                     'fail_step' => 'User Course Registration',
-                                    'error_message' => json_encode($exception->errorInfo),
+                                    'error_message' => "Duplicate Registration for ".$data->Courses_Offered,
                                 ]);
+
                             }
+                            else{
+                                try{        
+                                    $registration = new Registration();
+                                    $registration->student_id = $imported_user->id;
+                                    $registration->course_id = $courses[$data->Courses_Offered];
+                                    $registration->course_slot_id = $course_slot->id;
+                                    $registration->status = "1";
+                                    $registration->is_imported = 1;
+                                    $registration->created_at = $data->Timestamp;
+                                    
+                                    $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                                    $registration->save();
+                                    SerialNumberConfigurationsController::incrementRegistrationNumber();
+
+                                }
+                                catch(\Illuminate\Database\QueryException $exception){
+                                    DB::table('error_logger')->insert([
+                                        'email' =>  $data->Email,
+                                        'name' => $data->Name,
+                                        'fail_step' => 'User Course Registration',
+                                        'error_message' => json_encode($exception->errorInfo),
+                                    ]);
+                                }
+                            }
+                            
                                                 
                     }
                 }
@@ -401,84 +417,5 @@ class ImportController extends Controller
             }
        }
        print("count ".$i);
-       /* SELECT registration_no,u.name,up.mobile FROM `registrations` r
-JOIN users u on r.student_id = u.id
-JOIN user_profiles up on up.user_id = u.id */
-
-    //     $user_data = DB::select('SELECT u.email FROM users u JOIN user_profiles up ON u.id = up.user_id 
-    //                             WHERE u.is_imported = 0 AND up.created_by = 3');
-
-    //     $courses = ["Website Development" => 5 ,"MS-Office" => 7 ,
-    //                     "Accounting Course (Tally)" => 6,"English Language (Proficiency)" => 8,"Graphic Designing (3D)" => 2,
-    //                     "Pre-Primary Teachers Training" =>12,"Graphic Designing (2D)" => 2 , "Digital Marketing" => 1,
-    //                     "Retails Sales & Marketing" => 11,"Telugu Language" => 9 ,"Video Editing" => 3,
-    //                 ];
-
-    //     //Excel timings => there database counterparts
-    //     $config_course_slot = ["Afternoon (2pm to 5pm)" => "Afternoon (2pm-5pm)",
-    //                             "Evening (6pm to 9pm)" => "Evening (5pm-8pm)" ,
-    //                             "Morning (10am to 1pm)" => "Morning (10am-1pm)",
-    //                             "Evening (5pm to 8pm)" => "Evening (5pm-8pm)"];
-
-    //     if(count($user_data) == 0){
-    //         return " First Import Users ";
-            
-    //     }
-    //     else{
-    //         foreach($user_data as $imported_user){
-    //             $temp_data = DB::table('temp_import')->where('Email',$imported_user->email)->get();
-                
-    //             if(count($temp_data) > 0){
-    //                 foreach($temp_data as $data){
-
-    //                     if($data->Courses_Offered == "Others"){
-                            
-    //                         continue;
-    //                     }
-
-    //                         //get Proper course slot id
-    //                         /* So how ? 
-    //                             well it will get match according to course id 
-    //                             and the name of the timings to get afternoon morning ya eve 
-    //                         */
-    //                         $course_slot = CourseSlot::where('course_id',$courses[$data->Courses_Offered])
-    //                                                 ->where('name',$config_course_slot[$data->Preferred_Timings])
-    //                                                 ->get();                        
-    //                         $course_slot = $course_slot[0];
-    //                         try{        
-    //                             $registration = new Registration();
-    //                             $registration->student_id = $imported_user->id;
-    //                             $registration->course_id = $courses[$data->Courses_Offered];
-    //                             $registration->course_slot_id = $course_slot->id;
-    //                             $registration->status = "1";
-    //                             $registration->is_imported = 1;
-    //                             $registration->created_at = $data->Timestamp;
-                                
-    //                             $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
-    //                             $registration->save();
-    //                             SerialNumberConfigurationsController::incrementRegistrationNumber();
-
-    //                         }
-    //                         catch(\Illuminate\Database\QueryException $exception){
-    //                             DB::table('error_logger')->insert([
-    //                                 'email' =>  $data->Email,
-    //                                 'name' => $data->Name,
-    //                                 'fail_step' => 'User Course Registration',
-    //                                 'error_message' => json_encode($exception->errorInfo),
-    //                             ]);
-    //                         }
-                                                
-    //                 }
-    //             }
-    //             else{//just an edge case
-    //                 DB::table('error_logger')->insert([
-    //                         'email' =>  $imported_user->email,
-    //                         'name' => $imported_user->name,
-    //                         'fail_step' => 'User Course Registration',
-    //                         'error_message' => "Email Not found",
-    //                 ]); 
-    //             }
-    //         }
-    //     }
     }
 }

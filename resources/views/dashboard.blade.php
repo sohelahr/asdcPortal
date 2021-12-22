@@ -310,11 +310,11 @@
                                             <i class="fas fa-times"></i>                    
                                         </button>`
                             }
-                            else if(row.status == "2"){
+                            /* else if(row.status == "2"){
                                 return `<a type="button" class="btn btn-primary btn-rounded py-2" href="{{url('admission/id-card/${row.id}')}}">
                                             <i class="fa fa-id-card" style="font-size: 0.9rem;"></i>                          
                                         </a>`
-                            }
+                            } */
                             else{
                                 return `<button type="button" class="btn btn-danger btn-rounded py-2">
                                             <i class="fa fa-frown"></i>                          

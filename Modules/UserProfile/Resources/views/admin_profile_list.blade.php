@@ -129,6 +129,7 @@
     $('#userprofiles').DataTable({
         processing: true,
         serverSide: true,
+        "pageLength": 50,
         ajax: {
             "url": "{{route('user_profile_data')}}",
             "dataType": "json",

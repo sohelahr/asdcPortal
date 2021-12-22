@@ -3,11 +3,14 @@
 namespace Modules\UserProfile\Http\Controllers;
 
 use App\Http\Helpers\GetLocation;
+use Database\Seeders\UserSeeder;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Modules\Admission\Entities\Admission;
 use Modules\Occupation\Entities\Occupation;
 use Modules\Qualification\Entities\Qualification;
 use Modules\UserProfile\Entities\UserProfile;
@@ -40,17 +43,15 @@ class UserProfileController extends Controller
         
         if(isset($search))
         {
-            $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%')
-                                ->orWhere('user_id',function($query) use($search) {
+            $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%');
+                                /* ->orWhere('user_id',function($query) use($search) {
                                     $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
-                                })
-                                ->orWhere('user_id',function($query) use($search) {
-                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
-                                });
+                                }); */
+                                
         }
         $filteredRegistrationCount = $userprofiles->count();
         $userprofiles = $userprofiles->skip($start)->limit($limit)->get();
-        dd($userprofiles);
+        //dd($userprofiles);
 
         if(isset($search))
         {
@@ -141,7 +142,8 @@ class UserProfileController extends Controller
             if($profile->city != "undefined")
                 $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
         }
-        return view('userprofile::admin_user_profile',compact('state_name','city_name','profile'));
+        $admissions = Admission::where('student_id',$profile->user_id)->get();
+        return view('userprofile::admin_user_profile',compact('state_name','city_name','profile','admissions'));
     }
 
     /**

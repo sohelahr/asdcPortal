@@ -61,10 +61,10 @@ class RegistrationController extends Controller
         if(isset($search))
         {
             $registrations = $registrations->where('registration_no','LIKE','%'.$search.'%')
-                                ->orWhere('course_id',function($query) use($search) {
+                                ->OrWhere('course_id',function($query) use($search) {
                                     $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
                                 })
-                                 ->orWhere('student_id',function($query) use($search) {
+                                 ->OrWhere('student_id',function($query) use($search) {
                                     $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
                                 });
         }

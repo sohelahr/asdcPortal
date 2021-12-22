@@ -116,13 +116,13 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Roll No </label>
-                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$roll_no}}" id="roll_no" >
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$roll_no}}" readonly id="roll_no" >
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Admission Form Number </label>
-                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission_form_number}} >
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" readonly id="admission_form_no" value={{$admission_form_number}} >
                                 </div>
                             </div>
                         </div>

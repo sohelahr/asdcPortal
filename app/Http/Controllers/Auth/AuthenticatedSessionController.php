@@ -42,8 +42,9 @@ class AuthenticatedSessionController extends Controller
                     return redirect()->intended(RouteServiceProvider::HOME);
                 }
                 else{
+                    $id = Auth::user()->id;
                     Auth::logout();
-                    return redirect('/login')->with('verify_email_first','123');
+                    return  redirect('/register/success/'.base64_encode($id));
                 }
         }
     }

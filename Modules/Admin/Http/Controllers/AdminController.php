@@ -47,7 +47,7 @@ class AdminController extends Controller
         $data['total_cancellations'] = Admission::where('status','4')->count();
         $data['total_employments'] = Admission::where('status','3')->count();
         $user_stats = $this->getUsersStats();
-        $firstbatches = CourseBatch::where('course_id',1)->get();
+        $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->get();
         return view('admin::dashboard',compact('courses','user_stats','data','firstbatches'));
     }
 
@@ -234,23 +234,6 @@ class AdminController extends Controller
         $new_users = User::where('user_type','3')
             ->whereBetween('created_at',[$one_week_ago,$yesterday])
             ->count();//get new users in aweek
-        $last_week_new_users = User::where('user_type','3')
-            ->whereBetween('created_at',[$two_weeks_ago,$one_week_ago])
-            ->count();
-        if($last_week_new_users < $new_users){
-            if($last_week_new_users >0){
-                $percent_from = $new_users - $last_week_new_users;
-                $percent = $percent_from / $last_week_new_users * 100; //increase percent
-            }else{
-                $percent = 100; //increase percent
-            }
-            $user_count_type = 1;//decreased
-        }
-        else{
-            $percent_from = $last_week_new_users -$new_users;
-            $percent = $percent_from / $last_week_new_users * 100; //decrease percent
-            $user_count_type = -1;//decreased
-        }
-        return ['new_count'=>$new_users,'percent'=>floor($percent),'type'=>$user_count_type];
+        return ['new_count'=>$new_users,];
     }
 }
