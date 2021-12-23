@@ -4,6 +4,7 @@ namespace Modules\Instructor\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Course\Entities\Course;
 
 class Instructor extends Model
 {
@@ -11,8 +12,8 @@ class Instructor extends Model
 
     protected $fillable = [];
     
-    protected static function newFactory()
-    {
-        return \Modules\Instructor\Database\factories\InstructorFactory::new();
+
+    public function Course(){
+        return $this->belongsTo(Course::class,'course_id');
     }
 }

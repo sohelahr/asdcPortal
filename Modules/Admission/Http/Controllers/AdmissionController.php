@@ -159,8 +159,11 @@ class AdmissionController extends Controller
             $admission->is_course_changed = true;
         }
 
-        if(Admission::where('roll_no',$request->roll_no)
-            ->where('admission_form_number', $request->admission_form_number)->count() > 0){
+        if((Admission::where('roll_no',$request->roll_no)
+            ->where('admission_form_number', $request->admission_form_number)->count() > 0) 
+            || 
+            (Admission::where('registration_id',$request->registration_id)->count() > 0) ){
+                
                 return redirect('/admission')->with('error','Something Went Wrong');
         }
         else{

@@ -113,5 +113,19 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#instructors" aria-expanded="false" aria-controls="page-layouts">
+                <i class="fas fa-chalkboard-teacher menu-icon"></i>
+                <span class="menu-title">Instructor</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="instructors">
+                <ul class="nav flex-column sub-menu">
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.student_employment'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('instructor/')}}">Instructors</a></li>
+                    @endif
+                </ul>
+            </div>
+        </li>
         </ul>
 </nav>

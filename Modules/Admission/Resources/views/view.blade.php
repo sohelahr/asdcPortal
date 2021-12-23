@@ -82,7 +82,7 @@
             </div>
             {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions')) --}}
             <div>
-                <a type="button" href="{{url('admission/id-card/'.$admission->id)}}">
+                <a type="button" target="_blank" href="{{url('admission/id-card/'.$admission->id)}}">
                     <button class="btn bg-white" type="button" >
                             <i class="fa fa-id-card" style="font-size: 0.9rem;"></i> 
                             Get ID-Card                         

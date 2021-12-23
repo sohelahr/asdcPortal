@@ -68,9 +68,9 @@ class RegistrationController extends Controller
                                     $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
                                 });
         }
-        //dd($registrations);
         $filteredRegistrationCount = $registrations->count();
         $registrations = $registrations->skip($start)->limit($limit)->get();
+        //dd($registrations);
 
         if(isset($search))
         {
