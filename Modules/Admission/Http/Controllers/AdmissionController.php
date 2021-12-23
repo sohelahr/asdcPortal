@@ -159,55 +159,61 @@ class AdmissionController extends Controller
             $admission->is_course_changed = true;
         }
 
-
-        //get Current Values Of Admission and Roll NUMBERS
-        // $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
-        
-        //Create new Admission Numbers using that 
-        /* 
-        $course_slug = Course::find($request->course_id)->slug;
-        $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
-        
-        $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber; */
-        
-        $admission->admission_form_number = $request->admission_form_number;
-        
-        $admission->roll_no =  $request->roll_no;
-        
-        
-        if($admission->save()){                
-
-            //Incrrement Numbers if data saves
-            SerialNumberConfigurationsController::incrementNumbers($request->course_id);
-
-            $documents = DocumentList::all();
-            foreach($documents as $document){
-                $document_input_name = "document_".$document->id; 
-                
-                if($request->$document_input_name){
-                    $admission->documents()->attach([$request->$document_input_name => ['student_id' => $request->student_id ] ]);
-                }
-            }
-
-            $registration = Registration::find($request->registration_id);
-            $registration->status = "2";
-            $registration->save();
-
-            /* $course_slot = CourseSlot::find($request->course_slot_id);
-            $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
-            $course_slot->save(); *//* 
-            $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
-                                                ->where('slot_id',$admission->courseslot_id)->first(); */
-            if(isset($batch_slot_transaction)){
-                $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;
-                $batch_slot_transaction->save(); 
-            }
-
-            return redirect()->route('admission_show',[$admission->id])->with('created','created');
-            }
-            else{
+        if(Admission::where('roll_no',$request->roll_no)
+            ->where('admission_form_number', $request->admission_form_number)->count() > 0){
                 return redirect('/admission')->with('error','Something Went Wrong');
-            }
+        }
+        else{
+
+                //get Current Values Of Admission and Roll NUMBERS
+                // $current_numbers = SerialNumberConfigurationsController::getCurrentNumbers($request->course_id);
+                
+                //Create new Admission Numbers using that 
+                /* 
+                $course_slug = Course::find($request->course_id)->slug;
+                $admission->admission_form_number = "ASDC/". $course_slug . date("y")."-". $current_numbers->currentAdmissionNumber;
+                
+                $admission->roll_no =  $course_slug . date("y")."-". $current_numbers->currentRollNumber; */
+                
+                $admission->admission_form_number = $request->admission_form_number;
+                
+                $admission->roll_no =  $request->roll_no;
+                
+                
+                if($admission->save()){                
+
+                    //Incrrement Numbers if data saves
+                    SerialNumberConfigurationsController::incrementNumbers($request->course_id);
+
+                    $documents = DocumentList::all();
+                    foreach($documents as $document){
+                        $document_input_name = "document_".$document->id; 
+                        
+                        if($request->$document_input_name){
+                            $admission->documents()->attach([$request->$document_input_name => ['student_id' => $request->student_id ] ]);
+                        }
+                    }
+
+                    $registration = Registration::find($request->registration_id);
+                    $registration->status = "2";
+                    $registration->save();
+
+                    /* $course_slot = CourseSlot::find($request->course_slot_id);
+                    $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
+                    $course_slot->save(); *//* 
+                    $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                        ->where('slot_id',$admission->courseslot_id)->first(); */
+                    if(isset($batch_slot_transaction)){
+                        $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;
+                        $batch_slot_transaction->save(); 
+                    }
+
+                    return redirect()->route('admission_show',[$admission->id])->with('created','created');
+                    }
+                    else{
+                        return redirect('/admission')->with('error','Something Went Wrong');
+                    }
+        }
     }
 
     /**
