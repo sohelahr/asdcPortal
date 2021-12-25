@@ -69,30 +69,36 @@
                         </button>
                     </div>
                     <div class="pt-5 mt-6">
-                        <table class="table table-hover" id="registrations">
-                        <thead>
-                            <tr>
-                                <th>Registration Number</th>
-                                <th>Course Name</th>
-                                <th>Course Timing</th>
-                                <th>Registered On</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        {{-- <tfoot>
-                            <tr>
-                                <th>Registration Number</th>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="registrations">
+                                        <thead>
+                                            <tr>
+                                                <th>Registration Number</th>
+                                                <th>Course Name</th>
+                                                <th>Course Timing</th>
+                                                <th>Registered On</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        {{-- <tfoot>
+                                            <tr>
+                                                <th>Registration Number</th>
 
-                                <th>Course Name</th>
-                                <th>Course Timing</th>
-                                <th>Registered On</th>
-                                <th>Status</th>
-                            </tr>
-                        </tfoot> --}}
-                    </table>
+                                                <th>Course Name</th>
+                                                <th>Course Timing</th>
+                                                <th>Registered On</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </tfoot> --}}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -217,7 +223,15 @@
                     loader: false,        // Change it to false to disable loader
                     loaderBg: '#9EC600'  // To change the background
                 })
-                
+             @elseif(\Illuminate\Support\Facades\Session::has('unauthorized'))
+                $.toast({
+                    heading: 'Unauthorized',
+                    text: 'Aha! being sneeky af',
+                    position:'top-right',
+                    icon: 'danger',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
                 $.toast({
                     heading: 'Danger',
@@ -296,11 +310,11 @@
                                             <i class="fas fa-times"></i>                    
                                         </button>`
                             }
-                            else if(row.status == "2"){
+                            /* else if(row.status == "2"){
                                 return `<a type="button" class="btn btn-primary btn-rounded py-2" href="{{url('admission/id-card/${row.id}')}}">
                                             <i class="fa fa-id-card" style="font-size: 0.9rem;"></i>                          
                                         </a>`
-                            }
+                            } */
                             else{
                                 return `<button type="button" class="btn btn-danger btn-rounded py-2">
                                             <i class="fa fa-frown"></i>                          

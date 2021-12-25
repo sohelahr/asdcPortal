@@ -34,7 +34,7 @@
                             <th style="width: 30px">No</th>
                             <th>Name</th>
                             <th>Mobile</th>
-                            <th>Qualification</th>
+                            <th>Email</th>
                             <th>Type</th>
                             <th>Edit</th>
                         </tr>
@@ -46,7 +46,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Mobile</th>
-                            <th>Qualification</th>
+                            <th>Email</th>
                             <th>Type</th>
                             <th>Edit</th>
                         </tr>
@@ -129,25 +129,45 @@
     $('#userprofiles').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{route('user_profile_data')}}",
+        "pageLength": 50,
+        ajax: {
+            "url": "{{route('user_profile_data')}}",
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}"}
+            //"complete": afterRequestComplete
+        },
+        columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }],
         columns:[
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable: false},
             {data: 'name',render:function(data,type,row){
+                
+                if(type === "filter")
+                {
+                    return data['name'].toString();
+                }
                 //this will be rendered from server just for demo here
-                if(data['perm']){
-                    return "<a href='userprofile/admin/"+row.id+"/view'>"+data['name']+"</a>"
+                else if(type === "display"){
+                    if(data['perm']){
+                        return "<a href='userprofile/admin/"+row.id+"/view'>"+data['name']+"</a>"
+                    }
+                    else{
+                        return "<p class='mb-0'>"+data['name']+"</p>"
+                    }
                 }
                 else{
-                    return "<p class='mb-0'>"+data['name']+"</p>"
+                    return data['name'];
                 }
-                },
-            name:"name"
+            },
+            name:"name",searchable: true
             },
             {data: 'mobile',name:"mobile"},
-            {data: 'qualification',name:"qualification"},
+            {data: 'email',name:"email"},
             {data:'type',render:function(data,type,row){
                 //this will be rendered from server just for demo here
-                console.log(data)
                 if(data == "True")
                    return "<p class='text-success mb-0'>Registered</p>"
                 else

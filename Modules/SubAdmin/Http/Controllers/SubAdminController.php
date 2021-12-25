@@ -3,6 +3,7 @@
 namespace Modules\SubAdmin\Http\Controllers;
 
 use App\Http\Controllers\MailController;
+use App\Http\Helpers\GetLocation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Support\Renderable;
@@ -36,18 +37,18 @@ class SubAdminController extends Controller
         $occupations = Occupation::all();
         $qualifications = Qualification::all();
         $courses = Course::all();
-        return view('subadmin::create_student',compact('courses','occupations','qualifications'));
+        $states = GetLocation::getStates(101);
+        return view('subadmin::create_student',compact('courses','occupations','qualifications','states'));
     }
 
     public function storeStudent(Request $request)
     {
-        
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', Rules\Password::defaults()],
-            'mobile' => ['required', 'max:10', 'unique:user_profiles'],
+            /* 'mobile' => ['required', 'max:10', 'unique:user_profiles'], */
             'aadhaar' => ['required', 'unique:user_profiles'],            
         ]);
         $name = $request->first_name ." ".$request->last_name;
@@ -59,7 +60,7 @@ class SubAdminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->first_name.'@asdc'.date('Y')),
             'user_type' => '3',
-            'is_verifed' => 1,
+            'is_verified' => 1,
         ]);
         
         event(new Registered($user));
@@ -126,6 +127,7 @@ class SubAdminController extends Controller
             //if profile saves then move forward
             if($userprofile->save()){
 
+                //first registration
                 $registration = new Registration();
                 $registration->student_id = $user->id;
                 $registration->course_id = $request->course_id;
@@ -136,6 +138,151 @@ class SubAdminController extends Controller
                 
                 if($registration->save()){
                     SerialNumberConfigurationsController::incrementRegistrationNumber();
+                    //move to second registration if and only if the first registration is saved()
+                    if(isset($request->sec_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->sec_course_id;
+                        $registration->course_slot_id = $request->sec_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->third_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->third_course_id;
+                        $registration->course_slot_id = $request->third_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->fourth_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->fourth_course_id;
+                        $registration->course_slot_id = $request->fourth_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->fifth_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->fifth_course_id;
+                        $registration->course_slot_id = $request->fifth_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->sixth_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->sixth_course_id;
+                        $registration->course_slot_id = $request->sixth_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->seventh_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->seventh_course_id;
+                        $registration->course_slot_id = $request->seventh_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->eight_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->eight_course_id;
+                        $registration->course_slot_id = $request->eight_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->ninth_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->ninth_course_id;
+                        $registration->course_slot_id = $request->ninth_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
+                    if(isset($request->tenth_course_id)){
+                        $registration = new Registration();
+                        $registration->student_id = $user->id;
+                        $registration->course_id = $request->tenth_course_id;
+                        $registration->course_slot_id = $request->tenth_courseslot_id;
+                        $registration->status = "1";
+                    
+                        $registration->registration_no = 'RG-'.SerialNumberConfigurationsController::getCurrentRegistrationNumber();
+                        
+                        if($registration->save()){
+                            SerialNumberConfigurationsController::incrementRegistrationNumber();
+                        }
+                        else{
+                            return redirect()->route('user_profile_list')->with('error','0');
+                        }
+                    }
                     return redirect()->route('user_profile_list')->with('created','0');
                 }
                 else{

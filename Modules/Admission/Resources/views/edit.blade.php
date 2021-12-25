@@ -38,16 +38,25 @@
                                 <input type="hidden" name="registered_course_id" value="{{$selected_course_id}}">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Roll No</label>
-                            <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Admission Form Number</label>
-                            <input class="form-control form-control-sm" type="text" name="admission_form_number" value={{$admission->admission_form_number}} disabled>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <p>Capacity Left for this batch and slot :-<span id="current_capacity" class={{$transaction->current_capacity > 5 ? "text-sucess" : "text-danger" }}>{{$transaction->current_capacity}}</span>
+                                <p>WARNING : If you change the course now then if there are custom entries for earlier 
+                                course they will be lost,{{--  although you can redit them, --}} please proceed with caution</p>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Roll No</label>
+                                    <input class="form-control form-control-sm" name="roll_no" type="text" value="{{$admission->roll_no}}" id="roll_no" readonly>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Admission Form Number</label>
+                                    <input class="form-control form-control-sm" type="text" name="admission_form_number" id="admission_form_no" value={{$admission->admission_form_number}} readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -122,6 +131,14 @@
                         @endforeach
                         </div> 
                       </div>
+                      @if ($grade != "")
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-label">Grade</label>
+                                <input type="text" class="form-control-sm form-control" name="grade" value="{{$grade}}" >
+                            </div>
+                        </div>
+                        @endif
                 </div>                                                         
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
@@ -131,10 +148,51 @@
 @endsection
 @section('jcontent')
 <script>
-    $('#wait-text').hide();  
+    
+    @if(\Illuminate\Support\Facades\Session::has('capacity_full'))    
+        $.toast({
+            heading: 'Capacity Full',
+            text: 'Capacity for the following batches and slot is full',
+            position:'top-right',
+            icon: 'warning',
+            loader: true,        // Change it to false to disable loader
+            loaderBg: '#9EC600'  // To change the background
+        })
+    @elseif(\Illuminate\Support\Facades\Session::has('capacity_readmission_full'))    
+        $.toast({
+            heading: 'Capacity Full',
+            text: 'Capacity for the following batch/slot is full, please readmit in other batch/slot.',
+            position:'top-right',
+            icon: 'warning',
+            loader: true,        // Change it to false to disable loader
+            loaderBg: '#9EC600'  // To change the background
+        })
+    @endif
+    $('#wait-text').hide(); 
+
+    $('#course_batch').on('change',function(){
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        if(slot || batch)
+            getTransaction(slot,batch);
+        else
+        return null;
+    });
+    
+    $('#course_slot').on('change',function(){
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        if(slot || batch)
+            getTransaction(slot,batch);
+        else
+        return null;
+    }); 
     
     $("#admission_course").on('change',function(){
         let course_id = $("#admission_course").val()
+        let slot = $('#course_slot').val();
+        let batch = $('#course_batch').val();
+        getTransaction(slot,batch);
         $.ajax({
             type: "get",
             url: `{{url('admission/getforminputs/${course_id}')}}`,
@@ -171,6 +229,13 @@
                     $("#course_batch").append(`
                             <option value="">Not Found</option>
                         `);
+                }
+                if(response.roll_no){
+                    $('#roll_no').val(response.roll_no);
+                }
+                console.log(response)
+                if(response.admission_form_number){
+                    $('#admission_form_no').val(response.admission_form_number);
                 }
                 
             },
@@ -214,5 +279,30 @@
                 } 
             });
     }); 
+
+    function getTransaction(slot,batch){
+        $.ajax({
+            type: "get",
+            url: `{{url('admission/getransaction/${slot}/${batch}')}}`,
+            beforeSend: function() {
+              $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
+            },
+            success: function (response) {
+            
+                if(response.transaction == null){
+                    $('#current_capacity').empty().removeClass('text-success').removeClass('text-danger').addClass('text-danger').text('Not found');
+                }
+                
+                else{
+                    response.transaction.current_capacity > 5 ? $('#current_capacity').addClass('text-success').removeClass('text-danger') : $('#current_capacity').removeClass('text-success').addClass('text-danger')
+                    $('#current_capacity').empty().text(response.transaction.current_capacity);
+                }
+            },
+            complete: function () {
+                $('#overlay-loader').hide();
+            },
+        });
+    }
 </script>
 @endsection

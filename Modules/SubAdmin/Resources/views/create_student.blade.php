@@ -129,7 +129,7 @@
                                             <sup class="text-danger">*</sup></label>
 
                                         <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input type="text" readonly class="form-control form-control-sm" name="dob">
+                                            <input type="text" class="form-control form-control-sm" name="dob" id="dob">
                                             <span class="input-group-addon input-group-append border-left">
                                                 <i class="far fa-calendar input-group-text py-1 px-2"></i>
                                             </span>
@@ -142,7 +142,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Age <sup class="text-danger">*</sup></label>
 
-                                        <input required type="text" class="form-control form-control-sm" name="age">
+                                        <input required type="text" readonly class="form-control form-control-sm" name="age" id="age">
 
                                     </div>
                                 </div>
@@ -201,6 +201,7 @@
                                         <select class="form-control" name="home_type">
                                             <option value="rented">Rented</option>
                                             <option value="owned">Owned</option>
+                                            <option value="other">Other</option>
                                         </select>
 
                                     </div>
@@ -242,16 +243,23 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm" name="city">
+                                        <label class="form-label">State<sup class="text-danger">*</sup></label>
+                                        <select class="form-control " name="state" id="state">
+                                            <option value="">Choose State</option>
+                                            @foreach ($states as $state)
+                                            <option value="{{$state->id}}" @if($state->id == '36')selected @endif>{{$state->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">State <sup class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="state">
+                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
+                                        <select class="form-control " name="city" id="cities">
+                                            <option value="">Choose State</option>
+                                            <option value="4460" selected>Hyderabad</option>
+                                        </select>
                                     </div>
 
                                 </div>
@@ -422,16 +430,17 @@
                     </div>
                 </div>
             </div>
-            <div class="pt-3 pb-12">
+            <div class="pt-3 pb-18">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-5 bg-white border-b border-gray-200">
 
                             <p class="card-description text-black-50">
-                                Enroll in a course (You can later admit him/her via the admission tab.)
+                                Enroll in a course (You can later admit him/her via the admission tab.)<br>
+                                First Registration is necessary , Rest are optional.
                             </p>
-                            <div class="row justify-content-start">
-                                <div class="form-row col-5">
+                            <div class="row justify-content-between">
+                                <div class="form-row col-5 p-3 m-1 border border-dark rounded m-1">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="form-label">Course <sup class="text-danger">*</sup></label>
@@ -459,8 +468,269 @@
                                         </div>
                                     </div>
                                 </div>
+                                {{-- Second Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course II <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="sec_course_id" id="sec_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="sec_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="sec_courseslot_id" id="sec_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Third Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course III <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="third_course_id" id="third_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="third_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="third_courseslot_id" id="third_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- fourth Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course IV <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="fourth_course_id" id="fourth_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="fourth_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="fourth_courseslot_id" id="fourth_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- fifth Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course V <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="fifth_course_id" id="fifth_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="fifth_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="fifth_courseslot_id" id="fifth_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- sixth Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course VI <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="sixth_course_id" id="sixth_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="sixth_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="sixth_courseslot_id" id="sixth_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- seventh Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course VII <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="seventh_course_id" id="seventh_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="seventh_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="seventh_courseslot_id" id="seventh_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- eight Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course VIII <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="eight_course_id" id="eight_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="eight_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="eight_courseslot_id" id="eight_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- ninth Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course IX <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="ninth_course_id" id="ninth_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="ninth_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="ninth_courseslot_id" id="ninth_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- tenth Registration Form --}}
+                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course X <span class="text-black-50">(optional)</span></label>
+                                            <select class="form-control" name="tenth_course_id" id="tenth_registration_course">
+                                                <option value="">Choose A Course</option>
+                                                @foreach ($courses as $course)
+                                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Duration</label>
+                                            <input required type="text" class="form-control form-control-sm" id="tenth_course_duration"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Course Timing</label>
+                                            <select class="form-control" name="tenth_courseslot_id" id="tenth_course_slot">
+                                                <option value="blank">Choose Course First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="float-right">
+                            <div class="text-center my-2">
                             <button type="submit" class="btn btn-primary mr-2">Submit</button><a class="btn btn-light"
                                 href="{{url('admin/dashboard')}}">Cancel</a>
                             </div>
@@ -475,12 +745,17 @@
 @endsection
 @section('jcontent')
 <script>
+    var date = new Date();
+
     $('#datepicker-popup').datepicker({
         autoclose: true,
         todayHighlight: true,
         maxDate: "+0y +0m +0w +0d",
-    });
-    var date = new Date();
+    }).on('changeDate', function(e) {
+                let that_year = new Date(e.date);
+                let val =  date.getFullYear() - that_year.getFullYear();
+                $("#age").val(val);
+        });
     $(document).ready(function () {
         $('#subadmin_student_create').validate({
             errorClass: "text-danger pt-1",
@@ -619,7 +894,34 @@
                 },
                 courseslot_id: {
                     required: true,
-                },  
+                },
+                sec_courseslot_id: {
+                    required: true,
+                },
+                third_courseslot_id: {
+                    required: true,
+                }, 
+                fourth_courseslot_id: {
+                    required: true,
+                }, 
+                fifth_courseslot_id: {
+                    required: true,
+                }, 
+                sixth_courseslot_id: {
+                    required: true,
+                }, 
+                seventh_courseslot_id: {
+                    required: true,
+                }, 
+                eight_courseslot_id: {
+                    required: true,
+                }, 
+                ninth_courseslot_id: {
+                    required: true,
+                }, 
+                tenth_courseslot_id: {
+                    required: true,
+                }, 
             },
 
             messages: {
@@ -740,13 +1042,41 @@
                 courseslot_id: {
                     required: "Please select a timing",
                 }, 
+                sec_courseslot_id: {
+                    required: "please select a course timing",
+                },
+                third_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                fourth_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                fifth_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                sixth_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                seventh_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                eight_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                ninth_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
+                tenth_courseslot_id: {
+                    required: "please select a course timing",
+                }, 
             }
 
         });
     });
     $("#firstname").on('input',function(){
-        let name = $("#firstname").val();
-        $("#password").val(name+"@asdc"+date.getFullYear())
+        let name = $("#firstname").val()
+        let val = name+"@asdc"+date.getFullYear();
+        $("#password").val(val.replace(/ /g, ""));
     })
     $("#registration_course").on('change',function(){
         let course_id = $("#registration_course").val()
@@ -773,6 +1103,353 @@
                 else
                 {
                     $("#course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#sec_registration_course").on('change',function(){
+        let course_id = $("#sec_registration_course").val()
+        if(course_id == ""){
+            $("#sec_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#sec_course_slot").empty();
+                $("#sec_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#sec_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#sec_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#third_registration_course").on('change',function(){
+        let course_id = $("#third_registration_course").val()
+        if(course_id == ""){
+            $("#third_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#third_course_slot").empty();
+                $("#third_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#third_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#third_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#fourth_registration_course").on('change',function(){
+        let course_id = $("#fourth_registration_course").val()
+        if(course_id == ""){
+            $("#fourth_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#fourth_course_slot").empty();
+                $("#fourth_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#fourth_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#fourth_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#fifth_registration_course").on('change',function(){
+        let course_id = $("#fifth_registration_course").val()
+        if(course_id == ""){
+            $("#fifth_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#fifth_course_slot").empty();
+                $("#fifth_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#fifth_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#fifth_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#sixth_registration_course").on('change',function(){
+        let course_id = $("#sixth_registration_course").val()
+        if(course_id == ""){
+            $("#sixth_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#sixth_course_slot").empty();
+                $("#sixth_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#sixth_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#sixth_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#seventh_registration_course").on('change',function(){
+        let course_id = $("#seventh_registration_course").val()
+        if(course_id == ""){
+            $("#seventh_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#seventh_course_slot").empty();
+                $("#seventh_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#seventh_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#seventh_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#eight_registration_course").on('change',function(){
+        let course_id = $("#eight_registration_course").val()
+        if(course_id == ""){
+            $("#eight_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#eight_course_slot").empty();
+                $("#eight_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#eight_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#eight_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#ninth_registration_course").on('change',function(){
+        let course_id = $("#ninth_registration_course").val()
+        if(course_id == ""){
+            $("#ninth_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#ninth_course_slot").empty();
+                $("#ninth_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#ninth_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#ninth_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#tenth_registration_course").on('change',function(){
+        let course_id = $("#tenth_registration_course").val()
+        if(course_id == ""){
+            $("#tenth_course_slot").append(`
+                    <option value="blank">Choose A course first</option>
+            `);
+                return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('registration/getforminputs/${course_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                $("#tenth_course_slot").empty();
+                $("#tenth_course_duration").val(response.course_duration);
+                if(response.course_slots.length > 0){
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#tenth_course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#tenth_course_slot").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
+    $("#state").on('change',function(){
+        let state_id = $("#state").val()
+        if(state_id == ""){
+            return null;
+        }
+        $.ajax({
+            type: "get",
+            url: `{{url('userprofile/get-city/${state_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                console.log(response);
+                $("#cities").empty();
+                if(response.cities.length > 0){
+                    $.each(response.cities, function (index, element) { 
+                        $("#cities").append(`
+                            <option value="${element.id}">${element.city_name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#cities").append(`
                             <option value="">Not Found</option>
                     `);
                 }

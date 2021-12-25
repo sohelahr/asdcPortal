@@ -84,7 +84,7 @@
 
                                                 <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
                                                     <input type="text" readonly class="form-control form-control-sm" name="dob"
-                                                        value="{{$userprofile->dob}}" placeholder="yyyy-mm-dd">
+                                                        value="{{date('d/m/Y',strtotime($userprofile->dob))}}" placeholder="yyyy-mm-dd">
                                                     <span class="input-group-addon input-group-append border-left">
                                                         <i class="far fa-calendar input-group-text py-1 px-2"></i>
                                                     </span>
@@ -96,8 +96,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Age <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm" name="age"
+                                                <input required type="text" readonly class="form-control form-control-sm" name="age" id="age"
                                                     value="{{$userprofile->age}}">
 
                                             </div>
@@ -163,6 +162,9 @@
                                                     <option value="owned" @if ($userprofile->home_type == "owned")
                                                         selected
                                                         @endif>Owned</option>
+                                                    <option value="other"  @if ($userprofile->home_type == "other")
+                                                        selected
+                                                        @endif>Other</option>
                                                 </select>
 
                                             </div>
@@ -206,18 +208,31 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="form-label">City <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm" name="city"
-                                                    value="{{$userprofile->city}}">
+                                                <label class="form-label">State<sup class="text-danger">*</sup></label>
+                                                <select class="form-control " name="state" id="state">
+                                                    <option value="">Choose State</option>
+                                                    @foreach ($states as $state)
+                                                    <option value="{{$state->id}}" @if($state->id == $userprofile->state )selected @endif>{{$state->name}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="form-label">State <sup class="text-danger">*</sup></label>
-                                                <input required type="text" class="form-control form-control-sm" name="state"
-                                                    value="{{$userprofile->state}}">
+                                                <label class="form-label">City <sup class="text-danger">*</sup></label>
+                                                <select class="form-control " name="city" id="cities">
+                                                    @if ($cities == null)
+                                                        <option value="">Not found</option>
+                                                    @else
+                                                        @foreach ($cities as $city)
+                                                        <option value="{{$city->city_id}}" @if($city->city_id == $userprofile->city )selected @endif>
+                                                            {{$city->city_name}}
+                                                        </option>
+                                                        @endforeach
+                                                    @endif
+
+                                                </select>
                                             </div>
 
                                         </div>
@@ -413,10 +428,16 @@
 @endsection
     @section('jcontent')
     <script>
+        var date = new Date();
+
         $('#datepicker-popup').datepicker({
             autoclose: true,
             todayHighlight: true,
             maxDate: "+0y +0m +0w +0d",
+        }).on('changeDate', function(e) {
+                let that_year = new Date(e.date);
+                let val =  date.getFullYear() - that_year.getFullYear();
+                $("#age").val(val);
         });
          $(document).ready(function (){
         $('#edit_profile').validate({
@@ -653,7 +674,39 @@
 
         });
     });
-    
+    $("#state").on('change',function(){
+        let state_id = $("#state").val()
+        if(state_id == ""){
+            return null;
+        }
+        console.log(state_id)
+        $.ajax({
+            type: "get",
+            url: `{{url('userprofile/get-city/${state_id}')}}`,
+            beforeSend:function(){
+                $('#overlay-loader').removeClass('d-none');
+                $('#overlay-loader').show();
+            },
+            success: function (response) {
+                console.log(response);
+                $("#cities").empty();
+                if(response.cities.length > 0){
+                    $.each(response.cities, function (index, element) { 
+                        $("#cities").append(`
+                            <option value="${element.city_id}">${element.city_name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#cities").append(`
+                            <option value="">Not Found</option>
+                    `);
+                }
+                    $('#overlay-loader').hide(); 
+            },
+        });
+    });
 
 
     </script>

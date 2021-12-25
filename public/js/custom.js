@@ -14,6 +14,9 @@ function showPassword(e){
 }
 
 $('#pwd_confirm_visibility').on('click',function(e){
-        var target = e.currentTarget
-        $(target).hasClass('show')?hidePassword($(target)):showPassword($(target))
-    });
+    var target = e.currentTarget
+    $(target).hasClass('show')?hidePassword($(target)):showPassword($(target))
+});
+
+
+                    

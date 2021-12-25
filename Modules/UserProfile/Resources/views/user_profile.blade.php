@@ -11,7 +11,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                       <div class="border-bottom text-center pb-4">
                         <div class="d-flex justify-content-center">
                             <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile" class="img-lg rounded-circle mb-3">
@@ -115,9 +115,16 @@
                                 <h5>
                                 Address
                                 </h5>
-                                <h6 class=" text-muted mt-2 mb-0" style="width: 100vh">
-                                    {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>{{$profile->city}},
-                                    {{$profile->state}}, {{$profile->pincode}}
+                                <h6 class=" text-muted mt-2 mb-0">
+                                    {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>
+                                    @if($state_name !== "")
+                                        {{$city_name}},
+                                        {{$state_name}},
+                                    @else
+                                        {{$profile->city}},
+                                        {{$profile->state}},
+                                    @endif,   
+                                    {{$profile->pincode}}
                                 </h6>
                             </div>
                             </div>
@@ -137,7 +144,7 @@
                             <div class="d-flex align-items-start profile-feed-item">
                               
                             <img src="{{url('/public/images/father-icon.png')}}" alt="profile" height="50" width="50" class="rounded-circle">
-                            <div class="ml-3 col-7">
+                            <div class="ml-3 col-9">
                                 <h5>
                                 Family
                                 </h5>

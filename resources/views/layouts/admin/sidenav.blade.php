@@ -83,6 +83,23 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#attendance" aria-expanded="false" aria-controls="page-layouts">
+                <i class="fas fa-tasks menu-icon"></i>
+                <span class="menu-title">Attendance</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="attendance">
+                <ul class="nav flex-column sub-menu">{{-- 
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('view.registrations'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('registration/')}}">Registrations</a></li>
+                    @endif --}}
+                    {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions')) --}}
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('attendance/')}}">Attendance</a></li>
+                    {{-- @endif --}}
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#employments" aria-expanded="false" aria-controls="page-layouts">
                 <i class="fas fa-people-carry menu-icon"></i>
                 <span class="menu-title">Employments</span>
@@ -92,6 +109,20 @@
                 <ul class="nav flex-column sub-menu">
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('list.student_employment'))
                         <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('studentemployment/')}}">Employments</a></li>
+                    @endif
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#instructors" aria-expanded="false" aria-controls="page-layouts">
+                <i class="fas fa-chalkboard-teacher menu-icon"></i>
+                <span class="menu-title">Instructor</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="instructors">
+                <ul class="nav flex-column sub-menu">
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.student_employment'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('instructor/')}}">Instructors</a></li>
                     @endif
                 </ul>
             </div>

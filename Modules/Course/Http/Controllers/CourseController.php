@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Course\Entities\Course;
+use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\SerialNumberConfigurations\Http\Controllers\SerialNumberConfigurationsController;
 use Yajra\Datatables\Datatables;
 class CourseController extends Controller
@@ -142,10 +143,14 @@ class CourseController extends Controller
         }
 
         foreach($slots as $slot){
+            $slotid = $slot->id ;
             $slot->delete();
+            $transaction = BatchSlotTransaction::where('slot_id',$slotid);
+            $transaction->delete();
         }
         foreach($batches as $batch){
             $batch->delete();
+            
         }
         if($course->delete())
             return redirect()->route('course_list')->with('deleted','Course Updated successfully');

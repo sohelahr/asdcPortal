@@ -44,9 +44,43 @@ class RegistrationController extends Controller
                 })
                 ->make();
     }
-    function AllRegistrationData(){
-        $registrations = Registration::where('status','1')->get();
+    function AllRegistrationData(Request $request){
+        //dd($request->start());
+        //$registrations = Registration::where('status','1')->get();
+        $limit = $request->length;
+        $start = $request->start;
+        $search = $request->search['value'];
 
+        $registrations = Registration::query();
+        
+        $registrations = $registrations->where('status','1');
+        
+        //$totalApplicationCount = $registrations->count();
+        $totalRegistrationRecord = $registrations->count();
+        
+        if(isset($search))
+        {
+            $registrations = $registrations->where('registration_no','LIKE','%'.$search.'%')
+                                ->OrWhere('course_id',function($query) use($search) {
+                                    $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
+                                })
+                                 ->OrWhere('student_id',function($query) use($search) {
+                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                });
+        }
+        $filteredRegistrationCount = $registrations->count();
+        $registrations = $registrations->skip($start)->limit($limit)->get();
+        //dd($registrations);
+
+        if(isset($search))
+        {
+            $totalFiltered = $filteredRegistrationCount;
+        }
+        else
+        {
+            $totalFiltered = $totalRegistrationRecord;
+        }
+        //dd($registrations);
         return Datatables::of($registrations)
                 ->addIndexColumn()
                 ->addColumn('student_name',function($registration){
@@ -64,15 +98,18 @@ class RegistrationController extends Controller
                     return date('d M Y',$time) ;
                 })
                 ->addColumn('action',function($registration){
-                    $suspeneded = $registration->Student->UserProfile->status;
-                    if (\App\Http\Helpers\CheckPermission::hasPermission('create.admissions') && $suspeneded != '2' ){
+                    /* $suspeneded = $registration->Student->UserProfile->status; */
+                    if (\App\Http\Helpers\CheckPermission::hasPermission('create.admissions') /* && $suspeneded != '2'  */){
                         return true;
                     }
                     else{
                         return false;
                     }
                 })
-                ->make();
+                ->setTotalRecords($totalRegistrationRecord)
+                ->setOffset($start)
+                ->setFilteredRecords($totalFiltered)
+                ->toJson();
     }
     /**
      * Show the form for creating a new resource.
