@@ -43,10 +43,10 @@ class UserProfileController extends Controller
         
         if(isset($search))
         {
-            $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%');
-                                /* ->orWhere('user_id',function($query) use($search) {
+            $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%')
+                                ->orWhereIn('user_id',function($query) use($search) {
                                     $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
-                                }); */
+                                });
                                 
         }
         $filteredRegistrationCount = $userprofiles->count();
