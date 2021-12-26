@@ -60,13 +60,14 @@ class RegistrationController extends Controller
         
         if(isset($search))
         {
+            
             $registrations = $registrations->where('registration_no','LIKE','%'.$search.'%')
-                                ->OrWhere('course_id',function($query) use($search) {
-                                    $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
-                                })
-                                 ->OrWhere('student_id',function($query) use($search) {
-                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
-                                });
+                                            ->OrWhereIn('course_id',function($query) use($search) {
+                                                $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
+                                            })
+                                            ->OrWhereIn('student_id',function($query) use($search) {
+                                                $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                            });
         }
         $filteredRegistrationCount = $registrations->count();
         $registrations = $registrations->skip($start)->limit($limit)->get();
