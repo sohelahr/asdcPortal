@@ -14,12 +14,15 @@
 Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/', 'AdmissionController@index');
     Route::get('/mydata','AdmissionController@UserAdmissionData')->name('user_admission');
-    Route::get('/data','AdmissionController@AllAdmissionData')->name('all_admissions');
+    Route::post('/data','AdmissionController@AllAdmissionData')->name('all_admissions');
     Route::get('/data/{id}','AdmissionController@OneAdmissionData')->name('view_admission');
     Route::get('/create/{id}','AdmissionController@create')->name('user_admission_create');
     Route::post('/create','AdmissionController@store')->name('user_admission_create');
     Route::get('/getforminputs/{id}','AdmissionController@getFormData')->name('admission_input_select');
     Route::get('/view/{id}','AdmissionController@show')->name('admission_show');
+
+    Route::get('/viewfromreg/{id}','AdmissionController@showfromReg');
+
     Route::get('/print/{id}','AdmissionController@PrintForm')->name('print_admission_form');
 
     Route::get('/getransaction/{slotid}/{batchid}','AdmissionController@getTransaction')->name('getTransaction');

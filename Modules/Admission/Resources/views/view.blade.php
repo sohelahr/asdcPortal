@@ -89,7 +89,14 @@
                     </button>
                 </a>        
             </div>
-           
+            <div>
+                <a type="button"  href="{{route('user_profile_admin_from_other',$admission->student_id)}}">
+                    <button class="btn bg-white" type="button" >
+                            <i class="fa fa-user" style="font-size: 0.9rem;"></i> 
+                            View Profile                        
+                    </button>
+                </a>        
+            </div>
             @if($admission->status == '1') 
                 <div>
                     <button class="btn bg-white" type="button" @if ($grade == "") onclick="OpenGradesModal()" @else onclick="goToCertificate({{$admission->id}})" @endif>

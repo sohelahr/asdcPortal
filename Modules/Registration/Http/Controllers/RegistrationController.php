@@ -61,7 +61,7 @@ class RegistrationController extends Controller
         if(isset($search))
         {
             
-            $registrations = $registrations->where('registration_no','LIKE','%'.$search.'%')
+            $registrations = $registrations->where('status','1')->where('registration_no','LIKE','%'.$search.'%')
                                             ->OrWhereIn('course_id',function($query) use($search) {
                                                 $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
                                             })
@@ -70,7 +70,7 @@ class RegistrationController extends Controller
                                             });
         }
         $filteredRegistrationCount = $registrations->count();
-        $registrations = $registrations->skip($start)->limit($limit)->get();
+        $registrations = $registrations->orderBy('id','DESC')->skip($start)->limit($limit)->get();
         //dd($registrations);
 
         if(isset($search))
@@ -86,6 +86,11 @@ class RegistrationController extends Controller
                 ->addIndexColumn()
                 ->addColumn('student_name',function($registration){
                     return $registration->Student->name;
+                    //return ['id'=> $user->id,'name'=> $user->name];
+                })
+                
+                ->addColumn('student_id',function($registration){
+                    return $registration->Student->id;
                 })
                 ->addColumn('course_name',function($registration){
                     return $registration->Course->name;

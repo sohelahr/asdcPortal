@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
 
 class MarkCurrentBatches extends Command
@@ -47,7 +48,17 @@ class MarkCurrentBatches extends Command
             else{
                 $coursebatch->is_current = '0';
             }
-            $coursebatch->save();
+            if($coursebatch->save()){
+                $transactions = BatchSlotTransaction::where('batch_id',$coursebatch->id)->get();
+                if(count($transactions) > 0)
+                {
+                    foreach($transactions as $transaction){
+                        $transaction->is_current = $coursebatch->is_current ? '1':'0';
+                        $transaction->save();
+                    }
+                }
+            }
+
             $this->info('Course batch '.$coursebatch->batch_number. ' marked '.$coursebatch->is_current);
         }  
 

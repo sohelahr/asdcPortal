@@ -28,7 +28,7 @@
                     <a href="{{route('attendance_import')}}">
                         <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
                             <i class="fas fa-user-plus btn-icon-prepend"></i>
-                            Import New Attendance Sheet
+                            Import New
                         </button>
                     </a>
                 </div>
@@ -65,8 +65,10 @@
                             <tr>
                                 <th>Roll no</th>
                                 <th>Name</th>
-                                <th>Present</th>
                                 <th>Absent</th>
+                                <th>Present</th>
+                                <th>Weekly Off</th>
+                                <th>Holiday</th>
                                 <th>Total days</th>
                                 <th>Attendance</th>
                             </tr>
@@ -186,31 +188,41 @@
                 "data":{ _token: "{{csrf_token()}}"}
             },
             "columnDefs": [
-                {"className": "text-center", "targets": [1,2]}
+                {"className": "text-center", "targets": '_all'}
             ],
             columns: [{
-                    data: 'date',
-                    name: "date"
+                    data: 'roll_no',
+                    name: "roll_no"
                 },
                 {
-                    data: 'status',
-                    render: function (type, data, row) {
-                        if (row.status == "0")
-                            return "<label class='text-danger'>Absent</label>"
-                        else if (row.status == "1")
-                            return "<label class='text-warning'>No punch out</label>"
-                        else if (row.status == "2")
-                            return "<label class='text-success'>Present</label>"
-                        else if (row.status == "3")
-                            return "<label class='text-info'>Week Off</label>"
-                        else if (row.status == "4")
-                            return "<label class='text-primary'>Holiday</label>"
+                    data: 'student_name',
+                    render:function(data,type,row){
+                        return "<a href='userprofile/admin/"+row.student_id+"/viewfromother'>"+data+"</a>"
                     },
-                    name: 'status'
+                    name: "roll_no"
                 },
                 {
-                    data: 'punch_records',
-                    name: 'punch_records'
+                    data: 'absent',
+                    name: 'absent'
+                },
+                {
+                    data: 'present',
+                    name: 'present'
+                },
+                {
+                    data: 'weekly_off',
+                    name: 'weekly_off'
+                },
+                {
+                    data: 'holiday',
+                    name: 'holiday'
+                },
+                {
+                    data: 'total',
+                    name: 'total'
+                },{
+                    data: 'attendance',
+                    name: 'attendance'
                 },
             ]
         });

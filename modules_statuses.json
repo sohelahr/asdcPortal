@@ -19,5 +19,6 @@
     "Employee": true,
     "StudentEmployment": true,
     "Attendance": true,
-    "Instructor": true
+    "Instructor": true,
+    "Feedback": true
 }

@@ -13,6 +13,8 @@
 
 Route::prefix('attendance')->middleware(['auth'])->group(function() {
     Route::get('/', 'AttendanceController@index');
+
+
     Route::get('/attendance-import-page', 'AttendanceController@newAttendance')->name('attendance_import');
     Route::post('/attendance-dump-file', 'AttendanceController@dumpAttendance')->name('dump_attendance');
     Route::post('/attendance-preview-file', 'AttendanceController@previewAttendance')->name('preview_attendance');
@@ -26,5 +28,10 @@ Route::prefix('attendance')->middleware(['auth'])->group(function() {
 
     Route::get('/getforminputs/{id}','AttendanceController@getFormData')->name('attendance_input_select');
 
+    Route::get('/import_summaries','AttendanceController@importSummary');
+    Route::post('/import_summaries/data','AttendanceController@importSummaryData');
+	Route::get('/import_summaries/download/{file_name}/{flag}','AttendanceController@downloadImportSummary');
+    Route::post('/import_summaries/logs/{id}/data','AttendanceController@importLogsData');
+    Route::get('/import_summaries/logs/{id}','AttendanceController@importLogs');
 
 });

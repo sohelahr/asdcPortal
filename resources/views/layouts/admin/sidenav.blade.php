@@ -95,6 +95,7 @@
                     @endif --}}
                     {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions')) --}}
                         <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('attendance/')}}">Attendance</a></li>
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('attendance/import_summaries')}}">Import Summaries</a></li>
                     {{-- @endif --}}
                 </ul>
             </div>
@@ -123,6 +124,20 @@
                 <ul class="nav flex-column sub-menu">
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('list.student_employment'))
                         <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('instructor/')}}">Instructors</a></li>
+                    @endif
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#feedback" aria-expanded="false" aria-controls="page-layouts">
+                <i class="far fa-address-card menu-icon"></i>
+                <span class="menu-title">Feedbacks</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="feedback">
+                <ul class="nav flex-column sub-menu">
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions'))
+                        <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="{{url('feedback/')}}">Feedbacks</a></li>
                     @endif
                 </ul>
             </div>

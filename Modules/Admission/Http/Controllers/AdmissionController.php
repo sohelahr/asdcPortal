@@ -2,6 +2,7 @@
 
 namespace Modules\Admission\Http\Controllers;
 
+use App\Http\Middleware\Admin;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -55,17 +56,52 @@ class AdmissionController extends Controller
             })
             ->make();
     }
-    function AlladmissionData(){
-        $admissions = Admission::all();
+    function AlladmissionData(Request $request){
+        $limit = $request->length;
+        $start = $request->start;
+        $search = $request->search['value'];
 
+        $admissions = Admission::query();
+        
+        //$admissions = $admissions->where('status','1');
+        
+        //$totalApplicationCount = $admissions->count();
+        $totalAdmissionRecord = $admissions->count();
+        
+        if(isset($search))
+        {
+            
+            $admissions = $admissions->where('roll_no','LIKE','%'.$search.'%')
+                                    ->OrWhereIn('course_id',function($query) use($search) {
+                                        $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
+                                    })
+                                    ->OrWhereIn('student_id',function($query) use($search) {
+                                        $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                    });
+        }
+        $filteredAdmissionCount = $admissions->count();
+        $admissions = $admissions->orderBy('id','DESC')->skip($start)->limit($limit)->get();
+        //dd($admissions);
+
+        if(isset($search))
+        {
+            $totalFiltered = $filteredAdmissionCount;
+        }
+        else
+        {
+            $totalFiltered = $totalAdmissionRecord;
+        }
         return Datatables::of($admissions)
             ->addColumn('student_name',function($admission){
+                return $admission->Student->name;
+            })
+            ->addColumn('perm',function($admission){
                 if(\App\Http\Helpers\CheckPermission::hasPermission('view.admissions')){
-                        return ['perm'=>true,'name'=> $admission->Student->name ];
-                    }
-                    else{
-                       return ["perm"=>false,'name' =>  $admission->Student->name];
-                    }
+                    return true;
+                }
+                else{
+                    return false;
+                }
             })
             ->addColumn('course_name',function($admission){
                 return $admission->Course->name;
@@ -77,7 +113,10 @@ class AdmissionController extends Controller
                 $time = strtotime(($admission->created_at));
                 return date('d M Y',$time) ;
             })
-            ->make();
+            ->setTotalRecords($totalAdmissionRecord)
+            ->setOffset($start)
+            ->setFilteredRecords($totalFiltered)
+            ->toJson();
     }
 
     function OneadmissionData($id){
@@ -184,38 +223,41 @@ class AdmissionController extends Controller
                 
                 
                 if($admission->save()){                
+                        //Incrrement Numbers if data saves
+                        SerialNumberConfigurationsController::incrementNumbers($request->course_id);
 
-                    //Incrrement Numbers if data saves
-                    SerialNumberConfigurationsController::incrementNumbers($request->course_id);
-
-                    $documents = DocumentList::all();
-                    foreach($documents as $document){
-                        $document_input_name = "document_".$document->id; 
-                        
-                        if($request->$document_input_name){
-                            $admission->documents()->attach([$request->$document_input_name => ['student_id' => $request->student_id ] ]);
+                        $documents = DocumentList::all();
+                        foreach($documents as $document){
+                            $document_input_name = "document_".$document->id; 
+                            
+                            if($request->$document_input_name){
+                                $admission->documents()->attach([$request->$document_input_name => ['student_id' => $request->student_id ] ]);
+                            }
                         }
-                    }
 
-                    $registration = Registration::find($request->registration_id);
-                    $registration->status = "2";
-                    $registration->save();
+                        $registration = Registration::find($request->registration_id);
+                        $registration->status = "2";
+                        $registration->save();
 
-                    /* $course_slot = CourseSlot::find($request->course_slot_id);
-                    $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
-                    $course_slot->save(); *//* 
-                    $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
-                                                        ->where('slot_id',$admission->courseslot_id)->first(); */
-                    if(isset($batch_slot_transaction)){
-                        $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;
-                        $batch_slot_transaction->save(); 
-                    }
+                        /* $course_slot = CourseSlot::find($request->course_slot_id);
+                        $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
+                        $course_slot->save(); *//* 
+                        $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                                                            ->where('slot_id',$admission->courseslot_id)->first(); */
+                        if(isset($batch_slot_transaction)){
+                            $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;
+                            $batch_slot_transaction->save(); 
+                        }
 
-                    return redirect()->route('admission_show',[$admission->id])->with('created','created');
+                        return redirect()->route('admission_show',[$admission->id])->with('created','created');
+                }
+                else{
+                    $delete = Admission::find($admission->id);
+                    if($delete){
+                        $delete->destroy();
                     }
-                    else{
-                        return redirect('/admission')->with('error','Something Went Wrong');
-                    }
+                    return redirect('/admission')->with('error','Something Went Wrong');
+                }
         }
     }
 
@@ -234,7 +276,17 @@ class AdmissionController extends Controller
             $grade = $admission->Certificate->grade;
         return view('admission::view',compact('admission','documents_submitted','documents','grade'));
     }
-
+    
+    public function showfromReg($id)
+    {
+        $admission = Admission::where('registration_id',$id)->first();
+        $documents = DocumentList::all();
+        $documents_submitted =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
+        $grade = "";
+        if($admission->Certificate)
+            $grade = $admission->Certificate->grade;
+        return view('admission::view',compact('admission','documents_submitted','documents','grade'));
+    }
     function getFormData($id)
     {
         $course = Course::find($id);
@@ -468,7 +520,7 @@ class AdmissionController extends Controller
     
         if($admission->course_id != $request->course_id){
             
-            SerialNumberConfigurationsController::decrementNumbers($admission->course_id);
+            //SerialNumberConfigurationsController::decrementNumbers($admission->course_id);
             
             $admission->roll_no = $request->roll_no;
         

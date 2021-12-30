@@ -20,6 +20,9 @@ Route::prefix('userprofile')->middleware(['auth'])->group(function() {
     Route::post('/update',[UserProfileController::class,'update'])->name('profile_update');
     Route::post('/data',[UserProfileController::class,'UserProfileData'])->name('user_profile_data');
     Route::get('/admin/{id}/view', 'UserProfileController@Adminshow')->name('user_profile_admin');
+
+    Route::get('/admin/{id}/viewfromother', 'UserProfileController@viewProfile')->name('user_profile_admin_from_other');
+
     Route::get('/admin/{id}/edit', 'UserProfileController@AdminEdit')->name('user_profile_edit');
     Route::post('/admin/{id}/edit', 'UserProfileController@AdminEdit')->name('user_profile_edit');
     Route::get('/get-city/{id}', 'UserProfileController@GetCity')->name('getcities');

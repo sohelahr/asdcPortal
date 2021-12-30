@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CronJobController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\VerifyMailController;
 use Illuminate\Support\Facades\Auth;
@@ -52,5 +53,10 @@ Route::get('/dashboard', function () {
 Route::get('/testmail', function () {
     return view('email.course_readmission_template');
 });
+
+Route::get('/markcurrentbatches',[CronJobController::class,'MarkCurrentBatches']);
+Route::get('/markadmissioncomplete',[CronJobController::class,'MarkAdmissionComplete']);
+Route::get('/removesuspension',[CronJobController::class,'RemoveSuspension']);
+
 
 require __DIR__.'/auth.php';

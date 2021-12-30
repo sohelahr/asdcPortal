@@ -248,6 +248,7 @@
                                 <table class="table table-hover" id="userregistration">
                                     <thead>
                                         <tr>
+                                            <th>Registration Number</th>
                                             <th>Course Name</th>
                                             <th>Course Timing</th>
                                             <th>Date</th>
@@ -299,15 +300,21 @@
 @endsection
 @section('jcontent')
 <script>
-    getAttendanceRecords("{{$admissions[0]->id}}");
-
+    @if(count($admissions) > 0)
+        getAttendanceRecords("{{$admissions[0]->id}}")
+    @endif
     $(document).ready(function () {
         $('#userregistration').DataTable({
             processing: true,
             serverSide: true,
             
             ajax: "{{route('profile_registrations',$profile->id)}}",
-            columns: [{
+            columns: [
+                {
+                    data: 'registration_no',
+                    name: 'registration_no',
+                },
+                {
                     data: 'course_name',
                     name: "course_name"
                 },
@@ -338,6 +345,8 @@
                             return `<a class='badge badge-success badge-pill status_btns' href='{{url('admission/create/${row.id}')}}'>Admit</a>`;
                             //return "<label class='badge badge-warning badge-pill status_btns'>Applied</label>"
                         else if (row.status == "2")
+                            return `<a class='badge badge-success badge-pill status_btns' href='{{url('admission/viewfromreg/${row.id}')}}'>View</a>`;
+                        else
                             return " ";
                     },
                     name: 'action'
@@ -366,7 +375,8 @@
             ],
             columns: [{
                     data: 'date',
-                    name: "date"
+                    name: "date",
+                    sortable:true,
                 },
                 {
                     data: 'status',

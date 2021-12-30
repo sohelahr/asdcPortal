@@ -27,6 +27,10 @@ class UserProfileController extends Controller
         //     $userprofiles = UserProfile::where('is_profile_completed',"1")->get();
         return view('userprofile::admin_profile_list'/*, compact('userprofiles') */);
     }
+    public function viewProfile($id){
+        $userprofile = UserProfile::where('user_id',$id)->first();
+        return redirect()->route('user_profile_admin',[$userprofile->id]);
+    }
 
     function UserProfileData(Request $request){
         //$userprofiles = UserProfile::where('is_profile_completed',"1")->get();
@@ -46,11 +50,14 @@ class UserProfileController extends Controller
             $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%')
                                 ->orWhereIn('user_id',function($query) use($search) {
                                     $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
+                                })
+                                ->orWhereIn('user_id',function($query) use($search) {
+                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
                                 });
                                 
         }
         $filteredRegistrationCount = $userprofiles->count();
-        $userprofiles = $userprofiles->skip($start)->limit($limit)->get();
+        $userprofiles = $userprofiles->orderBy('id','DESC')->skip($start)->limit($limit)->get();
         //dd($userprofiles);
 
         if(isset($search))
@@ -137,10 +144,19 @@ class UserProfileController extends Controller
         $profile = UserProfile::find($id);
         $state_name = "";
         $city_name = "";
+        //dd($profile->state);
         if(is_numeric($profile->state)){
             $state_name = GetLocation::getOneState($profile->state)[0]->name;
-            if($profile->city != "undefined")
-                $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
+            if($profile->city != "undefined"){
+                //dd($profile->city);
+                try{
+                    $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;
+                }
+                catch(\Exception $e){
+                    $city_name = $profile->city;
+                }
+            }
+
         }
         $admissions = Admission::where('student_id',$profile->user_id)->get();
         return view('userprofile::admin_user_profile',compact('state_name','city_name','profile','admissions'));

@@ -99,14 +99,26 @@
             processing: true,
             serverSide: true,
             "pageLength": 50,
-            ajax: "{{route('all_admissions')}}",
+            searching: true,
+            "autoWidth": false,
+            "responsive": true,
+            ajax: {    
+                "url": "{{route('all_admissions')}}",
+                "dataType": "json",
+                "type": "POST",
+                "data":{ _token: "{{csrf_token()}}"}
+            },
+            columnDefs: [{
+                "defaultContent": "-",
+                "targets": "_all"
+            }], 
             columns:[
                 {data: 'student_name',render:function(data,type,row){
-                    if(data['perm']){
-                        return "<a href='admission/view/"+row.id+"'>"+data['name']+"</a>"
+                    if(row.perm){
+                        return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
                     }
                     else{
-                        return "<p class='mb-0'>"+data['name']+"</p>"
+                        return "<p class='mb-0'>"+data+"</p>"
                     }
                 }, name: 'student_name'},
                 {data: 'roll_no', name: 'roll_no'},

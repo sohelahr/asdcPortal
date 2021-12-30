@@ -75,7 +75,12 @@
         columns:[
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'registration_no', name: 'registration_no'},
-            {data: 'student_name', name: 'student_name'},
+            {data: 'student_name',render:function(data,type,row){
+                 if(type === "display"){
+                        return "<a href='userprofile/admin/"+row.student_id+"/viewfromother' target='_blank'>"+data+"</a>"
+                }
+            },
+             name: 'student_name'},
             {data: 'course_name',name:"course_name"},
             {data: 'course_slot',name:"course_slot"},
             {data: 'date',name:"date"},
