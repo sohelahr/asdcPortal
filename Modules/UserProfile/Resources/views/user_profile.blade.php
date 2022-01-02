@@ -14,7 +14,12 @@
                     <div class="col-lg-4 col-md-4">
                       <div class="border-bottom text-center pb-4">
                         <div class="d-flex justify-content-center">
-                            <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile" class="img-lg rounded-circle mb-3">
+                           @if($profile->photo)
+                                <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile"
+                                        class="img-lg rounded-circle mb-3">
+                            @else
+                                <img src = "{{asset('/storage/app/profile_photos/blankimage.png')}}" alt = "" class="img-lg rounded-circle mb-3">
+                            @endif
                         </div>
                         <p>{{$profile->Occupation->name}}</p>
                         <div class="d-flex justify-content-between">

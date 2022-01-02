@@ -134,7 +134,7 @@ class UserProfileController extends Controller
                     if($profile->city != "undefined")
                         $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
                 }
-                return view('userprofile::user_profile',compact('profile'));
+                return view('userprofile::user_profile',compact('profile','state_name','city_name'));
             }
         return redirect('/dashboard')->with('profile_not_complete','not complete');
         

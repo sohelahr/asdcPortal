@@ -3,12 +3,13 @@
 @section('content')
     <div class="page-header">
         <h3 class="page-title">
-            Feedback
+            Feedback Lines
         </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Feedback</li>
+            <li class="breadcrumb-item"><a href="{{url('/feedback')}}">Feedbacks</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Feedback Lines</li>
             </ol>
         </nav>
     </div>
@@ -25,12 +26,35 @@
         @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
             <div class="d-flex p-1 m-0 border header-buttons">
                 <div>
-                    <a href="{{route('feedback_header_create')}}">
-                        <button class="btn bg-white" type="button" >
-                            <i class="fas fa-user-plus btn-icon-prepend"></i>
-                            Initialize New
-                        </button>
-                    </a>
+                    <button class="btn bg-white" type="button" >
+                        Course : {{$course}}
+                    </button>
+                </div>
+                <div>
+                    <button class="btn bg-white" type="button" >
+                        Batch : {{$coursebatch}}
+                    </button>
+                </div>
+                <div>
+                    <button class="btn bg-white" type="button" >
+                        Instructor : {{$instructor}}
+                    </button>
+                </div>
+                <div>
+                    <button class="btn bg-white" type="button" >
+                        Start Date : {{$feedback_header->start_date}}
+                    </button>
+                </div>
+                
+                <div>
+                    <button class="btn bg-white" type="button" >
+                        End Date : {{$feedback_header->end_date}}
+                    </button>
+                </div>
+                <div>
+                    <button class="btn bg-white" type="button" >
+                        Status : {{($feedback_header->status == '0' ? 'Initialized' : ($feedback_header->status == '1' ? 'Active' : 'Expired')) }}
+                    </button>
                 </div>
             </div>
         @endif
@@ -52,16 +76,11 @@
                 </div>
             </div> --}}
             <div class="table-responsive">
-                <table class="table table-hover" id="feedback_header_table">
+                <table class="table table-hover" id="feedback_lines_table">
                     <thead>
                         <tr>
-                            <th>Course</th>
-                            <th>Batch</th>
-                            <th>Instructor</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                            <th>Feedbacks</th>
+                            <th>Student Name</th>
+                            <th>View</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +93,7 @@
 @endsection
 @section('jcontent')
     <script>
+        baseurl = '{{url("/")}}';
         getFeedbackHeaders();
         @if(\Illuminate\ Support\ Facades\ Session::has('created'))
             $.toast({
@@ -99,14 +119,14 @@
     function getFeedbackHeaders(){
         
         let courseid = 0;
-        $('#feedback_header_table').DataTable({
+        $('#feedback_lines_table').DataTable({
             processing: true,
             serverSide: true,
             searching:false,
             "pageLength": 30,
             "bDestroy": true,
             ajax: {
-                "url":`{{url("feedback/get-all-feedback-headers/".'${courseid}')}}`,
+                "url":`{{url("feedback/get-all-feedback-lines/$feedback_header->id")}}`,
                 "dataType": "json",
                 "type": "POST",
                 "data":{ _token: "{{csrf_token()}}"}
@@ -116,44 +136,13 @@
             ], */
             columns: [
                 {
-                    data:'course',
-                    name:'course'
-                },
-                {
-                    data:'coursebatch',
-                    name:'coursebatch'
-                },
-                {
-                    data:'instructor',
-                    name:'instructor'
-                },
-                {
-                    data:'start_date',
-                    name:'start_date'
-                },
-                {
-                    data:'end_date',
-                    name:'end_date'
-                },
-                {
-                    data:'status',
-                    render:function(data,type,row){
-                        if(data == '1'){
-                            return "<span>Active</span>"
-                        }
-                        else if(data == '2'){
-                            return "<span>Expired</span>"
-                        }
-                        else{
-                            return "<span>Initialized</span>"
-                        }
-                    },
-                    name:'status'
+                    data:'student_name',
+                    name:'student_name'
                 },
                 {
                    data:'id',
                     render:function(data,type,row){
-                        return '<a href="feedback/lines/'+data+'"><span class="badge badge-success badge-pill">View</span></a>';
+                        return '<a href="'+baseurl+'/feedback/lines/view/'+data+'"><span class="badge badge-success badge-pill">View</span></a>';
                     },
                     name:'id' 
                 }

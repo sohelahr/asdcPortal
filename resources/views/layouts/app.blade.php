@@ -16,7 +16,7 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ url('public/css/app.css') }}">    
         <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/style.css">
-
+        <link rel="stylesheet" href="{{env('BACKEND_CDN_URL')}}/css/custom.css">
         <!-- Scripts -->
         <script src="{{ url('public/js/app.js') }}" defer></script>
     </head>

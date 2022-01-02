@@ -71,6 +71,7 @@
                     <div class="pt-5 mt-6">
                         <div class="row">
                             <div class="col-12">
+                                <h4 class="card-title">Registrations</h4>
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="registrations">
                                         <thead>
@@ -95,6 +96,26 @@
                                                 <th>Status</th>
                                             </tr>
                                         </tfoot> --}}
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-6">
+                                <h4 class="card-title">Feedbacks</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="feedback_header_table">
+                                        <thead>
+                                            <tr>
+                                                <th>Course</th>
+                                                <th>Batch</th>
+                                                <th>Instructor</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Status</th>
+                                                <th>Your Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -232,6 +253,15 @@
                     loader: true,        // Change it to false to disable loader
                     loaderBg: '#9EC600'  // To change the background
                 })
+            @elseif(\Illuminate\Support\Facades\Session::has('feedback_created'))
+                $.toast({
+                    heading: 'Success',
+                    text: 'Feedback was successfully recorded',
+                    position:'top-center',
+                    icon: 'success',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
                 $.toast({
                     heading: 'Danger',
@@ -291,13 +321,13 @@
                     {data: 'date',name:"date"},
                     {data:'status',render:function(type,data,row){
                         if(row.status == "1"){
-                            return `<label class='badge badge-warning badge-pill status_btns'>Applied</label>`
+                            return `<label class='text-warning'>Applied</label>`
                         }
                         else if(row.status == "2"){
-                            return "<label class='badge badge-success badge-pill status_btns'>Admitted</label>"
+                            return "<label class='text-success'>Admitted</label>"
                         }
                         else if(row.status == "3"){
-                            return "<label class='badge badge-danger badge-pill status_btns'>Cancelled</label>"
+                            return "<label class='text-danger'>Cancelled</label>"
                         }
                     },
                     name:'status'
@@ -410,6 +440,80 @@
                 },
             });
         });
+
+        //Feedbacks assigned via sort wise
+        
+        $('#feedback_header_table').DataTable({
+            processing: true,
+            serverSide: true,
+            searching:false,
+            ordering:false,
+            "pageLength": 30,
+            "bDestroy": true,
+            ajax: {
+                "url":`{{url("feedback/get-all-feedback-headers-per-admission/")}}`,
+                "dataType": "json",
+                "type": "POST",
+                "data":{ _token: "{{csrf_token()}}"}
+            },
+            "columnDefs": [
+                {"className": "text-center", "targets": '_all'}
+            ],
+            columns: [
+                {
+                    data:'course',
+                    name:'course'
+                },
+                {
+                    data:'coursebatch',
+                    name:'coursebatch'
+                },
+                {
+                    data:'instructor',
+                    name:'instructor'
+                },
+                {
+                    data:'start_date',
+                    name:'start_date'
+                },
+                {
+                    data:'end_date',
+                    name:'end_date'
+                },
+                {
+                    data:'header_status',
+                    render:function(data,type,row){
+                        if(data == '1'){
+                            return "<span>Active</span>"
+                        }
+                        else if(data == '2'){
+                            return "<span>Expired</span>"
+                        }
+                        else{
+                            return "<span>Initialized</span>"
+                        }
+                    },
+                    name:'header_status'
+                },
+                {
+                    data:'filled_status',
+                    render:function(data,type,row){
+                        if(data == 0){
+                            if(row.header_status == '2'){
+                                return "<span class='text-danger'>Not Submitted</span>"
+                            }
+                            return '<a href="feedback/lines/create/'+btoa(row.id)+'"><span class="text-warning">Pending</span></a>';
+                        }
+                        else{
+                            return "<span class='text-success'>Submitted</span>"
+                        }
+                    },
+                    name:'filled_status'
+                },
+            ]
+        });
+    
+
     </script>
 @endsection
 </x-app-layout>
