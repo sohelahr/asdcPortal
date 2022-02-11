@@ -170,7 +170,7 @@ class AdminController extends Controller
                                         ->orderBy('how_know_us')
                                         ->get();
         $labels = ['Newspaper','From a Friend','From a relative','Other','Social Media',];
-        $colors = ['#222222','#717171','#bf9168','#e4ca43','#1c4f46'];
+        $colors = ['#717171','#bf9168','#717171','#e4ca43','#1c4f46'];
         $count = [];
         foreach($raw_count as $get_count){
           array_push($count,$get_count->count);
