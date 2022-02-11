@@ -22,7 +22,7 @@
     }
 </style>
 <body>
-    <div style = "background-color: #392C70; height: 100px">
+    <div style = "background-color: #1c4f46; height: 100px">
 
     </div>
     <div class = "container">

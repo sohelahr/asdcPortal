@@ -80,7 +80,7 @@ class RegisteredUserController extends Controller
         if(isset($user))
         {
             MailController::sendRegistrationEmail($user->email,$user->name,$user->id);
-            return redirect()->back()->with('success','Email resend successfully.');
+            return redirect()->back()->with('success','Email resent successfully.');
         }
         else
         {

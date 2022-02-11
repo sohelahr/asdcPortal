@@ -27,22 +27,34 @@ class RegistrationController extends Controller
     }
 
     function UserRegistrationData(){
-        $userregistrations = Auth::user()->Registrations;
-
-        return Datatables::of($userregistrations)
-                ->addIndexColumn()
-                ->addColumn('course_name',function($registration){
-                    return $registration->Course->name;
-                })
-                ->addColumn('course_slot',function($registration){
-                    return $registration->CourseSlot->name;
-                })
-                
-                ->addColumn('date',function($registration){
-                    $time = strtotime(($registration->created_at));
-                    return date('d M Y',$time) ;
-                })
-                ->make();
+        $userregistrations = Registration::where('student_id',Auth::user()->id)
+                                ->where('status','<>','3')
+                                ->orderBy('id','DESC')->get();
+        $data = array();
+        $status = true;
+        if(count($userregistrations) > 0)
+        {
+            foreach ($userregistrations as $userregistration)
+            {
+                $nestedData['id'] = $userregistration->id;
+                $nestedData['course_name'] = $userregistration->Course->name;
+                $nestedData['registration_no'] = $userregistration->registration_no;
+                $nestedData['course_slot'] = strtok($userregistration->CourseSlot->name,'(') ;
+                $nestedData['course_slug'] = $userregistration->Course->slug;
+                $nestedData['date'] = date('d M Y',strtotime($userregistration->created_at));
+                $nestedData['status'] = $userregistration->status;
+                $data[] = $nestedData;
+            }
+            $status = true;
+        }
+        else{
+            $status = false;
+        }
+        $json_data = array(
+            "status" => $status,
+            "data" => $data
+        );
+        return json_encode($json_data);
     }
     function AllRegistrationData(Request $request){
         //dd($request->start());

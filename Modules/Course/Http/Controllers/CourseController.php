@@ -24,8 +24,41 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::all();
-        return view('course::index',compact(['courses']));
+        return view('course::index');
+    }
+
+    function CourseData(){
+        $documents = Course::orderby('id','DESC')->get();
+        
+        return DataTables::of($documents)
+                ->addIndexColumn()
+                ->addColumn('coursetiming_perm',function($document){
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('view_courses_slots.courses')){
+                        return true; 
+                    }
+                    else{
+                        return false;
+                    }
+                })
+                ->addColumn('perm',function($document){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.courses')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.courses')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                })
+                ->make();
     }
 
     /**

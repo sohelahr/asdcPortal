@@ -1,71 +1,49 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Qualifications
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Qualifications</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div id="overlay-loader" class="d-none">
-            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
-                <div >  
-                    
-                        <div class="dot-opacity-loader">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Qualification</h3>
+		@endslot
+            <li class="breadcrumb-item active" aria-current="page">Qualification</li>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
+                    <div id="overlay-loader" class="d-none">
+                        <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>
                         </div>
-                    
+                    </div>
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('create.qualifications'))
+                        <div class="d-flex p-1 m-0 border header-buttons">
+                            <div>
+                                <button class="btn bg-white" type="button" data-bs-toggle="modal" data-bs-target="#qualification-create">
+                                    <i class="fa fa-plus btn-icon-prepend"></i>
+                                    Create
+                                </button>
+                            </div>
+                        </div>    
+                    @endif
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="display datatables" id="qualifications">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th>No</th>
+                                        <th style="width: 85%">Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="float-right my-2">
-                @if(\App\Http\Helpers\CheckPermission::hasPermission('create.qualifications'))      
-                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#qualification-create">
-                        + Create
-                    </button>
-                @endif
-            </div>    
-            
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width: 85%">Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($qualifications as $qualification)
-                            <tr>
-                                <td>{{$qualification->name}}</td>
-                                <td class="d-flex p-1">
-                                @if(\App\Http\Helpers\CheckPermission::hasPermission('update.qualifications'))      
-                                    <button class="btn btn-dark btn-rounded p-2" onclick="Editqualification({{$qualification->id}})">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                @endif
-                                @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.qualifications'))      
-                                    <form action="{{url('qualification/delete/'.$qualification->id)}}" method="post" class="ml-2 mb-0">
-                                        @csrf
-                                        <button type=submit class="btn btn-danger btn-rounded p-2 mb-0">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -76,14 +54,12 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="qualification-create-title">Create Qualification</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Name <sup class="text-danger">*</sup></label>
-                            <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: BCA">
+                            <input id="name" class="form-control" type="text" name="name" placeholder="eg: BCA">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -106,7 +82,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Name <sup class="text-danger">*</sup></label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Bachelor of Science">
+                            <input id="edit-name" class="form-control " type="text" name="name" placeholder="eg: Bachelor of Science">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -124,52 +100,60 @@
         function closeModal(){
             $('#qualification-edit').modal('hide');
         }
+        function Notify(title,msg,status){
+            $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
+        function deleteQualificationConfirm(id){
+            swal({
+                title: "Warning",
+                text: 'You sure want to delete',
+                icon:'warning',
+                buttons: ['Back','Yes I\'m Sure'],
+                dangerMode: true,
+                }).then((yes_delete) => {
+                    if (yes_delete) {
+                           $('#delete_form_'+id).submit();    
+                    }
+                    else
+                    return null;
+                });
+        }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
-            $.toast({
-                heading: 'Created',
-                text: 'Qualification Was Successfully Created',
-                position:'top-right',
-                icon: 'success',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Created','Qualification Was Successfully Created','success')
         @elseif(\Illuminate\Support\Facades\Session::has('updated'))
-            $.toast({
-                heading: 'Updated',
-                text: 'Qualification Was Successfully Updated',
-                position:'top-right',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Updated','Qualification Was Successfully Update','info')
         @elseif(\Illuminate\Support\Facades\Session::has('deleted'))
-            $.toast({
-                heading: 'Deleted',
-                text: 'Qualification Was Successfully Deleted',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
-            $.toast({
-                heading: 'Cannot Delete',
-                text: 'This Qualification already has registrations',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-            
+            Notify('Deleted','Qualification Was Successfully Deleted','warning')
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Danger','Something Went Wrong','danger')  
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            Notify('Cannot Delete','This qualification already has admissions','warning')
         @endif
         
         function Editqualification(qualification_id){
@@ -233,6 +217,43 @@
                     
                 } 
 
+            });
+
+            $('#qualifications').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{route('qualification_data')}}",
+                /* columnDefs: [{
+                "defaultContent": "-",
+                orderable:false,
+                "targets": "_all"
+                }], */
+                columns:[
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'name',name:"name"},
+                    {data: 'perm',render:function(data,type,row){
+                        return `<div>
+                                    <div  class="d-flex p-0 m-0">
+                                        ${data.edit_perm ? 
+                                        `<button class="form-btn form-btn-warning ms-4 me-2" onclick="Editqualification(${row.id})">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>` 
+                                        : null}
+                                        ${data.delete_perm ? 
+                                        
+                                        `<div class="ml-2">
+                                                    <button type=submit class="form-btn form-btn-danger ms-2" onclick="deleteQualificationConfirm(${row.id})">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                            </div>        
+                                                <form action='qualification/delete/${row.id}' id='delete_form_${row.id}' method="post" class="d-none">
+                                                    @csrf
+                                                </form>
+                                        `: null}
+                                    </div>
+                                </div>`
+                    },name:'perm'}
+                ]
             });
         });
  

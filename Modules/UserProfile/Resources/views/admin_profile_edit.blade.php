@@ -1,450 +1,450 @@
 @extends('layouts.admin.app')
 @section('content')
-    
-    <div class="page-header">
-        <h3 class="page-title">
-            Profile Edit
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Profile Edit</h3>
+		@endslot
+            <li class="breadcrumb-item"><a href="{{url('/userprofile')}}">Users</a></li>
             <li class="breadcrumb-item active" aria-current="page">User Profile Edit</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{route('user_profile_edit',$userprofile->id)}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-5 bg-white border-b border-gray-200">
-                                    @csrf
+	@endcomponent
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $error)
+                                <div class="alert alert-danger dark" role="alert">
+                                    <p>{{ $error }}</p>
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                @endforeach
+                            @endif
+                            <form action="{{route('user_profile_edit',$userprofile->id)}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
+                                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                            <div class="p-5 bg-white border-b border-gray-200">
+                                                    @csrf
 
-                                    <p class="card-description text-black-50">
-                                        Personal Info
-                                    </p>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">First Name <sup class="text-danger">*</sup></label>
+                                                    <p class="card-description">
+                                                        Personal Info
+                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">First Name <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="firstname"
-                                                    value="{{$userprofile->firstname}}">
+                                                                <input required type="text" class="form-control" name="firstname"
+                                                                    value="{{$userprofile->firstname}}">
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="lastname"
-                                                    value="{{$userprofile->lastname}}">
+                                                                <input required type="text" class="form-control" name="lastname"
+                                                                    value="{{$userprofile->lastname}}">
 
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="mobile"
-                                                    value="{{$userprofile->mobile}}">
+                                                                <input required type="text" class="form-control" name="mobile"
+                                                                    value="{{$userprofile->mobile}}">
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Gender <sup class="text-danger">*</sup></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Gender <sup class="text-danger">*</sup></label>
 
-                                                <select class="form-control" name="gender">
-                                                    <option value="male" @if ($userprofile->gender == "male")
-                                                        selected
-                                                        @endif>Male</option>
-                                                    <option value="female" @if ($userprofile->gender == "female")
-                                                        selected
-                                                        @endif>Female</option>
-                                                </select>
+                                                                <select class="form-control" name="gender">
+                                                                    <option value="male" @if ($userprofile->gender == "male")
+                                                                        selected
+                                                                        @endif>Male</option>
+                                                                    <option value="female" @if ($userprofile->gender == "female")
+                                                                        selected
+                                                                        @endif>Female</option>
+                                                                </select>
 
-                                            </div>
-                                        </div>
-                                    
-                                    
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Date of Birth {{-- <sup class="text-danger">*</sup> --}}</label>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
+                                                                <input class=" form-control" type="text" data-language="en" name="dob" readonly
+                                                                    value="{{$userprofile->dob ? date('d/m/Y',strtotime($userprofile->dob)) : ''}}" 
+                                                                    id="date_picker"/>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Age <sup class="text-danger">*</sup></label>
+                                                                <input required type="text" readonly class="form-control" name="age" id="age"
+                                                                    value="{{$userprofile->age}}">
 
-                                                <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                                    <input type="text" readonly class="form-control form-control-sm" name="dob"
-                                                        value="{{date('d/m/Y',strtotime($userprofile->dob))}}" placeholder="yyyy-mm-dd">
-                                                    <span class="input-group-addon input-group-append border-left">
-                                                        <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                                    </span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Aadhaar Number <sup class="text-danger">*</sup></label>
+                                                                <input required type="text" class="form-control" name="aadhaar"
+                                                                    value="{{$userprofile->aadhaar}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
+                                                                <input type="text" class="form-control" name="blood_group"
+                                                                    value="{{$userprofile->blood_group}}">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Marital Status <sup class="text-danger">*</sup></label>
+
+                                                                <select class="form-control" name="marital_status">
+                                                                    <option value="single" @if ($userprofile->marital_status == "single")
+                                                                        selected
+                                                                        @endif>Single</option>
+                                                                    <option value="married" @if ($userprofile->marital_status == "married")
+                                                                        selected
+                                                                        @endif>Married</option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Update Photo</label>
+                                                            <input type="file" name="photo" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    <div class="pt-3">
+                                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                                <div class="p-5 bg-white border-b border-gray-200">
 
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Age <sup class="text-danger">*</sup></label>
-                                                <input required type="text" readonly class="form-control form-control-sm" name="age" id="age"
-                                                    value="{{$userprofile->age}}">
+                                                    <p class="card-description">
+                                                        Address 
+                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Home Type <sup class="text-danger">*</sup></label>
 
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">Aadhaar Number <sup class="text-danger">*</sup></label>
-                                                <input required type="text" class="form-control form-control-sm" name="aadhaar"
-                                                    value="{{$userprofile->aadhaar}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">Blood Group <sup class="text-danger">*</sup></label>
-                                                <input type="text" class="form-control form-control-sm" name="blood_group"
-                                                    value="{{$userprofile->blood_group}}">
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">Marital Status <sup class="text-danger">*</sup></label>
+                                                                <select class="form-control" name="home_type">
+                                                                    <option value="rented" @if ($userprofile->home_type == "rented")
+                                                                        selected
+                                                                        @endif>Rented</option>
+                                                                    <option value="owned" @if ($userprofile->home_type == "owned")
+                                                                        selected
+                                                                        @endif>Owned</option>
+                                                                    <option value="other"  @if ($userprofile->home_type == "other")
+                                                                        selected
+                                                                        @endif>Other</option>
+                                                                </select>
 
-                                                <select class="form-control" name="marital_status">
-                                                    <option value="single" @if ($userprofile->marital_status == "single")
-                                                        selected
-                                                        @endif>Single</option>
-                                                    <option value="married" @if ($userprofile->marital_status == "married")
-                                                        selected
-                                                        @endif>Married</option>
-                                                </select>
+                                                            </div>
+                                                        </div>
+                        
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label class="form-label">House Name/Number <sup class="text-danger">*</sup></label>
 
+                                                                <input required type="text" class="form-control"
+                                                                    name="house_details" value="{{$userprofile->house_details}}">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Street/Locality <sup class="text-danger">*</sup></label>
+
+                                                                <input required type="text" class="form-control" name="street"
+                                                                    value="{{$userprofile->street}}">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Landmark <sup class="text-danger">*</sup></label>
+
+                                                                <input required type="text" class="form-control" name="landmark"
+                                                                    value="{{$userprofile->landmark}}">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Pincode <sup class="text-danger">*</sup></label>
+
+                                                                <input required type="text" class="form-control" name="pincode"
+                                                                    value="{{$userprofile->pincode}}">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">State<sup class="text-danger">*</sup></label>
+                                                                <select class="form-control " name="state" id="state">
+                                                                    <option value="">Choose State</option>
+                                                                    @foreach ($states as $state)
+                                                                    <option value="{{$state->id}}" @if($state->id == $userprofile->state )selected @endif>{{$state->name}}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="form-label">City <sup class="text-danger">*</sup></label>
+                                                                <select class="form-control " name="city" id="cities">
+                                                                    @if ($cities == null)
+                                                                        <option value="">Not found</option>
+                                                                    @else
+                                                                        @foreach ($cities as $city)
+                                                                        <option value="{{$city->city_id}}" @if($city->city_id == $userprofile->city )selected @endif>
+                                                                            {{$city->city_name}}
+                                                                        </option>
+                                                                        @endforeach
+                                                                    @endif
+
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Photo <sub> (leave blank if dont want to change)</sub></label>
-                                            <input type="file" name="photo" class="form-control-file">
                                         </div>
                                     </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="pt-3">
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                <div class="p-5 bg-white border-b border-gray-200">
+                                
+                                <div class="pt-3">
+                                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                            <div class="p-5 bg-white border-b border-gray-200">
 
-                                    <p class="card-description text-black-50">
-                                        Address 
-                                    </p>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label class="form-label">Home Type <sup class="text-danger">*</sup></label>
+                                                <p class="card-description">
+                                                    Education
+                                                </p>    
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Last Qualification <sup class="text-danger">*</sup></label>
 
-                                                <select class="form-control" name="home_type">
-                                                    <option value="rented" @if ($userprofile->home_type == "rented")
-                                                        selected
-                                                        @endif>Rented</option>
-                                                    <option value="owned" @if ($userprofile->home_type == "owned")
-                                                        selected
-                                                        @endif>Owned</option>
-                                                    <option value="other"  @if ($userprofile->home_type == "other")
-                                                        selected
-                                                        @endif>Other</option>
-                                                </select>
+                                                            <select class="form-control " name="qualification_id">
+                                                                @foreach ($qualifications as $qualification)
+                                                                <option value="{{$qualification->id}}" @if($qualification->id ==$userprofile->qualification_id) selected @endif>{{$qualification->name}}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Qualification Specialization <sup class="text-danger">*</sup></label>
+
+                                                            <input required type="text" class="form-control"
+                                                                name="qualification_specilization"
+                                                                value="{{$userprofile->qualification_specilization}}"
+                                                                placeholder="ex: Science/Mechanical/IT">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">School/College Name <sup class="text-danger">*</sup></label>
+
+                                                            <input required type="text" class="form-control" name="school_name"
+                                                                value="{{$userprofile->school_name}}">
+
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Qualification Status <sup class="text-danger">*</sup></label>
+
+                                                            <select class="form-control " name="qualification_status">
+                                                                <option value="Passed" @if($userprofile->qualification_status == "Passed")
+                                                                    selected @endif>Passed</option>
+                                                                <option value="Pursuing" @if($userprofile->qualification_status == "Pursuing")
+                                                                    selected @endif>Pursuing</option>
+                                                                <option value="Completed" @if($userprofile->qualification_status == "Completed")
+                                                                    selected @endif>Completed</option>
+                                                                <option value="Left Incomplete" @if($userprofile->qualification_status == "Left Incomplete") selected @endif>Left Incomplete</option>
+                                                                
+                                                                <option value="Failed" @if($userprofile->qualification_status == "Failed") selected @endif>Failed</option>
+
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Occupation <sup class="text-danger">*</sup></label>
+
+                                                            <select class="form-control" name="occupation_id">
+                                                                @foreach ($occupations as $occupation)
+                                                                <option value="{{$occupation->id}}" @if($occupation->id == $userprofile->occupation_id) selected @endif>{{$occupation->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-        
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label class="form-label">House Name/Number <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm"
-                                                    name="house_details" value="{{$userprofile->house_details}}">
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label class="form-label">Street/Locality <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm" name="street"
-                                                    value="{{$userprofile->street}}">
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">Landmark <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm" name="landmark"
-                                                    value="{{$userprofile->landmark}}">
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">Pincode <sup class="text-danger">*</sup></label>
-
-                                                <input required type="text" class="form-control form-control-sm" name="pincode"
-                                                    value="{{$userprofile->pincode}}">
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">State<sup class="text-danger">*</sup></label>
-                                                <select class="form-control " name="state" id="state">
-                                                    <option value="">Choose State</option>
-                                                    @foreach ($states as $state)
-                                                    <option value="{{$state->id}}" @if($state->id == $userprofile->state )selected @endif>{{$state->name}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="form-label">City <sup class="text-danger">*</sup></label>
-                                                <select class="form-control " name="city" id="cities">
-                                                    @if ($cities == null)
-                                                        <option value="">Not found</option>
-                                                    @else
-                                                        @foreach ($cities as $city)
-                                                        <option value="{{$city->city_id}}" @if($city->city_id == $userprofile->city )selected @endif>
-                                                            {{$city->city_name}}
-                                                        </option>
-                                                        @endforeach
-                                                    @endif
-
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                <div class="pt-3">
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-5 bg-white border-b border-gray-200">
-
-                                <p class="card-description text-black-50">
-                                    Education
-                                </p>    
-                                <div class="row">
-                                    
-                                    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Last Qualification <sup class="text-danger">*</sup></label>
-
-                                            <select class="form-control " name="qualification_id">
-                                                @foreach ($qualifications as $qualification)
-                                                <option value="{{$qualification->id}}" @if($qualification->id ==$userprofile->qualification_id) selected @endif>{{$qualification->name}}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Qualification Specialization <sup class="text-danger">*</sup></label>
-
-                                            <input required type="text" class="form-control form-control-sm"
-                                                name="qualification_specilization"
-                                                value="{{$userprofile->qualification_specilization}}"
-                                                placeholder="ex: Science/Mechanical/IT">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label class="form-label">School/College Name <sup class="text-danger">*</sup></label>
-
-                                            <input required type="text" class="form-control form-control-sm" name="school_name"
-                                                value="{{$userprofile->school_name}}">
-
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label class="form-label">Qualification Status <sup class="text-danger">*</sup></label>
-
-                                            <select class="form-control " name="qualification_status">
-                                                <option value="Passed" @if($userprofile->qualification_status == "Passed")
-                                                    selected @endif>Passed</option>
-                                                <option value="Pursuing" @if($userprofile->qualification_status == "Pursuing")
-                                                    selected @endif>Pursuing</option>
-                                                <option value="Completed" @if($userprofile->qualification_status == "Completed")
-                                                    selected @endif>Completed</option>
-                                                <option value="Left Incomplete" @if($userprofile->qualification_status == "Left Incomplete") selected @endif>Left Incomplete</option>
-                                                
-                                                <option value="Failed" @if($userprofile->qualification_status == "Failed") selected @endif>Failed</option>
-
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label class="form-label">Occupation <sup class="text-danger">*</sup></label>
-
-                                            <select class="form-control" name="occupation_id">
-                                                @foreach ($occupations as $occupation)
-                                                <option value="{{$occupation->id}}" @if($occupation->id == $userprofile->occupation_id) selected @endif>{{$occupation->name}}</option>
-                                                @endforeach
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-3 pb-12">
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-5 bg-white border-b border-gray-200">
+                                <div class="pt-3 pb-12">
+                                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                            <div class="p-5 bg-white border-b border-gray-200">
 
-                                <p class="card-description text-black-50">
-                                    Other Information
-                                </p>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="form-label">Father's/Gaurdian's Name <sup class="text-danger">*</sup></label>
+                                                <p class="card-description">
+                                                    Other Information
+                                                </p>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Father's/Gaurdian's Name <sup class="text-danger">*</sup></label>
 
-                                            <input required type="text" class="form-control form-control-sm" name="father_name"
-                                                value="{{$userprofile->father_name}}">
-                                        </div>
+                                                            <input required type="text" class="form-control" name="father_name"
+                                                                value="{{$userprofile->father_name}}">
+                                                        </div>
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="form-label">Father's/Gaurdian's Mobile <sup class="text-danger">*</sup></label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Father's/Gaurdian's Mobile <sup class="text-danger">*</sup></label>
 
-                                            <input required type="text" class="form-control form-control-sm"
-                                                name="fathers_mobile" value="{{$userprofile->fathers_mobile}}">
-                                        </div>
+                                                            <input required type="text" class="form-control"
+                                                                name="fathers_mobile" value="{{$userprofile->fathers_mobile}}">
+                                                        </div>
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="form-label">Father's/Gaurdian's Annual Income <sup class="text-danger">*</sup></label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Father's/Gaurdian's Annual Income <sup class="text-danger">*</sup></label>
 
-                                            <select class="form-control " name="fathers_income">
-                                                <option value="0 to 1 lac" @if($userprofile->fathers_income == "0 to 1 lac")
-                                                    selected @endif>0 to 1 lac</option>
-                                                <option value="1 to 2 lacs" @if($userprofile->fathers_income == "1 to 2 lacs")
-                                                    selected @endif>1 to 2 lacs</option>
-                                                <option value="2 to 3 lacs" @if($userprofile->fathers_income == "2 to 3 lacs")
-                                                    selected @endif>2 to 3 lacs</option>
-                                                <option value="3 to 4 lacs" @if($userprofile->fathers_income == "3 to 4 lacs") selected @endif>3 to 4 lacs</option>
-                                                
-                                                <option value=">= 4 lacs" @if($userprofile->fathers_income == ">= 4 lacs") selected @endif>>= 4 lacs</option>
+                                                            <select class="form-control " name="fathers_income">
+                                                                <option value="0 to 1 lac" @if($userprofile->fathers_income == "0 to 1 lac")
+                                                                    selected @endif>0 to 1 lac</option>
+                                                                <option value="1 to 2 lacs" @if($userprofile->fathers_income == "1 to 2 lacs")
+                                                                    selected @endif>1 to 2 lacs</option>
+                                                                <option value="2 to 3 lacs" @if($userprofile->fathers_income == "2 to 3 lacs")
+                                                                    selected @endif>2 to 3 lacs</option>
+                                                                <option value="3 to 4 lacs" @if($userprofile->fathers_income == "3 to 4 lacs") selected @endif>3 to 4 lacs</option>
+                                                                
+                                                                <option value=">= 4 lacs" @if($userprofile->fathers_income == ">= 4 lacs") selected @endif>>= 4 lacs</option>
 
-                                            </select>
-                                        </div>
+                                                            </select>
+                                                        </div>
 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Father's/Gaurdian's Occupation <sup class="text-danger">*</sup></label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Father's/Gaurdian's Occupation <sup class="text-danger">*</sup></label>
 
-                                            <input required type="text" class="form-control form-control-sm"
-                                                name="father_occupation" value="{{$userprofile->father_occupation}}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">How You Got To Know About Us</label>
+                                                            <input required type="text" class="form-control"
+                                                                name="father_occupation" value="{{$userprofile->father_occupation}}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">How You Got To Know About Us</label>
 
-                                            
-                                            <select class="form-control " name="how_know_us">
-                                                <option value="Social Media" @if($userprofile->how_know_us == "Social Media")
-                                                    selected @endif>Social Media</option>
-                                                <option value="Newspaper" @if($userprofile->how_know_us == "Newspaper")
-                                                    selected @endif>Newspaper</option>
-                                                <option value="From a Friend" @if($userprofile->how_know_us == "From a Friend")
-                                                    selected @endif>From a Friend</option>
-                                                <option value="From a relative" @if($userprofile->how_know_us == "From a relative") selected @endif>From a relative</option>
-                                                
-                                                <option value="Other" @if($userprofile->how_know_us == "Other") selected @endif>Other</option>
+                                                            
+                                                            <select class="form-control " name="how_know_us">
+                                                                <option value="Social Media" @if($userprofile->how_know_us == "Social Media")
+                                                                    selected @endif>Social Media</option>
+                                                                <option value="Newspaper" @if($userprofile->how_know_us == "Newspaper")
+                                                                    selected @endif>Newspaper</option>
+                                                                <option value="From a Friend" @if($userprofile->how_know_us == "From a Friend")
+                                                                    selected @endif>From a Friend</option>
+                                                                <option value="From a relative" @if($userprofile->how_know_us == "From a relative") selected @endif>From a relative</option>
+                                                                
+                                                                <option value="Other" @if($userprofile->how_know_us == "Other") selected @endif>Other</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Any Comments {{-- <sup class="text-danger">*</sup> --}}</label>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Any Comments {{-- <sup class="text-danger">*</sup> --}}</label>
 
-                                            <textarea class="form-control" rows="7" name="comments">{{$userprofile->comments}}</textarea>
+                                                            <textarea class="form-control" rows="7" name="comments">{{$userprofile->comments}}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    {{-- <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="form-check form-check-primary">
+                                                            <label class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input mt-2" name="is_profile_completed" value="1">
+                                                                I agree that all the information filled above is correct and won't be changed for atleast one year.Leave blank if not yet sure
+                                                            <i class="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary me-2">
+                                                    Submit</button>
+                                                    <a class="btn btn-secondary"
+                                                    href="{{url('admin/dashboard')}}">Cancel</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    {{-- <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-check form-check-primary">
-                                            <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input mt-2" name="is_profile_completed" value="1">
-                                                I agree that all the information filled above is correct and won't be changed for atleast one year.Leave blank if not yet sure
-                                            <i class="input-helper"></i>
-                                        </label>
-                                        </div>
-                                    </div>
-                                </div> --}}
-                                </div>
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button><a class="btn btn-light"
-                                    href="{{url('admin/dashboard')}}">Cancel</a>
-                            
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
 @endsection
-    @section('jcontent')
-    <script>
-        var date = new Date();
-
-        $('#datepicker-popup').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            maxDate: "+0y +0m +0w +0d",
-        }).on('changeDate', function(e) {
-                let that_year = new Date(e.date);
-                let val =  date.getFullYear() - that_year.getFullYear();
+@section('jcontent')
+<script>
+    var date = new Date(); 
+    $('#date_picker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        dateFormat: 'dd-mm-yyyy',
+        autoClose:true,
+        onSelect: function(datesel) {
+            let that_year = new Date(datesel);
+            let date = new Date();
+            let val = date.getFullYear() - that_year.getFullYear();
+            if(val){
                 $("#age").val(val);
-        });
-         $(document).ready(function (){
+            }
+            else{
+                $("#age").val(0);
+            }
+        }
+    });
+    $(document).ready(function (){
         $('#edit_profile').validate({
             errorClass: "text-danger pt-1",
             errorPlacement: function(error, element) {
                 if (element.attr("name") == "dob") {
-                    error.insertAfter($("#datepicker-popup"));
+                    error.insertAfter($("#date_picker"));
                 }
                 else {
                     error.insertAfter(element);
@@ -707,7 +707,5 @@
             },
         });
     });
-
-
-    </script>
-    @endsection
+</script>
+@endsection

@@ -1,76 +1,48 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Timings For {{$course->name}} Course
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Timings For {{$course->name}} Course</h3>
+		@endslot
             <li class="breadcrumb-item"><a href="{{url('/course')}}">Courses</a></li>
             <li class="breadcrumb-item active" aria-current="page">Timings</li>
-            </ol>
-        </nav>
-    </div>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
     <div class="card">
         <div id="overlay-loader" class="d-none">
-            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
-                <div >  
-                    
-                        <div class="dot-opacity-loader">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    
+                <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                    <div> 
+                        <div class="loader-box">
+                            <div class="loader-7"></div>
+                        </div>              
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursesslots'))
-                <div class="float-right my-2">
-                    <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#timing-create">
-                    + Create
+        @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursesslots'))
+            <div class="d-flex p-1 m-0 border header-buttons">
+                <div>
+                    <button class="btn bg-white" type="button" data-bs-toggle="modal" data-bs-target="#timing-create">
+                        <i class="fa fa-plus btn-icon-prepend"></i>
+                        Create
                     </button>
-                </div>    
-            @endif
+                </div>
+            </div>    
+        @endif
+        <div class="card-body">
+            
             <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
+                <table class="display datatables" id="timings">
+                    <thead class="bg-primary">
                         <tr>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Total Capacity</th>
-                            {{-- <th>Current Capacity</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($courseslot as $timing)
-                            <tr>
-                                <td>
-                                    {{$timing->name}}
-                                </td>
-                                <td>{{$timing->TotalCapacity}}</td>
-                                {{-- <td>{{$timing->CurrentCapacity}}</td>  --}}       
-                                <td class="d-flex p-1">
-                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot'))      
-                                        <button class="btn btn-dark btn-rounded p-2 mr-2" onclick="EditTiming({{$timing->id}})">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                    @endif
-                                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.coursesslots'))    
-                                        <form action="{{url('courseslot/delete/'.$timing->id)}}" method="post" class="ml-2">
-                                            @csrf
-                                            <button type=submit class="btn btn-danger btn-rounded p-2">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -83,24 +55,22 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="timing-create-title">Create timing for {{$course->name}}</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Timing in hours <sup class="text-danger">*</sup></label>
-                            <input id="name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: 10:00 - 12:00">
+                            <input id="name" class="form-control" type="text" name="name" placeholder="eg: 10:00 - 12:00">
                         </div>
                         <input type="hidden" name="course_id" value="{{$course->id}}">
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <label for="Total Capacity">Total Capacity <sup class="text-danger">*</sup></label>
-                                <input id="TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 60">
+                                <input id="TotalCapacity" class="form-control" type="text" name="TotalCapacity" placeholder="eg : 60">
                             </div>
                             {{-- <div class="form-group col-6">
                                 <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
-                                <input id="CurrentCapacity" class="form-control form-control-sm" type="text" name="CurrentCapacity" placeholder="eg : 59">
+                                <input id="CurrentCapacity" class="form-control" type="text" name="CurrentCapacity" placeholder="eg : 59">
                             </div> --}}
                         </div>
                     </div>
@@ -125,12 +95,12 @@
 
                         <div class="form-group">
                             <label for="name">Timing in hours<sup class="text-danger">*</sup></label>
-                            <input id="edit-name" class="form-control form-control-sm" type="text" name="name" placeholder="eg: Digital Marketing">
+                            <input id="edit-name" class="form-control" type="text" name="name" placeholder="eg: Digital Marketing">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <label for="TotalCapacity">Total Capacity <sup class="text-danger">*</sup></label>
-                                <input id="edit-TotalCapacity" class="form-control form-control-sm" type="text" name="TotalCapacity" placeholder="eg : 3 months">
+                                <input id="edit-TotalCapacity" class="form-control" type="text" name="TotalCapacity" placeholder="eg : 3 months">
                             </div>
                             {{-- <div class="form-group col-6">
                                 <label for="CurrentCapacity">Current Capacity <sup class="text-danger">*</sup></label>
@@ -152,56 +122,66 @@
 @endsection
 @section('jcontent')
     <script>
+        var course_id = '{{$course->id}}';
         function closeModal(){
             $('#timing-edit').modal('hide');
         }
+        function Notify(title,msg,status){
+            $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
+        function deleteTimingConfirm(id){
+            swal({
+                title: "Warning",
+                text: 'You sure want to delete',
+                icon:'warning',
+                buttons: ['Back','Yes I\'m Sure'],
+                dangerMode: true,
+                }).then((yes_delete) => {
+                    if (yes_delete) {
+                           $('#delete_form_'+id).submit();    
+                    }
+                    else
+                    return null;
+                });
+        }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
-            $.toast({
-                heading: 'Created',
-                text: 'CourseSlot Was Successfully Created',
-                position:'top-right',
-                icon: 'success',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Created','Course Timing Was Successfully Created','success')
         @elseif(\Illuminate\Support\Facades\Session::has('updated'))
-            $.toast({
-                heading: 'Updated',
-                text: 'CourseSlot Was Successfully Updated',
-                position:'top-right',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Updated','Course Timing Was Successfully Updated','info')
         @elseif(\Illuminate\Support\Facades\Session::has('deleted'))
-            $.toast({
-                heading: 'Deleted',
-                text: 'CourseSlot Was Successfully Deleted',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
-            $.toast({
-                heading: 'Cannot Delete',
-                text: 'This course Timing already has registrations or admissions',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-            
+            Notify('Deleted','Course Timing Was Successfully Deleted','warning')
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Danger','Something Went Wrong','danger')  
+        @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
+            Notify('Cannot Delete','This timing already has admissions','warning')
         @endif
+        
         
         function EditTiming(timing_id){
             getEditData(timing_id);
@@ -286,6 +266,45 @@
                 } 
 
             });
+
+            $('#timings').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: `{{url('courseslot/data/${course_id}')}}`,
+                /* columnDefs: [{
+                "defaultContent": "-",
+                orderable:false,
+                "targets": "_all"
+                }], */
+                columns:[
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'name',name:"name"},
+                    {data: 'TotalCapacity',name:"TotalCapacity"},
+                    {data: 'perm',render:function(data,type,row){
+                        return `<div>
+                                    <div  class="d-flex p-0 m-0">
+                                        ${data.edit_perm ? 
+                                        `<button class="form-btn form-btn-warning ms-4 me-2" onclick="EditTiming(${row.id})">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>` 
+                                        : null}
+                                        ${data.delete_perm ? 
+                                        
+                                        `<div class="ml-2">
+                                                    <button type=submit class="form-btn form-btn-danger ms-2" onclick="deleteTimingConfirm(${row.id})">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                            </div>        
+                                                <form action='{{url('courseslot/delete/${row.id}')}}' id='delete_form_${row.id}' method="post" class="d-none">
+                                                    @csrf
+                                                </form>
+                                        `: null}
+                                    </div>
+                                </div>`
+                    },name:'perm'}
+                ]
+            });
+
         });
     </script>
     

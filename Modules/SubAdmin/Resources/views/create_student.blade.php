@@ -1,34 +1,20 @@
 @extends('layouts.admin.app')
 
 @section('content')
-<div class="page-header">
-    <h3 class="page-title">
-        Create Students
-    </h3>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Create Students</h3>
+		@endslot
+            <li class="breadcrumb-item"><a href="{{url('/userprofile')}}">Users</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create Students</li>
-        </ol>
-    </nav>
-</div>
+	@endcomponent
 <div class="card">
-    {{-- <div class="d-flex p-1 m-0 border header-buttons">
-            <div>
-                <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
-                    <i class="fa fa-edit btn-icon-prepend"></i>
-                    Edit
-                </button>
-            </div>
-        </div> --}}
     <div id="overlay-loader" class="d-none">
         <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
             <div> 
-                <div class="dot-opacity-loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>                
+                <div class="loader-box">
+                    <div class="loader-7"></div>
+                </div>              
             </div>
         </div>
     </div>
@@ -46,697 +32,636 @@
         <form action="{{route('subadmin_student_create')}}" method="POST" enctype="multipart/form-data"
             id="subadmin_student_create">
             @csrf
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-5 bg-white border-b border-gray-200">
-                        @csrf
-                        <p class="card-description text-black-50">
-                            Account Info
-                        </p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">First Name <sup class="text-danger">*</sup></label>
-                                    <input type="text" class="form-control form-control-sm" id="firstname"
-                                        name="first_name">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
-                                    <input type="text" class="form-control form-control-sm" id="lastname"
-                                        name="last_name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Email<sup class="text-danger">*</sup></label>
-                                    <input type="email" class="form-control form-control-sm" id="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Password<sup class="text-danger">*</sup></label>
-                                    <input type="text" class="form-control form-control-sm" readonly id="password"
-                                        name="password">{{-- 
-                                    <div id="pwd_visibility" class="hide">
-                                        <i class="far fa-eye"></i>
-                                    </div> --}}
-                                </div>
-                            </div>
-                            {{-- <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label">Confirm Password <sup class="text-danger">*</sup></label>
-                                    <input id="password_confirmation" class="form-control form-control-sm"
-                                        type="password" name="password_confirmation" required />
-                                </div>
-                            </div> --}}
+            <p class="card-description">
+                Account Information
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">First Name <sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" id="firstname"
+                            name="first_name">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" id="lastname"
+                            name="last_name">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Email<sup class="text-danger">*</sup></label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Password<sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" readonly id="password"
+                            name="password">{{-- 
+                        <div id="pwd_visibility" class="hide">
+                            <i class="far fa-eye"></i>
+                        </div> --}}
+                    </div>
+                </div>
+                {{-- <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password <sup class="text-danger">*</sup></label>
+                        <input id="password_confirmation" class="form-control"
+                            type="password" name="password_confirmation" required />
+                    </div>
+                </div> --}}
+            </div>
+            <p class="card-description text-black">
+                Personal Information
+            </p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
+                        <input required type="text" class="form-control" name="mobile">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Gender <sup class="text-danger">*</sup></label>
+
+                        <select class="form-control" name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
+                        <input class=" form-control" type="text" data-language="en" name="dob" readonly
+                            id="date_picker" />
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="form-label">Age <sup class="text-danger">*</sup></label>
+
+                        <input required type="text" readonly class="form-control" name="age" id="age">
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Aadhaar Number <sup
+                                class="text-danger">*</sup></label>
+                        <input required type="text" class="form-control" name="aadhaar">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Marital Status <sup
+                                class="text-danger">*</sup></label>
+
+                        <select class="form-control" name="marital_status">
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Photo </label>
+                        <input type="file" name="photo" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="form-label">Blood Group{{--  <sup class="text-danger">*</sup> --}}</label>
+                        <input type="text" class="form-control" name="blood_group">
+                    </div>
+                </div>
+            </div>
+            <p class="card-description text-black">
+                Address
+            </p>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="form-label">Home Type <sup class="text-danger">*</sup></label>
+
+                        <select class="form-control" name="home_type">
+                            <option value="rented">Rented</option>
+                            <option value="owned">Owned</option>
+                            <option value="other">Other</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">House Name/Number <sup
+                                class="text-danger">*</sup></label>
+                        <input required type="text" class="form-control"
+                            name="house_details">
+                    </div>
+
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Street/Locality <sup
+                                class="text-danger">*</sup></label>
+                        <input required type="text" class="form-control" name="street">
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Landmark <sup class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="landmark">
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Pincode <sup class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control" name="pincode">
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">State<sup class="text-danger">*</sup></label>
+                        <select class="form-control " name="state" id="state">
+                            <option value="">Choose State</option>
+                            @foreach ($states as $state)
+                            <option value="{{$state->id}}" @if($state->id == '36')selected @endif>{{$state->name}}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">City <sup class="text-danger">*</sup></label>
+                        <select class="form-control " name="city" id="cities">
+                            <option value="">Choose State</option>
+                            <option value="4460" selected>Hyderabad</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <p class="card-description text-black">
+                Education
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Last Qualification <sup
+                                class="text-danger">*</sup></label>
+
+                        <select class="form-control " name="qualification_id">
+                            @foreach ($qualifications as $qualification)
+                            <option value="{{$qualification->id}}">{{$qualification->name}}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Qualification Specialization <sup
+                                class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="qualification_specilization" placeholder="ex: Science/Mechanical/IT">
+
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">School/College Name <sup
+                                class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="school_name">
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="form-label">Qualification Status <sup
+                                class="text-danger">*</sup></label>
+
+                        <select class="form-control " name="qualification_status">
+                            <option value="Passed">Passed</option>
+                            <option value="Pursuing">Pursuing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Left Incomplete">Left Incomplete</option>
+
+                            <option value="Failed">Failed</option>
+
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="form-label">Occupation <sup class="text-danger">*</sup></label>
+
+                        <select class="form-control" name="occupation_id">
+                            @foreach ($occupations as $occupation)
+                            <option value="{{$occupation->id}}">{{$occupation->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <p class="card-description text-black">
+                Other Information
+            </p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Father's/Gaurdian's Name <sup
+                                class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="father_name">
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Father's/Gaurdian's Mobile <sup
+                                class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="fathers_mobile">
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Father's/Gaurdian's Annual Income <sup
+                                class="text-danger">*</sup></label>
+
+                        <select class="form-control " name="fathers_income">
+                            <option value="0 to 1 lac">0 to 1 lac</option>
+                            <option value="1 to 2 lacs">1 to 2 lacs</option>
+                            <option value="2 to 3 lacs">2 to 3 lacs</option>
+                            <option value="3 to 4 lacs">3 to 4 lacs</option>
+
+                            <option value=">= 4 lacs">>= 4 lacs</option>
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Father's/Gaurdian's Occupation <sup
+                                class="text-danger">*</sup></label>
+
+                        <input required type="text" class="form-control"
+                            name="father_occupation">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">How You Got To Know About Us</label>
+
+
+                        <select class="form-control " name="how_know_us">
+                            <option value="Social Media">Social Media</option>
+                            <option value="Newspaper">Newspaper</option>
+                            <option value="From a Friend">From a Friend</option>
+                            <option value="From a relative">From a relative</option>
+
+                            <option value="Other">Other</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Any Comments
+                            {{-- <sup class="text-danger">*</sup> --}}</label>
+
+                        <textarea class="form-control" rows="7" name="comments"></textarea>
+                    </div>
+                </div>
+            </div>
+            <p class="card-description text-black">
+                Enroll in a course (You can later admit him/her via the admission tab.)<br>
+                First Registration is necessary , Rest are optional.
+            </p>
+            <div class="row justify-content-between">
+                <div class="form-row col-5 p-3 m-1 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course <sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="course_id" id="registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="courseslot_id" id="course_slot">
+                                <option value="">Choose Course Timing</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- Second Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course II <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="sec_course_id" id="sec_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="sec_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="sec_courseslot_id" id="sec_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- Third Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course III <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="third_course_id" id="third_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="third_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="third_courseslot_id" id="third_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- fourth Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course IV <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="fourth_course_id" id="fourth_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="fourth_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="fourth_courseslot_id" id="fourth_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- fifth Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course V <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="fifth_course_id" id="fifth_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="fifth_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="fifth_courseslot_id" id="fifth_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- sixth Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course VI <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="sixth_course_id" id="sixth_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="sixth_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="sixth_courseslot_id" id="sixth_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- seventh Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course VII <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="seventh_course_id" id="seventh_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="seventh_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="seventh_courseslot_id" id="seventh_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- eight Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course VIII <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="eight_course_id" id="eight_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="eight_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="eight_courseslot_id" id="eight_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- ninth Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course IX <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="ninth_course_id" id="ninth_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="ninth_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="ninth_courseslot_id" id="ninth_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{-- tenth Registration Form --}}
+                <div class="form-row col-5 p-3 border border-dark rounded m-1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course X <span class="text-black">(optional)</span></label>
+                            <select class="form-control" name="tenth_course_id" id="tenth_registration_course">
+                                <option value="">Choose A Course</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Duration</label>
+                            <input required type="text" class="form-control" id="tenth_course_duration"
+                                value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Course Timing</label>
+                            <select class="form-control" name="tenth_courseslot_id" id="tenth_course_slot">
+                                <option value="blank">Choose Course First</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="pt-3">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
-
-                            <p class="card-description text-black-50">
-                                Personal Info
-                            </p>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="mobile">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">Gender <sup class="text-danger">*</sup></label>
-
-                                        <select class="form-control" name="gender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">Date of Birth
-                                            <sup class="text-danger">*</sup></label>
-
-                                        <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input type="text" class="form-control form-control-sm" name="dob" id="dob">
-                                            <span class="input-group-addon input-group-append border-left">
-                                                <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Age <sup class="text-danger">*</sup></label>
-
-                                        <input required type="text" readonly class="form-control form-control-sm" name="age" id="age">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Aadhaar Number <sup
-                                                class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="aadhaar">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">Marital Status <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <select class="form-control" name="marital_status">
-                                            <option value="single">Single</option>
-                                            <option value="married">Married</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Photo </label>
-                                        <input type="file" name="photo" class="form-control-file">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Blood Group{{--  <sup class="text-danger">*</sup> --}}</label>
-                                        <input type="text" class="form-control form-control-sm" name="blood_group">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-3">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
-
-                            <p class="card-description text-black-50">
-                                Address
-                            </p>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Home Type <sup class="text-danger">*</sup></label>
-
-                                        <select class="form-control" name="home_type">
-                                            <option value="rented">Rented</option>
-                                            <option value="owned">Owned</option>
-                                            <option value="other">Other</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-label">House Name/Number <sup
-                                                class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="house_details">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-label">Street/Locality <sup
-                                                class="text-danger">*</sup></label>
-                                        <input required type="text" class="form-control form-control-sm" name="street">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">Landmark <sup class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="landmark">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">Pincode <sup class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm" name="pincode">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">State<sup class="text-danger">*</sup></label>
-                                        <select class="form-control " name="state" id="state">
-                                            <option value="">Choose State</option>
-                                            @foreach ($states as $state)
-                                            <option value="{{$state->id}}" @if($state->id == '36')selected @endif>{{$state->name}}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">City <sup class="text-danger">*</sup></label>
-                                        <select class="form-control " name="city" id="cities">
-                                            <option value="">Choose State</option>
-                                            <option value="4460" selected>Hyderabad</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-3">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
-
-                            <p class="card-description text-black-50">
-                                Education
-                            </p>
-                            <div class="row">
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Last Qualification <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <select class="form-control " name="qualification_id">
-                                            @foreach ($qualifications as $qualification)
-                                            <option value="{{$qualification->id}}">{{$qualification->name}}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Qualification Specialization <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="qualification_specilization" placeholder="ex: Science/Mechanical/IT">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-label">School/College Name <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="school_name">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Qualification Status <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <select class="form-control " name="qualification_status">
-                                            <option value="Passed">Passed</option>
-                                            <option value="Pursuing">Pursuing</option>
-                                            <option value="Completed">Completed</option>
-                                            <option value="Left Incomplete">Left Incomplete</option>
-
-                                            <option value="Failed">Failed</option>
-
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-label">Occupation <sup class="text-danger">*</sup></label>
-
-                                        <select class="form-control" name="occupation_id">
-                                            @foreach ($occupations as $occupation)
-                                            <option value="{{$occupation->id}}">{{$occupation->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-3 pb-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
-
-                            <p class="card-description text-black-50">
-                                Other Information
-                            </p>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Father's/Gaurdian's Name <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="father_name">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Father's/Gaurdian's Mobile <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="fathers_mobile">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Father's/Gaurdian's Annual Income <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <select class="form-control " name="fathers_income">
-                                            <option value="0 to 1 lac">0 to 1 lac</option>
-                                            <option value="1 to 2 lacs">1 to 2 lacs</option>
-                                            <option value="2 to 3 lacs">2 to 3 lacs</option>
-                                            <option value="3 to 4 lacs">3 to 4 lacs</option>
-
-                                            <option value=">= 4 lacs">>= 4 lacs</option>
-
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Father's/Gaurdian's Occupation <sup
-                                                class="text-danger">*</sup></label>
-
-                                        <input required type="text" class="form-control form-control-sm"
-                                            name="father_occupation">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">How You Got To Know About Us</label>
-
-
-                                        <select class="form-control " name="how_know_us">
-                                            <option value="Social Media">Social Media</option>
-                                            <option value="Newspaper">Newspaper</option>
-                                            <option value="From a Friend">From a Friend</option>
-                                            <option value="From a relative">From a relative</option>
-
-                                            <option value="Other">Other</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Any Comments
-                                            {{-- <sup class="text-danger">*</sup> --}}</label>
-
-                                        <textarea class="form-control" rows="7" name="comments"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-3 pb-18">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
-
-                            <p class="card-description text-black-50">
-                                Enroll in a course (You can later admit him/her via the admission tab.)<br>
-                                First Registration is necessary , Rest are optional.
-                            </p>
-                            <div class="row justify-content-between">
-                                <div class="form-row col-5 p-3 m-1 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course <sup class="text-danger">*</sup></label>
-                                            <select class="form-control" name="course_id" id="registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
-                                            <select class="form-control" name="courseslot_id" id="course_slot">
-                                                <option value="">Choose Course Timing</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- Second Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course II <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="sec_course_id" id="sec_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="sec_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="sec_courseslot_id" id="sec_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- Third Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course III <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="third_course_id" id="third_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="third_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="third_courseslot_id" id="third_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- fourth Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course IV <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="fourth_course_id" id="fourth_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="fourth_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="fourth_courseslot_id" id="fourth_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- fifth Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course V <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="fifth_course_id" id="fifth_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="fifth_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="fifth_courseslot_id" id="fifth_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- sixth Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course VI <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="sixth_course_id" id="sixth_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="sixth_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="sixth_courseslot_id" id="sixth_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- seventh Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course VII <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="seventh_course_id" id="seventh_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="seventh_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="seventh_courseslot_id" id="seventh_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- eight Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course VIII <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="eight_course_id" id="eight_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="eight_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="eight_courseslot_id" id="eight_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- ninth Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course IX <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="ninth_course_id" id="ninth_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="ninth_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="ninth_courseslot_id" id="ninth_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- tenth Registration Form --}}
-                                <div class="form-row col-5 p-3 border border-dark rounded m-1">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course X <span class="text-black-50">(optional)</span></label>
-                                            <select class="form-control" name="tenth_course_id" id="tenth_registration_course">
-                                                <option value="">Choose A Course</option>
-                                                @foreach ($courses as $course)
-                                                    <option value="{{$course->id}}">{{$course->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Duration</label>
-                                            <input required type="text" class="form-control form-control-sm" id="tenth_course_duration"
-                                                value="" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Course Timing</label>
-                                            <select class="form-control" name="tenth_courseslot_id" id="tenth_course_slot">
-                                                <option value="blank">Choose Course First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center my-2">
-                            <button type="submit" class="btn btn-primary mr-2">Submit</button><a class="btn btn-light"
-                                href="{{url('admin/dashboard')}}">Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="my-2">
+            <button type="submit" class="btn btn-primary me-2">Submit</button><a class="btn btn-secondary"
+                href="{{url('/userprofile')}}">Cancel</a>
             </div>
         </form>
     </div>
@@ -745,17 +670,23 @@
 @endsection
 @section('jcontent')
 <script>
-    var date = new Date();
-
-    $('#datepicker-popup').datepicker({
+    var date = new Date(); 
+    $('#date_picker').datepicker({
         autoclose: true,
         todayHighlight: true,
-        maxDate: "+0y +0m +0w +0d",
-    }).on('changeDate', function(e) {
-                let that_year = new Date(e.date);
-                let val =  date.getFullYear() - that_year.getFullYear();
+        format: 'dd-mm-yyyy',
+        onSelect: function(datesel) {
+            let that_year = new Date(datesel);
+            let date = new Date();
+            let val = date.getFullYear() - that_year.getFullYear();
+            if(val){
                 $("#age").val(val);
-        });
+            }
+            else{
+                $("#age").val(0);
+            }
+        }
+    });
     $(document).ready(function () {
         $('#subadmin_student_create').validate({
             errorClass: "text-danger pt-1",
@@ -1458,5 +1389,4 @@
         });
     });
 </script>
-
 @endsection

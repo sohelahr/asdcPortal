@@ -1,87 +1,98 @@
 @extends('layouts.admin.app')
-
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Import Summaries
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Import Summaries</h3>
+		@endslot
             <li class="breadcrumb-item" aria-current="page"><a href="{{url('attendance')}}">Attendance</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Import Summaries</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div id="admissions-by-batches-loader" class="d-none">
-            <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                <div class="bar-loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>    
+            <li class="breadcrumb-item active" aria-current="page">Import Summaries</li>    
+    @endcomponent
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div id="admissions-by-batches-loader" class="d-none">
+                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                        <div> 
+                            <div class="loader-box">
+                                <div class="loader-7"></div>
+                            </div>              
+                        </div>  
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                    <table id="import_sumarry_table" class="display datatables">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th>No.</th>                            
+                                    <th>Total Records</th>
+                                    <th>Success Records</th>
+                                    <th>Failed Records</th>
+                                    <th>Status</th>
+                                    <th>Error Logs</th>
+                                    <th>Imported On</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="bg-primary">
+                                <tr>
+                                    <th>No.</th>                            
+                                    <th>Total Records</th>
+                                    <th>Success Records</th>
+                                    <th>Failed Records</th>
+                                    <th>Status</th>
+                                    <th>Error Logs</th>
+                                    <th>Imported On</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-               <table id="import_sumarry_table" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Id</th>                            
-                            <th>Total Record</th>
-                            <th>Success Record</th>
-                            <th>Failed Record</th>
-                            <th>Status</th>
-                            <th>Error Logs</th>
-                            <th>Imported At</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>                            
-                            <th>Total Record</th>
-                            <th>Success Record</th>
-                            <th>Failed Record</th>
-                            <th>Status</th>
-                            <th>Error Logs</th>
-                            <th>Imported At</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
     </div>
+</div>
     
 @endsection
 @section('jcontent')
     <script>
+        function Notify(title,msg,status){
+            $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
         @if(\Illuminate\ Support\ Facades\ Session::has('published'))
-            $.toast({
-                heading: 'Publish',
-                text: 'Attendance was successfully published',
-                position: 'top-right',
-                icon: 'success',
-                loader: true, // Change it to false to disable loader
-                loaderBg: '#9EC600' // To change the background
-            })
-
+            Notify('Publish','Attendance was successfully published','success')
         @elseif(\Illuminate\ Support\ Facades\ Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position: 'top-right',
-                icon: 'danger',
-                loader: true, // Change it to false to disable loader
-                loaderBg: '#9EC600' // To change the background
-            })
+            Notify('Danger','Something went wrong','danger')
         @endif
-        var site_path = '{{url('/')}}';
+        var site_path = '{{url("/")}}';
     $(function () {
         loadDatatable();
     });
@@ -104,6 +115,7 @@
             },
             columnDefs: [{
                 "defaultContent": "-",
+                'class':'text-center',
                 "targets": "_all"
             }],
             columns: [
@@ -117,19 +129,19 @@
                         {
                             if(data === "0")
                             {
-                                return '<span title="InActive" class="badge badge-info">Pending</span>';
+                                return '<span title="InActive" class="text-info">Pending</span>';
                             }
                             else if(data === "1")
                             {
-                                return '<span title="Active" class="badge badge-success"> Fully Succeed</span>';
+                                return '<span title="Active" class="text-success">Succeeded</span>';
                             }
                             else if(data === "2")
                             {
-                                return '<span title="Active" class="badge badge-warning"> Partially Succeed</span>';
+                                return '<span title="Active" class="txt-secondary"> Partially Succeeded</span>';
                             }
                             else
                             {
-                                return '<span title="Blocked" class="badge badge-danger">Failed</span>';
+                                return '<span title="Blocked" class="text-danger">Failed</span>';
                             }
                         }
                         //return data;
@@ -141,7 +153,7 @@
                     render: function ( data, type, row ) {
                         if ( type === 'display' )
                         {
-                            return '<a class="nav-link" href="'+site_path+'/attendance/import_summaries/logs/'+row.id+'">View Error Logs</a>';
+                            return '<a class="nav-link" href="'+site_path+'/attendance/import_summaries/logs/'+row.id+'">View Logs</a>';
                         }
                         //return data;
                     },
@@ -154,16 +166,16 @@
                         {
                             var html_content = '';
 
-                            html_content += '<a class="btn btn-info btn-sm" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.original_file)+'/original" title="Download Original Record"><i class="fas fa-file-excel"></i></a>&nbsp;';
+                            html_content += '<a class="badge badge-info" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.original_file)+'/original" title="Original Records"><i class="fa fa-file-excel-o"></i></a>&nbsp;';
 
                             if(row.success_record != '0')
                             {
-                                html_content += '<a class="btn btn-success btn-sm" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.success_transaction_file)+'/success" title="Download Success Record"><i class="fas fa-file-excel"></i></a>&nbsp;';
+                                html_content += '<a class="badge badge-success" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.success_transaction_file)+'/success" title="Success Records"><i class="fa fa-file-excel-o"></i></a>&nbsp;';
                             }
                             
                             if(row.failed_record != '0')
                             {
-                                html_content += '<a class="btn btn-danger btn-sm" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.failed_transaction_file)+'/failed" title="Download Failed Record"><i class="fas fa-file-excel"></i></a>&nbsp;';
+                                html_content += '<a class="badge badge-danger" href="'+site_path+'/attendance/import_summaries/download/'+btoa(row.failed_transaction_file)+'/failed" title="Failed Records"><i class="fa fa-file-excel-o"></i></a>&nbsp;';
                             }
                             
                             return html_content;

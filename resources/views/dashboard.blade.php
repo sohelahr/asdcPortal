@@ -1,23 +1,18 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h5 class="font-semibold text-m text-gray-800 leading-tight">
-            {{ __('My Courses') }}
-        </h5>
-    </x-slot>
-    <div id="overlay-loader" class="d-none">
-        <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+@extends('layouts.app')
+@section('content')
+    
+    <div id="overlay-loader">
+        <div style="height: 100%;width:100%;position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
             <div> 
-                <div class="dot-opacity-loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>                
+                <div class="loader-box">
+                    <div class="loader-7"></div>
+                </div>              
             </div>
         </div>
     </div>
 
     <div id="complete_profile" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title text-danger" id="my-modal-title">Notice : </h3>
@@ -28,16 +23,16 @@
                 <div class="modal-footer">
                     <form method="POST" action="{{ route('logout') }}" class="px-2">
                         @csrf
-                        <input type="submit" value="Logout" class="btn btn-info">
+                        <input type="submit" value="Logout" class="btn btn-secondary">
                     </form>
-                    <a class="btn btn-warning" href="{{route('profile_update')}}">Complete Profile</a>
+                    <a class="btn btn-primary" href="{{route('profile_update',['one'])}}">Complete Profile</a>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="profile_suspended" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title text-danger" id="my-modal-title">Notice : </h3>
@@ -57,47 +52,49 @@
             </div>
         </div>
     </div>
-
-    <div class="py-12">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row justify-content-between">
+                <div class="col-6">
+                    <h3>My Courses</h3>
+                </div>
+                <div class="col-6 align-items-right">
+                    <div class="float-end">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#enroll-modal">
+                           Enroll 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="email-wrap bookmark-wrap">
+            <div class="row">
+                
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="crm-activity" id="registrations">
+                                
+                            </ul>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">               
                 <div class="p-6 bg-white border-b border-gray-200">
                     
-                    <div class="float-right">
-                        <button class="btn btn-outline-primary btn-fw" type="button" data-toggle="modal" data-target="#enroll-modal">
-                            Enroll In A Course
-                        </button>
-                    </div>
+                    
                     <div class="pt-5 mt-6">
-                        <div class="row">
-                            <div class="col-12">
-                                <h4 class="card-title">Registrations</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-hover" id="registrations">
-                                        <thead>
-                                            <tr>
-                                                <th>Registration Number</th>
-                                                <th>Course Name</th>
-                                                <th>Course Timing</th>
-                                                <th>Registered On</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        {{-- <tfoot>
-                                            <tr>
-                                                <th>Registration Number</th>
-
-                                                <th>Course Name</th>
-                                                <th>Course Timing</th>
-                                                <th>Registered On</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </tfoot> --}}
-                                    </table>
-                                </div>
+                        <div class="row justif-content-center">
+                            <div class="col-10">
+                               
                             </div>
                             <div class="col-12 mt-6">
                                 <h4 class="card-title">Feedbacks</h4>
@@ -124,11 +121,20 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="enroll-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="my-modal-title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    </div> --}}
+    <div class="modal fade" id="enroll-modal" tabindex="-1" data-backdrop="static" 
+        data-keyboard="false" aria-labelledby="my-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                <div id="admissions-by-batches-loader" class="d-none">
+                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                        <div> 
+                            <div class="loader-box">
+                                <div class="loader-7"></div>
+                            </div>              
+                        </div>    
+                    </div>
+                </div>
                 <div class="modal-header">
                     <h5 class="modal-title" id="my-modal-title">Course Enrollment</h5>
                 </div>
@@ -173,7 +179,7 @@
             </div>
         </div>
     </div>
-
+@endsection    
 @section('jcontent')
     <script>
         $.ajaxSetup({
@@ -182,102 +188,78 @@
                 }
             });
         @if(! $profile->is_profile_completed)
-            $("#complete_profile").modal({
+            var myModal = new bootstrap.Modal($("#complete_profile")[0],{
                 backdrop: 'static',
                 keyboard: false,
-                show:true,
-            })
+            });
+            myModal.show()
         @endif
-
+    
+        var enroll_modal = new bootstrap.Modal($("#enroll-modal")[0]);
+        
         @if($profile->status == "2")
-            $("#profile_suspended").modal({
+            var myModal = new bootstrap.Modal($("#profile_suspended")[0],{
                 backdrop: 'static',
                 keyboard: false,
-                show:true,
-            })
+            });
+            myModal.show()
         @endif
-
-        @if(\Illuminate\Support\Facades\Session::has('profile_complete'))    
-                $.toast({
-                    heading: 'Profile Complete',
-                    text: 'Please Contact admin to make changes to your profile',
-                    position:'top-right',
-                    icon: 'danger',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+        
+        function Notify(title,msg,status){
+             $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
+        @if(\Illuminate\Support\Facades\Session::has('profile_complete')) 
+                Notify('Profile Complete','Please Contact admin to make changes to your profile','danger')   
             @elseif(\Illuminate\Support\Facades\Session::has('profile_not_complete'))
-                $.toast({
-                    heading: 'Danger',
-                    text: 'First Update Your Profile',
-                    position:'top-center',
-                    icon: 'danger',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
-                
+                Notify('Danger','First Update Your Profile','danger')   
             @elseif(\Illuminate\Support\Facades\Session::has('profile_updated'))
-                $.toast({
-                    heading: 'success',
-                    text: 'Profile was successfully updated',
-                    position:'top-center',
-                    icon: 'success',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('success','Profile was successfully updated','success')   
             @elseif(\Illuminate\Support\Facades\Session::has('registered'))
-                $.toast({
-                    heading: 'Registered',
-                    text: 'You have successfully registered For a course',
-                    position:'top-right',
-                    icon: 'success',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('Registered','You have successfully registered For a course','success')   
                 
             @elseif(\Illuminate\Support\Facades\Session::has('already_registered'))
-                $.toast({
-                    heading: 'Warning',
-                    text: 'You have already registered for two courses please visit the center before applying for more',
-                    position:'top-right',
-                    icon: 'warning',
-                    loader: false,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('Warning','You have already registered for two courses please visit the center before applying for more','warning')   
+
              @elseif(\Illuminate\Support\Facades\Session::has('unauthorized'))
-                $.toast({
-                    heading: 'Unauthorized',
-                    text: 'Aha! being sneeky af',
-                    position:'top-right',
-                    icon: 'danger',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('Unauthorized','Aha! being sneeky af','danger')   
             @elseif(\Illuminate\Support\Facades\Session::has('feedback_created'))
-                $.toast({
-                    heading: 'Success',
-                    text: 'Feedback was successfully recorded',
-                    position:'top-center',
-                    icon: 'success',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('Success','Feedback was successfully recorded','success')   
+
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
-                $.toast({
-                    heading: 'Danger',
-                    text: 'Something went wrong ',
-                    position:'top-right',
-                    icon: 'danger',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
+                Notify('Danger','Something went wrong ','danger')   
             @endif
         function deleteRegistration(reg_id){
             swal({
                     title: "Withdraw Application",
-                    text: "Are you sure you want to withraw your application",
+                    text: "Are you sure?",
                     icon: "warning",
-                    buttons: ['Cancel','Withdraw'],
+                    buttons: ['Cancel','Yes'],
                     dangerMode: true,
                 }).then((withdraw) => {
                         if (withdraw) {
@@ -292,7 +274,7 @@
                                 },
                                 statusCode: {
                                     200: function (response) {
-                                            table.draw();
+                                            getRegistration();
                                             swal("You have successfully withdrawn your application", {
                                                 icon: "success",
                                             });
@@ -309,56 +291,82 @@
                         }
                     });
         }
-        var table = $('#registrations').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{route('user_registrations')}}",
-                columns:[
-                    /* {data: 'student_name', name: 'student_name'}, */
-                    {data: 'registration_no', name: 'registration_no'},
-                    {data: 'course_name',name:"course_name"},
-                    {data: 'course_slot',name:"course_slot"},
-                    {data: 'date',name:"date"},
-                    {data:'status',render:function(type,data,row){
-                        if(row.status == "1"){
-                            return `<label class='text-warning'>Applied</label>`
-                        }
-                        else if(row.status == "2"){
-                            return "<label class='text-success'>Admitted</label>"
-                        }
-                        else if(row.status == "3"){
-                            return "<label class='text-danger'>Cancelled</label>"
-                        }
-                    },
-                    name:'status'
-                    },
-                    {data:'action',render:function(type,data,row){
-                            if(row.status == "1"){
-                                return `<button type="button" class="btn btn-warning btn-rounded py-2" 
-                                            onclick='deleteRegistration(${row.id})'
-                                            >
-                                            <i class="fas fa-times"></i>                    
-                                        </button>`
-                            }
-                            /* else if(row.status == "2"){
-                                return `<a type="button" class="btn btn-primary btn-rounded py-2" href="{{url('admission/id-card/${row.id}')}}">
-                                            <i class="fa fa-id-card" style="font-size: 0.9rem;"></i>                          
-                                        </a>`
-                            } */
-                            else{
-                                return `<button type="button" class="btn btn-danger btn-rounded py-2">
-                                            <i class="fa fa-frown"></i>                          
-                                        </button>`
-                            }
-                        }
+
+        function getRegistration() {
+            $.ajax({
+                type: "get",
+                url: `{{route('user_registrations')}}`,
+                beforeSend: function () {
+                    $('#overlay-loader').removeClass('d-none');
+                },
+                success: function (response) {
+                    $("#registrations").empty();
+                    response = JSON.parse(response);
+                    if(response.status == true){
+                        console.log(response);
+                        $.each(response.data, function (index, element) { 
+                            $('#registrations').append(`
+                                    <li class="media">
+                                        <span class="me-3 overflow-hidden">
+                                            <div class='initials text-capitalize'>
+                                                <span>${element.course_slug}</span>
+                                            </div>
+                                        </span>
+                                        <div class="align-self-center media-body">
+                                            <div class="d-flex flex-row align-items-center justify-content-between">
+                                                <div>
+                                                    <h6 class="mt-0">
+                                                       ${element.course_name} 
+                                                    </h6>
+                                                </div>
+                                                ${element.status == "1" ? ( 
+                                                    `<div class="" onclick='deleteRegistration(${element.id})' role="button">
+                                                        <span style="font-size:20px" class="text-danger">
+                                                            <i class="icofont icofont-ui-delete" ></i>
+                                                        </span>
+                                                    </div>`)
+                                                : ''}             
+                                            </div>
+                                            <ul class="dates">
+                                                <li>
+                                                    <span class="text-dark">Status:</span> 
+                                                    <span class="text-${element.status == "1" ? 'warning' : (element.status == "2" ? 'success' : 'danger' )}">
+                                                        ${element.status == "1" ? 'Applied' : (element.status == "2" ? 'Admitted' : 'Cancelled' )}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                            <ul class="dates">
+                                                <li><span class="text-dark">Timing:</span> ${element.course_slot}</li>                                            
+                                            </ul>
+                                            <ul class="dates">
+                                                <li><span class="text-dark">Reg No.:</span>
+                                                        ${element.registration_no} </li>
+                                            </ul>
+                                        </div>                
+                                    </li>
+                            `);
+                        });
                     }
-                ]
+                    else
+                    {
+                        /* $("#course_slot").append(`
+                                <option value="">Not Found</option>
+                        `); */
+                        $('#registrations').append(`
+                            <h3>Start by enrolling in a course...</h3>
+                        `);
+                    }
+                            $('#overlay-loader').hide();
+                },
             });
             
-    
+        }
         
         
         $(document).ready(function () {
+            getRegistration();
+
+            //for enrolling 
              $('#enrollment_form').validate({
                 errorClass: "text-danger pt-1",            
                 rules: {     
@@ -390,14 +398,7 @@
                         },
                         success: function (response) {
                             if(response.status == "success"){
-                                $.toast({
-                                    heading: 'Success',
-                                    text: response.msg,
-                                    position:'top-center',
-                                    icon: 'success',
-                                    loader: true,        // Change it to false to disable loader
-                                    loaderBg: '#9EC600'
-                                });
+                                Notify('Success', response.msg ,'success')
                             }
                             else{
                                 swal({
@@ -406,21 +407,28 @@
                                     icon: 'warning',
                                 });
                             }
-                            table.draw();
+                            getRegistration();
                             $('#overlay-loader').hide();
                         },
                     });
                 },
             });
         }); 
+
+        //for closing enroll modal
         function closeModal(){
-            $('#enroll-modal').modal('hide');
+            enroll_modal.hide()
         }
+        
+        //for getting timings
         $("#registration_course").on('change',function(){
             let course_id = $("#registration_course").val()
             $.ajax({
                 type: "get",
                 url: `{{url('registration/getforminputs/${course_id}')}}`,
+                beforeSend: function (){
+                    $('#admissions-by-batches-loader').removeClass('d-none');
+                },
                 success: function (response) {
                     $("#course_slot").empty();
                     $("#course_duration").val(response.course_duration);;
@@ -438,18 +446,22 @@
                         `);
                     }
                 },
+                complete: function(){
+                    $('#admissions-by-batches-loader').addClass('d-none');
+                }
             });
         });
 
         //Feedbacks assigned via sort wise
         
-        $('#feedback_header_table').DataTable({
+        /* $('#feedback_header_table').DataTable({
             processing: true,
             serverSide: true,
             searching:false,
             ordering:false,
             "pageLength": 30,
             "bDestroy": true,
+            
             ajax: {
                 "url":`{{url("feedback/get-all-feedback-headers-per-admission/")}}`,
                 "dataType": "json",
@@ -457,7 +469,7 @@
                 "data":{ _token: "{{csrf_token()}}"}
             },
             "columnDefs": [
-                {"className": "text-center", "targets": '_all'}
+                {"class": "text-center", "targets": '_all'}
             ],
             columns: [
                 {
@@ -511,9 +523,8 @@
                     name:'filled_status'
                 },
             ]
-        });
+        }); */
     
 
     </script>
 @endsection
-</x-app-layout>

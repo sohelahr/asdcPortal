@@ -1,224 +1,207 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('content')
     
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-    <div class="content-wrapper">
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                      <div class="border-bottom text-center pb-4">
-                        <div class="d-flex justify-content-center">
-                           @if($profile->photo)
-                                <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile"
-                                        class="img-lg rounded-circle mb-3">
-                            @else
-                                <img src = "{{asset('/storage/app/profile_photos/blankimage.png')}}" alt = "" class="img-lg rounded-circle mb-3">
-                            @endif
-                        </div>
-                        <p>{{$profile->Occupation->name}}</p>
-                        <div class="d-flex justify-content-between">
-                          <button class="badge badge-info badge-pill"><i class="fas fa-birthday-cake"></i> {{date('d M Y',strtotime($profile->dob))}}</button>
-                          <button class="badge badge-danger badge-pill"><i class="fas fa-burn"></i> {{$profile->blood_group}}</button>
-                        </div>
-                      </div>
-                      <div class="border-bottom py-4">
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Aadhaar
-                          </span>
-                          <span class="float-right text-muted">
-                            {{$profile->aadhaar}}
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Marital Status
-                          </span>
-                          <span class="float-right text-muted">
-                            {{$profile->marital_status}}
-                          </span>
-                        </p>
-                      </div>
-                      <div class="py-4">
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Status
-                          </span>
-                          <span class="float-right text-muted">
-                            @if($profile->status == '2')
-                              Suspended
-                            @elseif($profile->status == '1')
-                             Employed
-                            @else  
-                              Active
-                            @endif
-                          </span>
-                        </p>
-                        @if($profile->status == '2')
-                          <p class="clearfix">
-                            <span class="float-left">
-                              Suspended Till
-                            </span>
-                            <span class="float-right text-muted">
-                                {{date('d M Y',strtotime($profile->suspended_till))}}
-                            </span>
-                          </p>
-                        @endif
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Phone
-                          </span>
-                          <span class="float-right text-muted">
-                            {{$profile->mobile}}
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Email
-                          </span>
-                          <span class="float-right text-muted">
-                            {{$profile->User->email}}
-                          </span>
-                        </p>
-                        {{-- <p class="clearfix">
-                          <span class="float-left">
-                            Facebook
-                          </span>
-                          <span class="float-right text-muted">
-                            <a href="#">David Grey</a>
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Twitter
-                          </span>
-                          <span class="float-right text-muted">
-                            <a href="#">@davidgrey</a>
-                          </span>
-                        </p>
-                      </div> 
-                      <button class="btn btn-primary btn-block">Preview</button> --}}
-                    </div>
-                  </div>
-                    <div class="col-lg-8 pl-lg-5">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <h3>{{$profile->firstname}} {{$profile->lastname}}</h3>
-                          <div class="d-flex align-items-center">
-                            <h5 class="mb-0 mr-2 text-muted text-capitalize">{{$profile->gender}} ({{$profile->age}})</h5>
-                        </div>
-                        <div class="profile-feed">
-                            <div class="d-flex align-items-start profile-feed-item">
-                            <img src="{{url('/public/images/state_icon.png')}}" alt="profile"  height="50" width="50" class="rounded-circle">
-                            <div class="ml-4">
-                                <h5>
-                                Address
-                                </h5>
-                                <h6 class=" text-muted mt-2 mb-0">
-                                    {{$profile->house_details}}, {{$profile->street}}, {{$profile->landmark}}, <br>
-                                    @if($state_name !== "")
-                                        {{$city_name}},
-                                        {{$state_name}},
+<div class="container-fluid">	
+    <div class="user-profile">
+        <div class="row">
+            <div class="col-sm-12">
+	                <div class="card profile-header">
+	                    <img class="img-fluid bg-img-cover" src="{{asset('public/images/gradient.png')}}" alt="" />{{-- 
+	                    <div class="profile-img-wrrap"><img class="img-fluid bg-img-cover" src="{{asset('public/images/bg-image.jpg')}}" alt="" /></div> --}}
+	                   <div class="userpro-box">
+	                        <div class="img-wrraper">
+	                            <div class="avatar">
+                                    @if($profile->photo)
+                                        <img src="{{asset('storage/app/profile_photos/'.$profile->photo)}}" alt="profile"
+                                            class="img-lg">
                                     @else
-                                        {{$profile->city}},
-                                        {{$profile->state}},
-                                    @endif,   
-                                    {{$profile->pincode}}
-                                </h6>
+                                        <img src="{{asset('/storage/app/profile_photos/blankimage.png')}}" alt=""
+                                            class="img-lg">
+                                    @endif
+                                </div>
+	                        </div>
+	                        <div class="user-designation">
+	                            <div class="title">
+	                                    <h4 class="txt-primary">{{$profile->firstname}} {{$profile->lastname}}</h4>
+	                                    <h6>+91 {{$profile->mobile}}</h6>
+	                                    <h6 class="text-lowercase">{{$profile->User->email}}</h6>
+                                         @if($profile->status == '2')
+                                        <h6 class="text-danger">
+                                            Suspended till
+                                            <span>
+                                                {{date('d M Y',strtotime($profile->suspended_till))}}
+                                            </span>
+                                        </h6>
+                                        @endif
+    	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+                <!-- user profile header end-->
+	            <div class="col-xl-4 col-lg-4 col-md-4">
+	                <div class="default-according style-1 faq-accordion job-accordion">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="p-0">
+                                    <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="true" aria-controls="collapseicon2">About Me</button>
+                                </h5>
                             </div>
-                            </div>
-                            
-                            <div class="d-flex align-items-start profile-feed-item">
-                                <img src="{{url('/public/images/export_icon.png')}}" alt="profile"  height="50" width="50" class="rounded-circle">
-                                <div class="ml-4">
-                                  <h5>Education</h5>
-                                  <div>
-                                    <label class="badge badge-outline-dark">{{$profile->Qualification->name}}</label>
-                                    <label class="badge badge-outline-dark">{{$profile->qualification_specilization}}</label>
-                                    <label class="badge badge-outline-dark">{{$profile->school_name}}</label>
-                                    <label class="badge badge-outline-dark">{{$profile->qualification_status}}</label>
-                                  </div>                                                               
+                            <div class="collapse show" id="collapseicon2" aria-labelledby="collapseicon2" data-parent="#accordion">
+                                <div class="card-body post-about">
+                                    <ul>
+                                        <li>
+                                            <div class="icon"><i data-feather="briefcase"></i></div>
+                                            <div>
+                                                <h5>Employment Status</h5>
+                                                <p>{{$profile->Occupation->name}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="book"></i></div>
+                                            <div>
+                                                <h5>studied {{$profile->Qualification->name}} {{$profile->qualification_specilization}}</h5>
+                                                <p>{{$profile->qualification_status}}, {{$profile->school_name}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="heart"></i></div>
+                                            <div>
+                                                <h5>relationship status</h5>
+                                                <p>{{$profile->marital_status}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="heart"></i></div>
+                                            <div>
+                                                <h5>Age</h5>
+                                                <p>{{$profile->age}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="map-pin"></i></div>
+                                            <div>
+                                                <h5>Lives in 
+                                                    @if($state_name !== "")
+                                                    {{$city_name}},
+                                                    @else
+                                                    {{$profile->city}},
+                                                    @endif
+                                                </h5>
+                                                <p>{{$profile->house_details}}, {{$profile->street}},<br>
+                                                    {{$profile->landmark}}, {{$profile->pincode}}<br>
+                                                    @if($state_name !== "")
+                                                    {{$state_name}}
+                                                    @else
+                                                    {{$profile->state}}
+                                                    @endif
+                                                    
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    {{-- <div class="social-network theme-form">
+                                        <span class="f-w-600">Social Networks</span>
+                                        <button class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Facebook</button>
+                                        <button class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Twitter</button>
+                                        <button class="btn social-btn btn-google text-center"><i class="fa fa-dribbble m-r-5"></i>Dribbble</button>
+                                    </div> --}}
                                 </div>
                             </div>
-                            <div class="d-flex align-items-start profile-feed-item">
-                              
-                            <img src="{{url('/public/images/father-icon.png')}}" alt="profile" height="50" width="50" class="rounded-circle">
-                            <div class="ml-3 col-9">
-                                <h5>
-                                Family
+	                    </div>
+	                </div>
+	            </div>
+                <div class="col-xl-4 col-lg-4 col-md-4">
+	                <div class="default-according style-1 faq-accordion job-accordion">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="p-0">
+                                    <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon3" aria-expanded="true" aria-controls="collapseicon3">Additional Information</button>
                                 </h5>
-                                <p class="clearfix">
-                                  <span class="float-left">
-                                    Father/Gaurdian 
-                                  </span>
-                                  <span class="float-right text-muted">
-                                    {{$profile->father_name}}
-                                  </span>
-                                </p>
-                                <p class="clearfix">
-                                  <span class="float-left">
-                                    Occupation
-                                  </span>
-                                  <span class="float-right text-muted">
-                                    {{$profile->father_occupation}}
-                                  </span>
-                                </p>
-                                <p class="clearfix">
-                                  <span class="float-left">
-                                    Mobile
-                                  </span>
-                                  <span class="float-right text-muted">
-                                    {{$profile->fathers_mobile}}
-                                  </span>
-                                </p>
-                                
-                                <p class="clearfix">
-                                  <span class="float-left">
-                                    Income
-                                  </span>
-                                  <span class="float-right text-muted">
-                                    {{$profile->fathers_income}}
-                                  </span>
-                                </p>  
                             </div>
+                            <div class="collapse show" id="collapseicon3" aria-labelledby="collapseicon3" data-parent="#accordion">
+                                <div class="card-body post-about">
+                                    <ul>
+                                        <li>
+                                            <div class="icon"><i data-feather="briefcase"></i></div>
+                                            <div>
+                                                <h5>Aadhaar</h5>
+                                                <p>{{$profile->aadhaar}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="book"></i></div>
+                                            <div>
+                                                <h5>Gender</h5>
+                                                <p>{{$profile->gender}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="heart"></i></div>
+                                            <div>
+                                                <h5>Born on</h5>
+                                                <p>{{date('d M Y',strtotime($profile->dob))}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="droplet"></i></div>
+                                            <div>
+                                                <h5>blood group</h5>
+                                                <p>{{$profile->blood_group ? $profile->blood_group : 'Not Provided'}}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            {{-- <div class="d-flex align-items-start profile-feed-item">
-                            <img src="../../images/faces/face19.jpg" alt="profile" class="img-sm rounded-circle">
-                            <div class="ml-4">
-                                <p>
-                                Dylan Silva
-                                <small class="ml-4 text-muted"><i class="far fa-clock mr-1"></i>10 hours</small>
-                                </h6>
-                                <p>
-                                When I first got into the online advertising business, I was looking for the magical combination 
-                                that would put my website into the top search engine rankings
-                                </p>
-                                <img src="../../images/samples/1280x768/5.jpg" alt="sample" class="rounded mw-100">                                                        
-                                <p class="small text-muted mt-2 mb-0">
-                                <span>
-                                    <i class="fa fa-star mr-1"></i>4
-                                </span>
-                                <span class="ml-2">
-                                    <i class="fa fa-comment mr-1"></i>11
-                                </span>
-                                <span class="ml-2">
-                                    <i class="fa fa-mail-reply"></i>
-                                </span>
-                                </p>
+	                    </div>
+	                </div>
+	            </div>
+                <div class="col-xl-4 col-lg-4 col-md-4">
+	                <div class="default-according style-1 faq-accordion job-accordion">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="p-0">
+                                    <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon4" aria-expanded="true" aria-controls="collapseicon4">About My Family</button>
+                                </h5>
                             </div>
-                            </div> --}}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                            <div class="collapse show" id="collapseicon4" aria-labelledby="collapseicon4" data-parent="#accordion">
+                                <div class="card-body post-about">
+                                    <ul>
+                                        <li>
+                                            <div class="icon"><i data-feather="briefcase"></i></div>
+                                            <div>
+                                                <h5>Father/Gaurdian</h5>
+                                                <p>{{$profile->father_name}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="book"></i></div>
+                                            <div>
+                                                <h5>Father Occupation</h5>
+                                                <p>{{$profile->father_occupation}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="heart"></i></div>
+                                            <div>
+                                                <h5>Father's Mobile</h5>
+                                                <p>{{$profile->fathers_mobile}}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="icon"><i data-feather="map-pin"></i></div>
+                                            <div>
+                                                <h5>Family Income</h5>
+                                                <p>{{$profile->fathers_income}}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+	                    </div>
+	                </div>
+	            </div>
         </div>
-</x-app-layout>
+    </div>
+</div>
+@endsection  

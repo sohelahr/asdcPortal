@@ -3,7 +3,40 @@
     <title>Registration Confirmation</title>
 @endsection
 @section('content')
-    <div class="container-scroller">
+<section>
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-12">
+                    <div class="login-card">
+                        <div class="theme-form login-form">
+                            <h5 class="txt-primary text-center">Hello, {{$user->name}}</h5>
+                                @if($user->is_verified == 1)
+                                    <p>
+                                        Thank you for verifying your email, Please click on login.
+                                    </p>
+                                    <div class="mt-2">
+                                        <a href="{{url('/login')}}" class="btn btn-block btn-primary btn-sm font-weight-medium">Login</a>
+                                    </div>
+                                @else
+                                    <p>
+                                        We have sent you a confirmation email, please check your mailbox / spam folder.<br><br>
+                                        If you have not received the email, please click below.
+                                    </p>
+                                    <div class="mt-2">
+                                        <a href="{{url('/register/resend-verification-email/'.base64_encode($user->id))}}" 
+                                            onclick="showLoader(this);" 
+                                            class="btn btn-block btn-primary btn-sm font-weight-medium">
+                                            <i style="font-size: 12px;" class="fa fa-envelope"></i>
+                                            &nbsp; Resend Verification Email</a>
+                                    </div>
+                                @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{-- <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-center auth">
                 <!-- Validation Errors -->
@@ -32,31 +65,68 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 @section('jcontent')
     <script>
-
         $(function(){
             @if(\Illuminate\Support\Facades\Session::has('success'))
-            $.toast({
-                heading: 'Email Send',
-                text: 'Verification email resend successfully.',
-                position:'top-right',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            $.notify({
+                    title:'Email Send',
+                    message:'Verification email resend successfully.'
+                },
+                {
+                    type:'warning',
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+                });
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
-            $.toast({
-                heading: 'Opps,',
-                text: 'Something went wrong we are unable to send the email.',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            $.notify({
+                    title:'Opps,',
+                    message:'Something went wrong we are unable to send the email.'
+                },
+                {
+                    type:'danger',
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+                });
             @endif
         });
 

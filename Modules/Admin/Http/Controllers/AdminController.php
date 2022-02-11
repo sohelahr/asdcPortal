@@ -56,10 +56,16 @@ class AdminController extends Controller
         $admission_counts = [];
         $labels = [];
         $colors = [];
+        $color_stock = [
+            '#222222','#717171','#bf9168','#e4ca43','#1c4f46',
+            '#d43545','#DBD5C3','#9C872C','#B36452','#5F388B',
+            '#4A57BA','#A5494F','#00C4CB','#61606A','#eb20c7'
+        ];
+        $i = 0;
         foreach ($courses as $course) {
           array_push($admission_counts,$course->Admissions->count());  
           array_push($labels,$course->name);
-          array_push($colors,'#' . dechex(rand(256,16777215)));
+          array_push($colors,$color_stock[$i++]);
         }
         return json_encode(['labels'=>$labels,'count'=>$admission_counts,'colors'=>$colors]);
     }
@@ -164,15 +170,15 @@ class AdminController extends Controller
                                         ->orderBy('how_know_us')
                                         ->get();
         $labels = ['Newspaper','From a Friend','From a relative','Other','Social Media',];
-        $colors = [];
+        $colors = ['#222222','#717171','#bf9168','#e4ca43','#1c4f46'];
         $count = [];
         foreach($raw_count as $get_count){
           array_push($count,$get_count->count);
         }
 
-        for($i=0;$i<4;$i++){
+        /* for($i=0;$i<4;$i++){
           array_push($colors,'#' . dechex(rand(256,16777215)));
-        }
+        } */
         return json_encode(['labels'=>$labels,'count'=>$count,'colors'=>$colors]);
     }
 
@@ -211,7 +217,7 @@ class AdminController extends Controller
                                 WHERE coursebatch_id = ".$batch_id."
                                 GROUP BY status");
         $labels = [];
-        $colors = ['#36a2eb','#ff6384','#4bc0c0','#ffcd56','#ffa449'];
+        $colors = ['#1c4f46','#717171','#bf9168','#e4ca43','#222222'];
         $count = [];
         foreach($admission_counts as $admissioncount){
             array_push($count,$admissioncount->admissioncount);  
@@ -223,6 +229,25 @@ class AdminController extends Controller
     public function getBatches($courseid){
         $coursebatches = Course::find($courseid)->CourseBatches;
         return json_encode(['coursebatch'=>$coursebatches]);
+    }
+
+    public function getTopCourses(){
+        $topcourses = DB::select('SELECT course_id,courses.name AS name,COUNT(registration_no) AS reg_count 
+                                FROM `registrations` 
+                                JOIN courses ON 
+                                registrations.course_id = courses.id 
+                                GROUP BY course_id ,name
+                                ORDER BY reg_count DESC 
+                                LIMIT 5');
+        $total_reg_count = Registration::all()->count();
+        $labels = [];
+        $colors = ['#1c4f46','#717171','#bf9168','#e4ca43','#222222'];
+        $count = [];
+        foreach($topcourses as $courses){
+            array_push($count,$courses->reg_count);  
+            array_push($labels,$courses->name);
+        }
+        return json_encode(['labels'=>$labels,'count'=>$count,'colors'=>$colors,'total_reg'=>$total_reg_count]);
     }
 
     public function getUsersStats(){

@@ -22,7 +22,7 @@
     }
 </style>
 <body>
-    <div style = "background-color: #392C70; height: 100px">
+    <div style = "background-color: #1c4f46; height: 100px">
 
     </div>
     <div class = "container">
@@ -30,13 +30,13 @@
             <div>
                 <table style = "width: 100%;padding:3%">
                     <td style = "width:20%">
-                        <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "100px" style = "padding: 4%;" class="seed" />
+                        <img src = "{{url('/public/images/Seed_Logo3.png')}}" width = "80px" style = "padding: 4%;" class="seed" />
                     </td>        
                     <td style = "text-align:center;width:60%;">
                         <img src = "{{url('/public/images/ASDC_Final_Logo-01.png')}}" width="275px" class="logo" />
                     </td>
                     <td style = "text-align: right;width:20%" class = "tqf">
-                        <img src = "{{url('/public/images/TQF_Logo.jpg')}}" class = "tqf" width = "100px" style = "padding: 4%; " />
+                        <img src = "{{url('/public/images/TQF_Logo.jpg')}}" class = "tqf" width = "80px" style = "padding: 4%; " />
                     </td>
                  </table>
                 <div>
@@ -45,13 +45,13 @@
                         <p><b>Greetings from ASDC,</b></p>
                         <p>ASDC is formed to help the students who could not continue their education with the required skills necessary for employment.</p>
                     </div>
-                    <div style = "margin-top: 50px; text-align: center; padding: 1% 0 0 5%">
+                    <div style = "margin-top: 20px; text-align: center; padding: 2% 5%">
                         <p>Verify your email by pressing below, by pressing the button below,</p>
                     </div>
                     <div style = "text-align: center;margin-bottom:1%">
-                        <a href="{{route('verify_mail',base64_encode($user_id))}}"><button style = "background-color: rgb(54, 14, 54); border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 80px; height: 40px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
+                        <a href="{{route('verify_mail',base64_encode($user_id))}}"><button style = "background-color: #1c4f46 ; border: 1px solid rgb(54, 14, 54); border-radius: 10px; color: white; width: 80px; height: 40px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">Click Here</button>
                     </div>
-                    <div style="margin:4%;text-align: center;">
+                    <div style="margin:4%;text-align: center;padding-bottom:4%">
                         Click <a href="{{route('verify_mail',base64_encode($user_id))}}">here</a> if the button doesn't work.
                     </div>
                     {{-- <div style = "width: 100%">

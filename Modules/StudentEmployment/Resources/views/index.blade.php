@@ -1,43 +1,40 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Admissions
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Admissions</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        
-        <div class="card-body">
-            
-            <div class="table-responsive">
-                         <table class="table table-hover" id="admissions">
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Course Name</th>
-                            <th>Company Name</th>
-                            <th>Location</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                     <tfoot>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Course Name</th>
-                            <th>Company Name</th>
-                            <th>Location</th>
-                        </tr>
-                     </tfoot>
-                </table>
-                </div>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Employments</h3>
+		@endslot
+            <li class="breadcrumb-item active" aria-current="page">Employments</li>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
+                    
+                    <div class="card-body">
+                        
+                        <div class="table-responsive">
+                            <table class="diplay datatables" id="admissions">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Course Name</th>
+                                        <th>Company Name</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="bg-primary">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Course Name</th>
+                                        <th>Company Name</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,7 +91,7 @@
             columns:[
                 {data: 'student_name',render:function(data,type,row){
                     if(data['perm']){
-                        return "<a href='studentemployment/view/"+row.id+"'>"+data['student_name']+"</a>"
+                        return "<a href='studentemployment/view/"+row.id+"' class='txt-primary'>"+data['student_name']+"</a>"
                     }
                     else{
                         return "<p class='mb-0'>"+data['student_name']+"</p>"

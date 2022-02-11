@@ -24,7 +24,7 @@ class CourseBatchController extends Controller
     }
 
     function CourseBatchData(){
-        $coursebatches = CourseBatch::all();
+        $coursebatches = CourseBatch::orderby('id','DESC')->get();
         
         return DataTables::of($coursebatches)
                 ->addIndexColumn()

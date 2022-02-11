@@ -1,271 +1,470 @@
 @extends('layouts.admin.app')
-@section('title')
-    <title>Dashboard</title>
-@endsection
-@section('content')
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title">
-                Dashboard
-            </h3>
-            <div class="float-right">
-                <a href="{{url("admin/import-index")}}" class="btn btn-outline-primary" >Import Registrations<a>
-            </div>
-        </div>
-        <div class="row grid-margin">
-            <div class="col-12">
-                <div class="card">
-                        
-                    <div class="card-body">
-                        
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-2 col-md-4 col-sm-6 align-items-center">
-                                    <div class="counter">
-                                        <div class="counter-icon">
-                                            <i class="fa fa-user"></i>
-                                        </div>
-                                        <span class="counter-value">{{$user_stats['new_count']}}</span>
-                                        <h3>Weekly New Users</h3>
-                                        
-                                    </div>
-                                    <div>
-                                    {{-- @if($user_stats['type'] == 1)
-                                        <label class="badge badge-outline-success badge-pill">{{$user_stats['percent']}}% increase</label>
-                                    @elseif($user_stats['type'] == -1)
-                                        <label class="badge badge-outline-danger badge-pill">{{$user_stats['percent']}}% decrease</label>
-                                    @endif --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6">
-                                    <div class="counter second">
-                                        <div class="counter-icon">
-                                            <i class="	fas fa-file-alt"></i>
-                                        </div>
-                                        <span class="counter-value">{{$data['total_registrations']}}</span>
-                                        <h3>Registrations</h3>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6 align-items-center">
-                                    <div class="counter third">
-                                        <div class="counter-icon">
-                                            <i class="fas fa-user-graduate"></i>
-                                        </div>
-                                        <span class="counter-value">{{$data['total_admissions']}}</span>
-                                        <h3>Admissions</h3>
-                                        
-                                    </div>
-                                    <div>
-                                    {{-- @if($user_stats['type'] == 1)
-                                        <label class="badge badge-outline-success badge-pill">{{$user_stats['percent']}}% increase</label>
-                                    @elseif($user_stats['type'] == -1)
-                                        <label class="badge badge-outline-danger badge-pill">{{$user_stats['percent']}}% decrease</label>
-                                    @endif --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6">
-                                    <div class="counter fourth">
-                                        <div class="counter-icon">
-                                            <i class="fas fa-hourglass"></i>
-                                        </div>
-                                        <span class="counter-value">{{$data['total_batches']}}</span>
-                                        /
-                                        <span class="counter-value"> {{$data['total_slots']}}</span>
-                                        
-                                        <h3>Batches / Active Slots</h3>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6 align-items-center">
-                                    <div class="counter fifth">
-                                        <div class="counter-icon">
-                                            <i class="fas fa-user-alt-slash"></i>
-                                        </div>
-                                        <span class="counter-value">{{$data['total_cancellations']}} </span>
-                                        / <span class="counter-value">{{$data['total_terminations']}}</span>
-                                        <h3>Cancellation / Termination</h3>
-                                        
-                                    </div>
-                                    <div>
-                                    {{-- @if($user_stats['type'] == 1)
-                                        <label class="badge badge-outline-success badge-pill">{{$user_stats['percent']}}% increase</label>
-                                    @elseif($user_stats['type'] == -1)
-                                        <label class="badge badge-outline-danger badge-pill">{{$user_stats['percent']}}% decrease</label>
-                                    @endif --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6">
-                                    <div class="counter sixth">
-                                        <div class="counter-icon">
-                                            <i class="fas fa-user-tie"></i>
-                                        </div>
-                                        <span class="counter-value">{{$data['total_employments']}}</span>
-                                        <h3>Total Employments</h3> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
 
+@section('content')
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Dashboard</h3>
+		@endslot
+	@endcomponent
+    {{-- <div class="float-right">
+                <a href="{{url("admin/import-index")}}" class="btn btn-outline-primary" >Import Registrations<a>
+            </div> --}}
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div id="gauge-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-md-row justify-content-between align-items-center">
-                            <div>
-                            <h4 class="card-title mb-0">Capacity by slots (Current Batch)</h4>
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card o-hidden border-0">
+                    <div class="bg-primary b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="align-self-center text-center"><i data-feather="user-plus"></i></div>
+                            <div class="media-body">
+                                <span class="m-0">Total Registrations</span>
+                                <h4 class="mb-0 counter">{{$data['total_registrations']}}</h4>
+                                <i class="icon-bg" data-feather="user-plus"></i>
                             </div>
-                            <div class="col-3">
-                                <select class="form-control" id="change_gauge">
-                                    @foreach ($courses as $course)
-                                        <option value="{{$course->id}}">{{$course->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div id="course_gauges_container" class="row justify-content-center align-items-center">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div id="all-admissions-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="card-body" > 
-                        <h4 class="card-title">Admissions by status per course</h4>
-                        <div style="position: relative;">
-                            <canvas id="course_wise_employements" height="120px"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
-                    <div id="course-wise-admissions-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="card-body" style="position: relative;">
-                        <h4 class="card-title">Admissions by course</h4>
-                        <canvas id="course_wise_admissions"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
-                    <div id="students-by-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="card-body" style="position: relative;">
-                        <h4 class="card-title">Students by Source</h4>
-                        <canvas id="reach_source"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
-                    <div id="admissions-by-batches-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="card-body" style="position: relative;">
-                        <div class="d-flex flex-md-row justify-content-between align-items-center">
-                            <div>
-                            <h4 class="card-title mb-0">Admissions By Batches</h4>
-                            </div>
-                            <div class="col-4">
-                                <select class="form-control" id="change_admission_by_batch">
-                                    @foreach ($courses as $course)
-                                        <option value="{{$course->id}}">{{$course->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <select class="form-control" id="course_batch">
-                                    @foreach ($firstbatches as $item)
-                                        <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
-                                    @endforeach
-                                </select>
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card o-hidden border-0">
+                    <div class="bg-secondary b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="align-self-center text-center"><i data-feather="user-check"></i></div>
+                            <div class="media-body">
+                                <span class="m-0">Admissions</span>
+                                <h4 class="mb-0 counter">{{$data['total_admissions']}}</h4>
+                                <i class="icon-bg" data-feather="user-check"></i>
                             </div>
                         </div>
-                        <div class="admission_by_batch_container"> 
-                        <canvas id="admission_by_batch">
-                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card o-hidden border-0">
+                    <div class="bg-primary b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="align-self-center text-center"><i data-feather="trending-up"></i></div>
+                            <div class="media-body">
+                                <span class="m-0">Batches | Slots</span>
+                                <h4 class="mb-0 counter">{{$data['total_batches']}} | {{$data['total_slots']}}</h4>
+                                <i class="icon-bg" data-feather="trending-up"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 grid-margin stretch-card">
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card o-hidden border-0">
+                    <div class="bg-primary b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="align-self-center text-center"><i data-feather="briefcase"></i></div>
+                            <div class="media-body">
+                                <span class="m-0">Employed</span>
+                                <h4 class="mb-0 counter">{{$data['total_employments']}}</h4>
+                                <i class="icon-bg" data-feather="briefcase"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 xl-100 box-col-12">
                 <div class="card">
+                    <div id="get-top-courses-loader" class="d-none">
+                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="cal-date-widget card-body">
+                        <div class="row">
+                            <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
+                                <div class="cal-info text-center">
+                                    <div>
+                                        <h2>{{date('d',time())}}</h2>
+                                        <div class="d-inline-block">
+                                            <span class="b-r-dark pe-3">{{date('F',time())}}</span>
+                                            <span class="ps-3">{{date('Y',time())}}</span>
+                                        </div>
+                                        <p class="f-16">There is no minimum donation, any sum is appreciated.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
+                                <div class="cal-datepicker">
+                                    <div class="custom-box p-4 float-sm-end" data-language="en">
+                                        <div class="card-header p-0 pb-1">
+                                            <h6 class="txt-primary ">Top 5 Applied Courses</h6>
+                                            <hr />
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordernone">
+                                                <tbody id="top-courses-table">
+                                                    <tr>
+                                                        <td style="width: 220px" class="bd-t-none u-s-tb">
+                                                            <div class="align-middle image-sm-size">
+                                                                <div class="d-inline-block">
+                                                                    <h6>John Deo</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td style="width: 120px">
+                                                                <div class="progress" style="height: 8px;">
+                                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                        </td>
+                                                        <td>
+                                                            20%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bd-t-none u-s-tb">
+                                                            <div class="align-middle image-sm-size d-flex align-items-center">
+                                                                <div class="d-inline-block">
+                                                                    <h6>Holio Mako</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="progress-showcase">
+                                                                <div class="progress" style="height: 8px;">
+                                                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 70%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            20%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bd-t-none u-s-tb">
+                                                            <div class="align-middle image-sm-size">
+                                                                <div class="d-inline-block">
+                                                                    <h6>Mohsib lara</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="progress-showcase">
+                                                                <div class="progress" style="height: 8px;">
+                                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 60%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            60%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bd-t-none u-s-tb">
+                                                            <div class="align-middle image-sm-size">
+                                                                <div class="d-inline-block">
+                                                                    <h6>Hileri Soli</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="progress-showcase">
+                                                                <div class="progress" style="height: 8px;">
+                                                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            40%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bd-t-none u-s-tb">
+                                                            <div class="align-middle image-sm-size">
+                                                                <div class="d-inline-block">
+                                                                    <h6>Pusiz bia</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="progress-showcase">
+                                                                <div class="progress" style="height: 8px;">
+                                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 90%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            80%
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="row">
+                    {{-- <div class="row grid-margin">
+                        <div class="col-12">
+                            <div class="card">
+                                    
+                                <div class="card-body">
+                                    
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-2 col-md-4 col-sm-6 align-items-center">
+                                                <div class="counter">
+                                                    <div class="counter-icon">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                    <span class="counter-value">{{$user_stats['new_count']}}</span>
+                                                    <h3>Weekly New Users</h3>
+                                                    
+                                                </div>
+                                                <div>
+                                                @if($user_stats['type'] == 1)
+                                                    <label class="badge badge-outline-success badge-pill">{{$user_stats['percent']}}% increase</label>
+                                                @elseif($user_stats['type'] == -1)
+                                                    <label class="badge badge-outline-danger badge-pill">{{$user_stats['percent']}}% decrease</label>
+                                                @endif
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-2 col-md-4 col-sm-6 align-items-center">
+                                                <div class="counter fifth">
+                                                    <div class="counter-icon">
+                                                        <i class="fas fa-user-alt-slash"></i>
+                                                    </div>
+                                                    <span class="counter-value">{{$data['total_cancellations']}} </span>
+                                                    / <span class="counter-value">{{$data['total_terminations']}}</span>
+                                                    <h3>Cancellation / Termination</h3>
+                                                    
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div> --}}
+                    <div class="col-xl-12">
+                        <div class="card o-hidden custom-box">
+                            <div id="registrations-loader" class="d-none">
+                                <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                    <div> 
+                                        <div class="loader-box">
+                                            <div class="loader-7"></div>
+                                        </div>              
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="card-header pb-0">
+                                <h5>Registrations</h5>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <canvas id="total_registrations" height="60px"></canvas>                                   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div id="feedback-by-status-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
+                    <div class="col-xl-12">
+                        <div class="card o-hidden custom-box">
+                            <div id="all-admissions-loader" class="d-none">
+                                <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                    <div> 
+                                        <div class="loader-box">
+                                            <div class="loader-7"></div>
+                                        </div>              
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="card-header pb-0">
+                                <h5>Admissions by status per course</h5>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <canvas id="course_wise_employements" height="120px"></canvas>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body" style="position: relative;">
-                        <h4 class="card-title">Feedbacks by status</h4>
-                        <div class="d-flex justify-content-center">
-                            <h2 class="text-success"><marquee>Coming Soon! :)</marquee></h2>
+                    <div class="col-xl-6">
+                        <div class="card o-hidden custom-box">
+                            <div id="course-wise-admissions-loader" class="d-none">
+                                <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                    <div> 
+                                        <div class="loader-box">
+                                            <div class="loader-7"></div>
+                                        </div>              
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="card-header pb-0">
+                                <h5>Admissions by course</h5>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <canvas id="course_wise_admissions"></canvas>                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <canvas id="some_id">
-                        </canvas>
                     </div>
-                </div>
-            </div>        
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div id="registrations-loader" class="d-none">
-                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
+                    <div class="col-xl-6">
+                        <div class="card o-hidden custom-box">
+                            <div id="students-by-loader" class="d-none">
+                                <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                    <div> 
+                                        <div class="loader-box">
+                                            <div class="loader-7"></div>
+                                        </div>              
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="card-header pb-0">
+                                <h5>Students by Source</h5>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <canvas id="reach_source"></canvas>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body" style="position: relative;">
-                        <h4 class="card-title">Registrations</h4>
-                        <canvas id="total_registrations" height="60px"></canvas>
+                    <div class="col-xl-6">
+                        <div class="card o-hidden custom-box">
+                            <div id="admissions-by-batches-loader" class="d-none">
+                                <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                    <div> 
+                                        <div class="loader-box">
+                                            <div class="loader-7"></div>
+                                        </div>              
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="card-header pb-0">
+                                <div class="d-flex flex-md-row justify-content-between align-items-center">
+                                
+                                    <h5>Admissions By Batches</h5>
+                                    <div class="float-end">
+                                        <select class="form-control" id="change_admission_by_batch">
+                                            @foreach ($courses as $course)
+                                                <option value="{{$course->id}}">{{$course->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <select class="form-control" id="course_batch">
+                                            @foreach ($firstbatches as $item)
+                                                <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="admission_by_batch_container"> 
+                                                <canvas id="admission_by_batch"></canvas>                                  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card o-hidden custom-box">
+                            <div id="feedback-by-status-loader" class="d-none">
+                                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                        <div> 
+                                            <div class="loader-box">
+                                                <div class="loader-7"></div>
+                                            </div>              
+                                        </div>    
+                                    </div>
+                                </div>
+                            <div class="card-header pb-0">
+                                <h5>Feedbacks by status</h5>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2 class="text-success"><marquee>Coming Soon! :)</marquee></h2> 
+                                            <canvas></canvas>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="card o-hidden custom-box">
+                            <div id="gauge-loader" class="d-none">
+                                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                                        <div> 
+                                            <div class="loader-box">
+                                                <div class="loader-7"></div>
+                                            </div>              
+                                        </div>    
+                                    </div>
+                                </div>
+                            <div class="card-header pb-0">
+                                <div class="d-flex flex-md-row justify-content-between align-items-center">
+                                
+                                    <h5>Capacity by slots (Current Batch)</h5>
+                                    <div class="float-end">
+                                        <select class="form-control" id="change_gauge">
+                                            @foreach ($courses as $course)
+                                                <option value="{{$course->id}}">{{$course->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-chart-widget">
+                                <div class="top-content bg-primary"></div>
+                                <div class="bottom-content card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div id="course_gauges_container" class="row justify-content-center align-items-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,20 +472,15 @@
     </div>
 @endsection
 @section('jcontent')
+<script src="{{ env('BACKEND_CDN_URL')}}/js/just-gauge/raphael-2.1.4.min.js"></script>
+
+<script src="{{ env('BACKEND_CDN_URL')}}/js/just-gauge/justgage.js"></script>
+<script src="{{ env('BACKEND_CDN_URL')}}/js/chart/chartjs/chart.min.js"></script>
+
 <script>
     let admissionChart;
     $(document).ready(function () {
-        $('.counter-value').each(function(){
-            $(this).prop('Counter',0).animate({
-                Counter: $(this).text()
-            },{
-                duration: 3500,
-                easing: 'swing',
-                step: function (now){
-                    $(this).text(Math.ceil(now));
-                }
-            });
-        });
+        getTopCourses();
         //Initial gauge
         $.ajax({
             type: "get",
@@ -548,37 +742,37 @@
                 {
                     type: 'bar',
                     label: 'Currently Studying',
-                    data: bardata.admitted_counts,              
-                    borderColor: '#36a2eb',
-                    backgroundColor: '#36a2eb',
+                    data: bardata.admitted_counts,      
+                    backgroundColor: '#1c4f46',//success
+                    // backgroundColor: 'rgba(36, 105, 92, 0.4)',
                 },    
                 {
                     type: 'bar',
                     label: 'Not Employed',
                     data: bardata.not_employed_admissions_counts,              
-                    borderColor: '#ff6384',
-                    backgroundColor: '#ff6384',
+                    backgroundColor: '#717171',//info
+                    // backgroundColor: 'rgba(113, 113, 113, 0.2)',
                 },
                 {
                     type: 'bar',
                     label: 'Employed',
                     data: bardata.employed_admissions_counts,                
-                    borderColor: '#4bc0c0',
-                    backgroundColor: '#4bc0c0',
+                    backgroundColor: '#bf9168',//secondary
+                    // backgroundColor: 'rgba(186, 137, 93, 0.4)',
                 },
                 {
                     type: 'bar',
                     label: 'Cancelled',
                     data: bardata.cancelled_counts,                
-                    borderColor: '#ffcd56',
-                    backgroundColor: '#ffcd56',
+                    backgroundColor: '#d43545',//warning
+                    // backgroundColor: 'rgb(228, 202, 67,0.4)',
                 },
                 {
                     type: 'bar',
                     label: 'Terminated',
                     data: bardata.terminated_counts,                
-                    borderColor: '#ffa449',
-                    backgroundColor: '#ffa449',
+                    backgroundColor: '#e4ca43',//red
+                    // backgroundColor: 'rgba(0,0,0,.4)',
                 },
             ],
                 labels:  bardata.labels,
@@ -647,11 +841,11 @@
         const data = {
             labels: linedata.labels,
             datasets: [{
-                fill: false,
-                borderColor:'#392C70',
+                fill:true,
+                backgroundColor: "rgba(36, 105, 92, 0.4)",
+                borderColor:'#1c4f46',
                 label: 'Registrations',
                 data: linedata.count,
-                backgroundColor: 'transparent',
                 hoverOffset: 4
             }],
             
@@ -687,7 +881,9 @@
         if(gaugedata['slot_transaction'].length > 0){
             gaugedata['slot_transaction'].map((transaction)=>{
                 $('#course_gauges_container').append(`
-                        <div id="gauge_${transaction.id}" class='col-md-4 col-12' ><div>
+                        <div id="gauge_${transaction.id}" class='col-md-4 col-12' >
+                            
+                        <div>
                 `);
                 
                 let courseslot = gaugedata['course_slots'].filter((element)=>{
@@ -698,9 +894,11 @@
                         value: transaction.total_capacity - transaction.current_capacity,
                         min: 0,
                         max: transaction.total_capacity,
+                        valueFontColor:'#1c4f46',
                         gaugeWidthScale: 0.6,
                         label: courseslot[0].name,
-                        labelFontColor:'black',
+                        labelFontColor:'#1c4f46',
+                        levelColors:['#1c4f46','#e4ca43','#d43545']
                     });
                 gauges.push(gauge);
             }) 
@@ -713,7 +911,6 @@
     }
 
     function generatePieChartForBatchAdmissions(piebatchdata) {
-        console.log(piebatchdata)
         if(piebatchdata.count.length == 0){
             return $('#admission_by_batch_container').append(` <h2 class="text-warning">No Data found :(<h2>`);
         }
@@ -755,5 +952,52 @@
        
 
     }
+
+    function getTopCourses(){
+        $.ajax({
+            type: "get",
+            url: `{{url('admin/get-top-courses')}}`,
+            beforeSend: function (){
+                $('#get-top-courses-loader').removeClass('d-none');
+            },
+            success: function (response) {
+                let data = JSON.parse(response);
+                console.log(data);
+                
+                if(data.count.length){
+                    $('#top-courses-table').html('');
+                    data.count.map((item,index) => {
+                        var perc = Math.ceil((item/data.total_reg)*100);
+                        $('#top-courses-table').append(`
+                            <tr>
+                                <td style="width: 220px;vertical-align:center" class="bd-t-none u-s-tb">
+                                    <div class="align-middle image-sm-size">
+                                        <div class="d-inline-block">
+                                            <h6>${data.labels[index]}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width: 120px;vertical-align:center">
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" role="progressbar" style="width: ${perc}%;background-color: ${data.colors[index]}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                </td>
+                                <td style="vertical-align:center">
+                                    ${perc}%
+                                </td>
+                        </tr>`);
+                    });
+
+                }
+                else{
+                    $('#top-courses-table').html(`<div class="my-5">No Registrations Yet</div>`);
+                }
+            },
+            complete: function(){
+                $('#get-top-courses-loader').addClass('d-none');
+            }
+        });
+    }
+    
 </script>
 @endsection

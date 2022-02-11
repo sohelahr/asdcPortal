@@ -1,55 +1,48 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Registrations
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Registrations</h3>
+		@endslot
             <li class="breadcrumb-item active" aria-current="page">Registrations</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        
-        <div class="card-body">
-            
-            <div class="table-responsive">
-                         <table class="table table-hover" id="registrations">
-                    <thead>
-                        <tr>
-                            <th style="width: 30px">No</th>
-                            <th>Reg Number</th>
-                            <th>Student Name</th>
-                            <th>Course Name</th>
-                            <th>Course Timing</th>
-                            <th>Registered On</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                     <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Reg Number</th>
-                            <th>Student Name</th>
-                            <th>Course Name</th>
-                            <th>Course Timing</th>
-                            <th>Registered On</th>
-                            <th>Action</th>
-                        </tr>
-                     </tfoot>
-                </table>
-                </div>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+	            <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="dislay datatable" id="registrations">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th style="width: 30px">No</th>
+                                        <th>Reg Number</th>
+                                        <th>Student Name</th>
+                                        <th>Course Name</th>
+                                        <th>Course Timing</th>
+                                        <th>Registered On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="bg-primary">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Reg Number</th>
+                                        <th>Student Name</th>
+                                        <th>Course Name</th>
+                                        <th>Course Timing</th>
+                                        <th>Registered On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection
 @section('jcontent')
 <script>
@@ -71,6 +64,9 @@
          columnDefs: [{
             "defaultContent": "-",
             "targets": "_all"
+        },{
+            className: 'text-center',
+            'targets':[6]
         }],
         columns:[
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
@@ -86,11 +82,11 @@
             {data: 'date',name:"date"},
             {data:'action',render:function(data,type,row){
                     if(data === true)
-                        return "<a class='badge badge-success badge-pill' href='admission/create/"+row.id+"'>Admit</a>"
+                        return "<a class='text-success' href='admission/create/"+row.id+"'>Admit</a>"
                     else
-                        return "<a class='badge badge-danger badge-pill ml-2'  href='#'><i class='fa fa-frown'></i></a>"
+                        return ;
 
-            },name:'action'}
+            },name:'action',orderable:false}
         ]
     });
 } );

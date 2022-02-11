@@ -1,59 +1,44 @@
 @extends('layouts.admin.app')
 @section('content')
-    
-    <div class="page-header">
-        <h3 class="page-title">
-            Feedback Initialize
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> Feedback Initialize</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div id="admissions-by-batches-loader" class="d-none">
-                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                        <div class="bar-loader">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>    
-                    </div>
-                </div>
-        <div class="card-body">
-            
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{route('feedback_header_create')}}" method="POST" enctype="multipart/form-data" id = "edit_profile">
-
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Feedback Create</h3>
+		@endslot
+            <li class="breadcrumb-item"><a href="{{url('feedback')}}">Feedbacks</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Feedback Create</li>
+    @endcomponent
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
                     <div id="admissions-by-batches-loader" class="d-none">
                         <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                            <div class="bar-loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>    
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>   
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-5 bg-white border-b border-gray-200">
+                    <div class="card-body">
+                        
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{route('feedback_header_create')}}" method="POST" enctype="multipart/form-data" id = "edit_profile">
                             @csrf
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label">Course <sup class="text-danger">*</sup></label>
                                         <select id="course" class="form-control" name="course_id">
-                                            <option value="">Choose A option</option>
+                                            <option value="">Choose Course</option>
                                             @foreach ($courses as $course)
                                                 <option value="{{$course->id}}">{{$course->name}}</option>
                                             @endforeach
@@ -64,7 +49,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Batch<sup class="text-danger">*</sup></label>
                                         <select id="coursebatch" class="form-control" name="coursebatch_id">
-                                            <option value="">Choose A option</option>
+                                            <option value="">Choose Batch</option>
                                         </select>
                                     </div>
                                 </div>
@@ -73,7 +58,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Instructor <sup class="text-danger">*</sup></label>
                                             <select id="instructor" class="form-control" name="instructor_id">
-                                                <option value="">Choose A option</option>
+                                                <option value="">Choose Instructor</option>
                                             </select>
 
                                     </div>
@@ -83,33 +68,28 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label class="form-label">Start Date <sup class="text-danger">*</sup></label>
-                                                <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                                    <input required type="text" class="form-control form-control-sm" name="start_date">
-                                                    <span class="input-group-addon input-group-append border-left">
-                                                        <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                                    </span>
-                                                </div>
+                                                 <input class="date_picker form-control" type="text" data-language="en" name="start_date" readonly
+                                                 />
+                            
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label class="form-label">End Date<sup class="text-danger">*</sup></label>
-                                                <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                                    <input required type="text" class="form-control form-control-sm" name="end_date">
-                                                    <span class="input-group-addon input-group-append border-left">
-                                                        <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                                    </span>
-                                                </div>
+                                                <input class="date_picker form-control" type="text" data-language="en" name="end_date" readonly
+                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button><a class="btn btn-light"
-                            href="{{url('/instructor')}}">Cancel</a>
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <a class="btn btn-secondary"
+                                href="{{url('/feedback')}}">Cancel</a>
+                        </form>
                     </div>
-                </div> 
-            </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -117,10 +97,12 @@
     <script>
         var date = new Date();
 
-        $('.datepicker').datepicker({
+        $('.date_picker').datepicker({
             autoclose: true,
             todayHighlight: true,
+            format: 'dd-mm-yyyy',
             useCurrent: false,
+            autoClose:true,
         });
 
          $('#course').on('change',function(){
@@ -238,11 +220,11 @@
                         },
 
                         start_date: {
-                            required: "Please add Email",
+                            required: "Please add start date",
                         },
 
                         end_date: {
-                            required: "Please add designation",
+                            required: "Please add enddate",
                             /* date:'Please enter correct formatted date' */
                         },
 

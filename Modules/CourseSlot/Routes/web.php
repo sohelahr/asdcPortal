@@ -19,4 +19,7 @@ Route::prefix('courseslot')->middleware(['auth'])->group(function() {
     Route::post('/edit/{id}','CourseSlotController@update');
     Route::post('/delete/{id}','CourseSlotController@destroy');
     Route::get('/get/{id}','CourseSlotController@get_course_slot');
+
+    Route::get('/data/{id}','CourseSlotController@CourseSlotData')->name('course_slot_data');
+
 });

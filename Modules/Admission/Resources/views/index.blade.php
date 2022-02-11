@@ -1,97 +1,88 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Admissions
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Admissions</h3>
+		@endslot
             <li class="breadcrumb-item active" aria-current="page">Admissions</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        
-        <div class="card-body">
-            
-            <div class="table-responsive">
-                         <table class="table table-hover" id="admissions">
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Roll no.</th>
-                            <th>Course Name</th>
-                            <th>Course Slot</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            {{-- <th>Action</th> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                     <tfoot>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Roll no.</th>
-                            <th>Course Name</th>
-                            <th>Course Slot</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            {{-- <th>Action</th> --}}
-                        </tr>
-                     </tfoot>
-                </table>
-                </div>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="display datatable" id="admissions">
+                                <thead class="bg-success">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Roll no.</th>
+                                        <th>Course Name</th>
+                                        <th>Course Slot</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        {{-- <th>Action</th> --}}
+                                    </tr>
+                                </thead>
+                                <tfoot class="bg-success">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Roll no.</th>
+                                        <th>Course Name</th>
+                                        <th>Course Slot</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        {{-- <th>Action</th> --}}
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection
 @section('jcontent')
-<script>
-    
-        
+<script>  
+    function Notify(title,msg,status){
+        $.notify({
+                title:title,
+                message:msg
+            },
+            {
+                type:status,
+                allow_dismiss:true,
+                newest_on_top:false ,
+                mouse_over:true,
+                showProgressbar:false,
+                spacing:10,
+                timer:2000,
+                placement:{
+                    from:'top',
+                    align:'center'
+                },
+                offset:{
+                    x:30,
+                    y:30
+                },
+                delay:1000 ,
+                z_index:10000,
+                animate:{
+                    enter:'animated pulse',
+                    exit:'animated bounce'
+                }
+        });
+    }
         @if(\Illuminate\Support\Facades\Session::has('created'))    
-            $.toast({
-                heading: 'Created',
-                text: 'Successfully Admitted',
-                position:'top-right',
-                icon: 'success',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Created','Successfully Admitted','success')
         @elseif(\Illuminate\Support\Facades\Session::has('updated'))
-            $.toast({
-                heading: 'Updated',
-                text: 'Successfully Updated',
-                position:'top-right',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Updated','Successfully Updated','info')
         @elseif(\Illuminate\Support\Facades\Session::has('deleted'))
-            $.toast({
-                heading: 'Deleted',
-                text: 'Successfully Deleted',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-            
+            Notify('Deleted','Successfully Deleted','warning')        
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Danger','Something Went Wrong','danger')        
         @endif
     
     $(document).ready( function () {
@@ -111,11 +102,14 @@
             columnDefs: [{
                 "defaultContent": "-",
                 "targets": "_all"
+            },{
+                className: 'text-center',
+                'targets':[5]
             }], 
             columns:[
                 {data: 'student_name',render:function(data,type,row){
                     if(row.perm){
-                        return "<a href='admission/view/"+row.id+"'>"+data+"</a>"
+                        return "<a href='admission/view/"+row.id+"' target='_blank'>"+data+"</a>"
                     }
                     else{
                         return "<p class='mb-0'>"+data+"</p>"
@@ -127,19 +121,19 @@
                 {data: 'date',name:"date"},
                 {data:'status',render:function(data,type,row){
                     if(row.status == '1'){
-                        return '<p class="badge badge-pill badge-primary status_btns">Admitted</p>'
+                        return '<p class="txt-primary">Admitted</p>'
                     }
                     else if(row.status == '2'){
-                        return '<p class="badge badge-pill badge-info status_btns">Completed</p>'
+                        return '<p class="text-secondary">Completed</p>'
                     }
                     else if(row.status == '3'){
-                        return '<p class="badge badge-pill badge-success status_btns">Employed</p>'
+                        return '<p class="text-success">Employed</p>'
                     }
                     else if(row.status == '4'){
-                        return '<p class="badge badge-pill badge-warning status_btns">Cancelled</p>'
+                        return '<p class="text-warning">Cancelled</p>'
                     }
                     else{
-                        return '<p class="badge badge-pill badge-danger status_btns">Terminated</p>'
+                        return '<p class="text-danger">Terminated</p>'
                     }
                 },name:'status'},
                /*  {data:'Action',render:function(type,data,row){

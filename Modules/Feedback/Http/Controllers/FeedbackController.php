@@ -20,6 +20,8 @@ class FeedbackController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+     
     public function index()
     {
         return view('feedback::index');
@@ -185,58 +187,145 @@ class FeedbackController extends Controller
         }
     }
 
-    public function allFeedbackHeadersPerAdmission(Request $request){
-        $limit = $request->length;
-        $start = $request->start;
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param int $id
+     * @return Renderable
+     */
+    public function edit($id)
+    {       
+        $header = DB::table('feedback_headers')->where('id',$id)->first();
+        $end_date = date('d M Y',strtotime($header->end_date));
+        return json_encode(['end_date' => $end_date]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return Renderable
+     */
+    public function update(Request $request, $id)
+    {
+        //
+        $feedback_header = DB::table('feedback_headers')->where('id',$id)->first();
+
+        //default active
+        $status = 1;
+        //if start date greater than today status initialized
+        if(strtotime($feedback_header->start_date) > time()){
+            $status = '0';
+        }
+        //if expired date less than today mark expired
+        if(strtotime($request->end_date) < time())
+        {
+            $status = '2';
+        }
+        
+        
+        $insert = DB::table('feedback_headers')
+                    ->where('id',$id)
+                    ->update([
+                        'end_date' => date('y-m-d',strtotime($request->end_date)),
+                        'status' => $status,
+                        'initialized_by' => Auth::user()->id,
+                    ]);
+        if($insert){
+            return redirect('/feedback')->with('updated','123');
+        }
+        else{
+            return redirect('/feedback')->with('error','123');
+        }
+    }
+
+
+
+
+    public function allFeedbackHeadersPerAdmission(){
         $admitted_courses = Admission::where('student_id',Auth::user()->id)->get(['course_id','coursebatch_id']);
         $course_ids = [];
         $course_batch_ids = [];
-        //dd($admitted_courses);
-        foreach($admitted_courses as $admitted_courses){
-            array_push($course_ids,$admitted_courses->course_id);
-            array_push($course_batch_ids,$admitted_courses->coursebatch_id);
-        }
-        $feedback_header = DB::table('feedback_headers')->whereIn('course_id',$course_ids)
-                                        ->whereIn('course_batch_id',$course_batch_ids)
-                                        ->where('status','<>','0')
-                                        ->skip($start)->limit($limit)->get();
-        
-        $totalData = count($feedback_header);
-
-        $totalFiltered = $totalData;
-
-        //dd($feedback_header);
-        //data table code without yajara datatable
+        $status = true;
         $data = array();
-        if(count($feedback_header) > 0)
-        {
-            foreach ($feedback_header as $feedback_header)
-            {
-                $nestedData['id'] = $feedback_header->id;
-                $nestedData['course'] = Course::where('id',$feedback_header->course_id)->first()->name;
-                $nestedData['coursebatch'] = CourseBatch::where('id',$feedback_header->course_batch_id)->first()->batch_identifier;
-                $nestedData['instructor'] = Instructor::where('id',$feedback_header->instructor_id)->first()->firstname ;
-                $nestedData['start_date'] = date('d M Y',strtotime($feedback_header->start_date));
-                $nestedData['end_date'] = date('d M Y',strtotime($feedback_header->end_date));
-                $nestedData['header_status'] = $feedback_header->status;
-                $nestedData['initialized_by'] = $feedback_header->initialized_by;
-                $nestedData['filled_status'] = DB::table('feedback_lines')
-                                                    ->where('feedback_header_id',$feedback_header->id)
-                                                    ->where('student_id',Auth::user()->id)
-                                                    ->count();
-                $data[] = $nestedData;
+
+        //dd($admitted_courses);
+        if($admitted_courses->count() > 0){
+            foreach($admitted_courses as $admitted_courses){
+                array_push($course_ids,$admitted_courses->course_id);
+                array_push($course_batch_ids,$admitted_courses->coursebatch_id);
             }
+            /* 8 -> English 9 -> Telugu */
+            /* Get current batches of data of english and telegu */
+            $getEnglishCourseBatchId = CourseBatch::where('course_id','8')->get();
+            $getTeluguCourseBatchId = CourseBatch::where('course_id','9')->get();
+            
+            //check if english is already present
+            if(!in_array('8',$course_ids)){
+                array_push($course_ids,'8');
+                foreach ($getEnglishCourseBatchId as $batch) {
+                    array_push($course_batch_ids,$batch->id);
+                }
+            }
+
+            //check if telugu is already present
+            if(!in_array('9',$course_ids)){
+                array_push($course_ids,'9');
+                foreach ($getTeluguCourseBatchId as $batch) {
+                    array_push($course_batch_ids,$batch->id);
+                }
+            }
+            //dd($course_batch_ids,$course_ids);
+            $feedback_header = DB::table('feedback_headers')->whereIn('course_id',$course_ids)
+                                            ->whereIn('course_batch_id',$course_batch_ids)
+                                            ->where('status','<>','0')->get();
+            
+            $totalData = count($feedback_header);
+
+            $totalFiltered = $totalData;
+
+            //dd($feedback_header);
+            //data table code without yajara datatable
+            if(count($feedback_header) > 0)
+            {
+                foreach ($feedback_header as $feedback_header)
+                {
+                    $line = DB::table('feedback_lines')
+                                ->where('feedback_header_id',$feedback_header->id)
+                                ->where('student_id',Auth::user()->id)
+                                ->first();
+                    $course = Course::where('id',$feedback_header->course_id)->first();
+                    $nestedData['id'] = $feedback_header->id;
+                    $nestedData['course'] = $course->name;
+                    $nestedData['course_slug'] = $course->slug;
+                    $nestedData['coursebatch'] = CourseBatch::where('id',$feedback_header->course_batch_id)->first()->batch_identifier;
+                    $nestedData['instructor'] = Instructor::where('id',$feedback_header->instructor_id)->first()->firstname ;
+                    $nestedData['start_date'] = date('d M Y',strtotime($feedback_header->start_date));
+                    $nestedData['end_date'] = date('d M Y',strtotime($feedback_header->end_date));
+                    $nestedData['header_status'] = $feedback_header->status;
+                    $nestedData['initialized_by'] = $feedback_header->initialized_by;
+                    $nestedData['filled_status'] = $line ? $line->is_feedback_completed : 0;
+                    $data[] = $nestedData;
+                }
+            }
+            
+        }
+        else{
+            $status = false;
         }
         $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
+            "status" => $status,
+            "data"   => $data
         );
+        
         return json_encode($json_data);
     }
 
-    public function createLines($feedback_header_id)
+    public function studentView(){
+        return view('feedback::studentfeedbackpage');
+    }
+    
+    public function createLines($feedback_header_id,$step)
     {
         $feedback_header_id = base64_decode($feedback_header_id);
 
@@ -245,20 +334,40 @@ class FeedbackController extends Controller
         if($feedback_header->status == '2'  ){
             return redirect('/dashboard')->with('unauthorized','123');
         }
-
-        if(DB::table('feedback_lines')
-                ->where('feedback_header_id',$feedback_header_id)
-                ->where('student_id',Auth::user()->id)
-                ->count() > 0
-        )
+        $line = DB::table('feedback_lines')
+                    ->where('feedback_header_id',$feedback_header_id)
+                    ->where('student_id',Auth::user()->id)
+                    ->first();
+        if($line && $line->is_feedback_completed == 1)
         {
             return redirect('/dashboard')->with('unauthorized','123');
         }
         $course = Course::where('id',$feedback_header->course_id)->first();
         $batch = CourseBatch::where('id',$feedback_header->course_batch_id)->first();
-        $instructor = Instructor::where('id',$feedback_header->instructor_id)->first();
-//        dd(compact('course','batch','feedback_header','instructor'));
-        return view('feedback::lines.create',compact('course','batch','feedback_header','instructor'));
+        $instructor = Instructor::where('id',$feedback_header->instructor_id)->first();  
+            //        dd(compact('course','batch','feedback_header','instructor'));
+        if($step == "one"){
+            return view('feedback::lines.create_step_one',compact('course','batch','line','feedback_header','instructor'));
+        }
+        elseif($step == "two"){
+            if($line->qOne == null){
+                return redirect()->route('feedback_lines_create',[base64_encode($feedback_header_id),'one']);
+            }
+
+            return view('feedback::lines.create_step_two',compact('course','batch','line','feedback_header','instructor'));
+
+        }
+        elseif($step == "three"){
+            
+            if(($line->qOne == null || $line->qTen == null )){
+                return redirect()->route('feedback_lines_create',[base64_encode($feedback_header_id),'one']);
+            }
+            return view('feedback::lines.create_step_three',compact('course','batch','line','feedback_header','instructor'));
+        }
+        else{
+            return redirect('/dashboard')->with('unauthorized','123');
+        }
+        
     }
 
     /**
@@ -266,7 +375,7 @@ class FeedbackController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function storeLines(Request $request,$feedback_header_id)
+    public function storeLines(Request $request,$feedback_header_id,$step)
     {
         //dd($request);
         $feedback_header_id = base64_decode($feedback_header_id);
@@ -276,36 +385,79 @@ class FeedbackController extends Controller
                                             ->where('coursebatch_id',$request->coursebatch_id)
                                             ->where('student_id',Auth::user()->id)->first()->id;
         $data['student_id'] = Auth::user()->id;
-        $data['qOne'] = $request->qOne;
-        $data['qTwo'] = $request->qTwo;
-        $data['qThree'] = $request->qThree;
-        $data['qFour'] = $request->qFour;
-        $data['qFive'] = $request->qFive;
-        $data['qSix'] = $request->qSix;
-        $data['qSeven'] = $request->qSeven;
-        $data['qEight'] = $request->qEight;
-        $data['qNine'] = $request->qNine;
-        $data['qTen'] = $request->qTen;
-        $data['qTwelve'] = $request->qTwelve;
-        $data['qThirteen'] = $request->qThirteen;
-        $data['qFourteen'] = $request->qFourteen;
-        $data['qFifteen'] = $request->qFifteen;
-        $data['qSixteen'] = $request->qSixteen;
-        $data['qSeventeen'] = $request->qSeventeen;
-        $data['qEighteen'] = $request->qEighteen;
-        $data['qNineteen'] = $request->qNineteen;
-        $data['qTwenty'] = $request->qTwenty;
-        $data['qTwentyOne'] = $request->qTwentyOne;
-        $data['qTwentyTwo'] = $request->qTwentyTwo;
-        $data['qTwentyThree'] = $request->qTwentyThree;
-        $data['feedback'] = $request->feedback; 
-        //dd($data);
-        $insert = DB::table('feedback_lines')->insert($data);
-        if($insert){
-            return redirect('/dashboard')->with('feedback_created','123');
+        if($step == 'one'){
+            $data['qOne'] = $request->qOne;
+            $data['qTwo'] = $request->qTwo;
+            $data['qThree'] = $request->qThree;
+            $data['qFour'] = $request->qFour;
+            $data['qFive'] = $request->qFive;
+            $data['qSix'] = $request->qSix;
+            $data['qSeven'] = $request->qSeven;
+            $data['qEight'] = $request->qEight;
+            //dd($data);
+            if($request->line_id == 0){
+                $update = DB::table('feedback_lines')->insert($data);
+                return redirect()->route('feedback_lines_create',[base64_encode($feedback_header_id),'two']);
+                
+            }
+            else{
+                $update = DB::table('feedback_lines')->where('id', $request->line_id)->update($data);
+                
+                return redirect()->route('feedback_lines_create',[base64_encode($feedback_header_id),'two']);
+                
+            }
+            
+            
+        }
+        elseif($step == "two"){
+            $data['qNine'] = $request->qNine;
+            $data['qTen'] = $request->qTen;
+            $data['qTwelve'] = $request->qTwelve;
+            $data['qThirteen'] = $request->qThirteen;
+            $data['qFourteen'] = $request->qFourteen;
+            $data['qFifteen'] = $request->qFifteen;
+            $data['qSixteen'] = $request->qSixteen;
+            //dd($data);
+            $update = DB::table('feedback_lines')->where('id', $request->line_id)->update($data);
+            
+            return redirect()->route('feedback_lines_create',[base64_encode($feedback_header_id),'three']);
+        }
+        elseif($step == "three"){
+            $data['qSeventeen'] = $request->qSeventeen;
+            $data['qEighteen'] = $request->qEighteen;
+            $data['qNineteen'] = $request->qNineteen;
+            $data['qTwenty'] = $request->qTwenty;
+            $data['qTwentyOne'] = $request->qTwentyOne;
+            $data['qTwentyTwo'] = $request->qTwentyTwo;
+            $data['qTwentyThree'] = $request->qTwentyThree;
+            $data['feedback'] = $request->feedback; 
+            $data['is_feedback_completed'] = 1;
+            //dd($data);
+            $update = DB::table('feedback_lines')->where('id', $request->line_id)->update($data);
+            
+            return redirect('/feedback/student/feedbacks')->with('feedback_created','123');
+        }
+            return redirect('/feedback/student/feedbacks')->with('error','123');
+    }
+
+    public function destroy($id)
+    {
+        //
+        $coursebatch = DB::table('feedback_headers')->where('id',$id)->first();
+        $line = DB::table('feedback_lines')
+                    ->where('feedback_header_id',$id)
+                    ->count();
+        if($line)
+        {
+           return redirect('/feedback')->with('prohibited','123'); 
+        }
+
+        $del = DB::table('feedback_headers')->where('id',$id)->delete();
+        if($del){
+            return redirect('/feedback')->with('deleted','course deleted successfully');
         }
         else{
-            return redirect('/dashboard')->with('error','123');
+            return redirect('/feedback')->with('error','Something went Wrong');
         }
     }
 

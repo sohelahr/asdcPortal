@@ -25,20 +25,21 @@ Route::get('/', function () {
 
 Route::get('/verfiy/email/{id}',[VerifyMailController::class,'Verify'])->name('verify_mail');
 
-Route::get('/mail', function () {
+/* Route::get('/mail', function () {
     //$content['user_name'] = 'Naseem';
     //$content['course_name'] = 'BCA';
     $content = 'Naseem';
+    $user_id = 1;
     //$content['documents'] = ['1'=>'asdnas'];
     //return view('email.course_registrations_template',compact('content')); 
     /* $content = [
                 'name' =>  'Naseem',
                 'mail' =>  'nk4822805@gmai.com',
                 'pwd' =>   'naseem'.'@asdc'.date('Y')
-            ]; */
-           MailController::sendRegistrationEmail("asdci nstitute@gmail.com",$content,'12');
-    //return view('email.admin_user_registrations_mail',compact('content'));
-});
+            ];
+           //MailController::sendRegistrationEmail("asdcinstitute@gmail.com",$content,'12');
+    return view('email.user_registration_mail',compact('content','user_id'));
+}); */
 
 
 Route::get('/dashboard', function () {
@@ -54,9 +55,11 @@ Route::get('/testmail', function () {
     return view('email.course_readmission_template');
 });
 
-Route::get('/markcurrentbatches',[CronJobController::class,'MarkCurrentBatches']);
-Route::get('/markadmissioncomplete',[CronJobController::class,'MarkAdmissionComplete']);
-Route::get('/removesuspension',[CronJobController::class,'RemoveSuspension']);
+Route::get('/markcurrentbatches',[CronJobController::class,'MarkCurrentBatches']); //6 am daily
+Route::get('/markadmissioncomplete',[CronJobController::class,'MarkAdmissionComplete']);//11 pm daily
+Route::get('/removesuspension',[CronJobController::class,'RemoveSuspension']);// 4 pm daily
+Route::get('/markfeedbacks',[CronJobController::class,'MarkFeedbacks']);// 8 pm daily
+// http://asdcdev.ngocrm.in/route_here //
 
 
 require __DIR__.'/auth.php';

@@ -16,8 +16,12 @@ use Modules\UserProfile\Http\Controllers\UserProfileController;
 Route::prefix('userprofile')->middleware(['auth'])->group(function() {
     Route::get('/', 'UserProfileController@index')->name('user_profile_list');
     Route::get('/view', 'UserProfileController@show')->name('user_profile');
-    Route::get('/update',[UserProfileController::class,'edit'])->name('profile_update');
-    Route::post('/update',[UserProfileController::class,'update'])->name('profile_update');
+    
+    
+    Route::get('/update/{step}',[UserProfileController::class,'edit'])->name('profile_update');
+    
+    Route::post('/update/{step}',[UserProfileController::class,'update'])->name('profile_update');
+
     Route::post('/data',[UserProfileController::class,'UserProfileData'])->name('user_profile_data');
     Route::get('/admin/{id}/view', 'UserProfileController@Adminshow')->name('user_profile_admin');
 
@@ -27,5 +31,6 @@ Route::prefix('userprofile')->middleware(['auth'])->group(function() {
     Route::post('/admin/{id}/edit', 'UserProfileController@AdminEdit')->name('user_profile_edit');
     Route::get('/get-city/{id}', 'UserProfileController@GetCity')->name('getcities');
 
+    Route::get('/get-sidebar-data/', 'UserProfileController@getSidebarData');
 
 });

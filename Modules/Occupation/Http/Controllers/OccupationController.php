@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Occupation\Entities\Occupation;
+use Yajra\DataTables\DataTables;
 
 class OccupationController extends Controller
 {
@@ -20,8 +21,33 @@ class OccupationController extends Controller
 
     public function index()
     {
-        $occupations = Occupation::all();
-        return view('occupation::index',compact(['occupations']));
+        return view('occupation::index');
+    }
+
+    function OccupationData(){
+        $documents = Occupation::orderby('id','DESC')->get();
+        
+        return DataTables::of($documents)
+                ->addIndexColumn()
+                ->addColumn('perm',function($document){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.occupations')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.occupations')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                })
+                ->make();
     }
 
     /**

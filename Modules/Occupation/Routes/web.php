@@ -18,4 +18,7 @@ Route::prefix('occupation')->middleware(['auth'])->group(function() {
     Route::get('/edit/{id}','OccupationController@edit');
     Route::post('/edit/{id}','OccupationController@update');
     Route::post('/delete/{id}','OccupationController@destroy');
+
+    Route::get('/data','OccupationController@OccupationData')->name('occupation_data');
+
 });

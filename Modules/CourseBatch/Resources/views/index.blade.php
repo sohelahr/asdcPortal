@@ -1,185 +1,162 @@
 @extends('layouts.admin.app')
 
 @section('content')
-<div class="page-header">
-        <h3 class="page-title">
-            Course Batches
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Batches</h3>
+		@endslot
             <li class="breadcrumb-item active" aria-current="page">Course Batches</li>
-            </ol>
-        </nav>
-    </div>
-
-    <div class="card">
-        
-            @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursebatch'))
-            <div class="d-flex p-1 m-0 border header-buttons">
-                <div>
-                        <button class="btn bg-white" type="button" data-toggle="modal" data-target="#course-create">
-                            <i class="fas fa-plus btn-icon-prepend"></i>
-                            Create
-                        </button>
-                </div>
-            </div>
-            @endif
-        <div id="overlay-loader" class="d-none">
-            <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
-                <div >  
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
                     
-                        <div class="dot-opacity-loader">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    <div id="overlay-loader" class="d-none">
+                        <div style="height: 100%;width:100%;background:rgba(121, 121, 121, 0.11);position: absolute;z-index:999;" class="d-flex justify-content-center align-items-center"> 
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>
                         </div>
-                    
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            
-            <div class="table-responsive">
-                <table class="table table-striped" id="coursebatchtable">
-                    <thead>
-                        <tr>
-                            <th style="width: 30px">Sr no</th>
-                            <th>Course</th>
-                            <th>Batch Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th style="max-width: 150px">Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    </div>
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('create.coursebatch'))
+                        <div class="d-flex p-1 m-0 border header-buttons">
+                            <div>
+                                    <button class="btn bg-white" type="button" data-bs-toggle="modal" data-bs-target="#course-create">
+                                        <i class="fa fa-plus btn-icon-prepend"></i>
+                                        Create
+                                    </button>
+                            </div>
+                        </div>
+                        @endif
+                    <div class="card-body">
                         
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="POST" action="{{url('coursebatch/create')}}" id="coursebatch-create">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="course-create-title">Create Course Batch</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="course">Course <sup class="text-danger">*</sup></label>
-                            <select id="course" class="form-control" name="course_id">
-                                @foreach ($courses as $course)
-                                    <option value="{{$course->id}}">{{$course->name}}</option>                                    
-                                @endforeach
-                            </select>
+                        <div class="table-responsive">
+                            <table class="display datables" id="coursebatchtable">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th>Sr no</th>
+                                        <th>Course</th>
+                                        <th>Batch Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-12">
-                                <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
-                                <input id="batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
-                            </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
-                                        <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input required type="text" class="form-control form-control-sm" name="start_date">
-                                            <span class="input-group-addon input-group-append border-left">
-                                                <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                            </span>
-                                        </div>
+                    </div>
+                </div>
 
+                <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form method="POST" action="{{url('coursebatch/create')}}" id="coursebatch-create">
+                                @csrf
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="course-create-title">Create Course Batch</h5>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="course">Course <sup class="text-danger">*</sup></label>
+                                        <select id="course" class="form-control" name="course_id">
+                                            @foreach ($courses as $course)
+                                                <option value="{{$course->id}}">{{$course->name}}</option>                                    
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
+                                            <input id="batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
+                                        </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
+                                                    <input class="date_picker form-control" type="text" data-language="en" name="start_date" readonly
+                                                    />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
+                                                    <input class="date_picker form-control" type="text" data-language="en" name="end_date" readonly
+                                                    />
+
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
-                                        <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input required type="text" class="form-control form-control-sm" name="end_date">
-                                            <span class="input-group-addon input-group-append border-left">
-                                                <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                            </span>
-                                        </div>
+                                <div class="modal-footer">
+                                    <input type="submit" value="Submit" class="btn btn-primary">    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+                <div id="coursebatch-edit" class="modal" tabindex="-1" role="dialog" 
+                    data-backdrop="static" data-keyboard="false" aria-labelledby="course-edit-title" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form method="POST"  id="edit-form" action="{{url('coursebatch/edit/')}}">
+                                @csrf
+                                <div class="modal-header">
+
+                                    <h5 class="modal-title" id="course-create-title">Edit Course Batch</h5>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="form-group">
+                                        <label for="course">Course <sup class="text-danger">*</sup></label>
+                                        <select id="edit-course" class="form-control" name="course_id">
+                                            @foreach ($courses as $course)
+                                                <option value="{{$course->id}}" id="edit-option-{{$course->id}}"> {{$course->name}}</option>                                    
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-12">
+                                            <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
+                                            <input id="edit-batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                                <p>Please select the dates again while editing them</p>
+                                        </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
+                                                    <input id="edit-start-date" class="date_picker form-control" type="text" data-language="en" name="start_date" readonly
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
+                                                    <input id="edit-end-date" class="date_picker form-control" type="text" data-language="en" name="end_date" readonly
+                                                    />
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">    
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="coursebatch-edit" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="course-edit-title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="POST"  id="edit-form" action="{{url('coursebatch/edit/')}}">
-                    @csrf
-                    <div class="modal-header">
-
-                        <h5 class="modal-title" id="course-create-title">Edit Course Batch</h5>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <label for="course">Course <sup class="text-danger">*</sup></label>
-                            <select id="edit-course" class="form-control" name="course_id">
-                                @foreach ($courses as $course)
-                                    <option value="{{$course->id}}" id="edit-option-{{$course->id}}"> {{$course->name}}</option>                                    
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-12">
-                                <label for="batch_number">Batch Number <sup class="text-danger">*</sup></label>
-                                <input id="edit-batch_number" class="form-control form-control-sm" type="text" name="batch_number" placeholder="eg : ">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-12">
-                                    <p>Please select the dates again while editing them</p>
-                            </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Batch Start Date <sup class="text-danger">*</sup></label>
-                                        <div id="datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input required type="text" class="form-control form-control-sm" name="start_date" id="edit-start-date">
-                                            <span class="input-group-addon input-group-append border-left">
-                                                <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                            </span>
-                                        </div>
-
-                                    </div>
+                                <div class="modal-footer">
+                                    <input type="submit" value="Submit" class="btn btn-primary">
+                                    <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Batch End Date <sup class="text-danger">*</sup></label>
-                                        <div id="end-datepicker-popup" class="input-group date datepicker p-0 m-0">
-                                            <input required type="text" class="form-control form-control-sm" name="end_date" id="edit-end-date">
-                                            <span class="input-group-addon input-group-append border-left">
-                                                <i class="far fa-calendar input-group-text py-1 px-2"></i>
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <input type="submit" value="Submit" class="btn btn-primary">
-                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>    
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -188,6 +165,35 @@
 @endsection
 @section('jcontent')
     <script>
+        function Notify(title,msg,status){
+            $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
         function closeModal(){
             $('#coursebatch-edit').modal('hide');
         }
@@ -207,75 +213,27 @@
                 });
         }
         
-        $('.datepicker').datepicker({
+        $('.date_picker').datepicker({
             autoclose: true,
             todayHighlight: true,
+            dateFormat: 'dd-mm-yyyy',
             useCurrent: false,
+            autoClose:true,
         });
         @if(\Illuminate\Support\Facades\Session::has('created'))    
-            $.toast({
-                heading: 'Created',
-                text: 'Course Batch Was Successfully Created',
-                position:'top-right',
-                icon: 'success',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Created','Course Batch Was Successfully Created','success')
         @elseif(\Illuminate\Support\Facades\Session::has('updated'))
-            $.toast({
-                heading: 'Updated',
-                text: 'Course Batch Was Successfully Updated',
-                position:'top-right',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Updated','Course Batch Was Successfully Update','info')
         @elseif(\Illuminate\Support\Facades\Session::has('already'))
-            $.toast({
-                heading: 'Warning',
-                text: 'Course Batch already Present',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Warning','Course Batch already Present','warning')
         @elseif(\Illuminate\Support\Facades\Session::has('deleted'))
-            $.toast({
-                heading: 'Deleted',
-                text: 'Course Batch Was Successfully Deleted',
-                position:'top-right',
-                icon: 'warning',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
-            
+            Notify('Deleted','Course Batch Was Successfully Deleted','warning')
         @elseif(\Illuminate\Support\Facades\Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Danger','Something Went Wrong','danger')  
         @elseif(\Illuminate\Support\Facades\Session::has('prohibited'))
-        $.toast({
-            heading: 'Cannot Delete',
-            text: 'This coursebatch already has admissions',
-            position:'top-right',
-            icon: 'warning',
-            loader: true,        // Change it to false to disable loader
-            loaderBg: '#9EC600'  // To change the background
-        })
+            Notify('Cannot Delete','This coursebatch already has admissions','warning')
         @elseif(\Illuminate\Support\Facades\Session::has('status'))
-            $.toast({
-                heading: 'Success',
-                text: 'Status changed Succesfully ',
-                position:'top-right',
-                icon: 'danger',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            })
+            Notify('Success','Status changed successfully')
         @endif
         function EditCourseBatch(coursebatch_id){
             getEditData(coursebatch_id);
@@ -316,6 +274,15 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{route('course_batch_data')}}",
+                columnDefs: [{
+                "defaultContent": "-",
+                orderable:false,
+                "targets": "_all"
+                },
+                {
+                    className: 'text-center',
+                    'targets':[5,6]
+                }],
                 columns:[
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'course_name',name:"course_name"},
@@ -327,36 +294,38 @@
                                         @csrf
                                         ${row.status == 1 ? 
                                                 `${row.is_current ? 
-                                                    `<input class="btn btn-sm btn-success badge-pill status_btns" 
-                                                    type="submit" value="Active / Current">`
+                                                    `<button class="form-btn form-btn-success"  title="Change Status to Inactive"
+                                                    type="submit">Active / Current</button>`
                                                     :
-                                                    `<input class="btn btn-sm btn-success badge-pill status_btns" 
-                                                    type="submit" value="Active">`
+                                                    `<button class="form-btn form-btn-success"  title="Change Status to Inactive"
+                                                    type="submit">Active</button>`
                                                 }`
                                                 :
-                                            `<input class="btn btn-sm badge-pill btn-warning status_btns" type="submit" value="Inactive"></input>`
+                                            `<button class="form-btn form-btn-warning" type="submit"  title="Change Status to Active" >Inactive</button>`
                                         }
                                     </form>`
                     },name:'status'},
                     {data: 'action',render:function(data,type,row){
-                        return ` <div  class="d-flex p-0 m-0">
+                        return `<div>
+                                    <div  class="d-flex p-0 m-0">
                                         ${data.edit_perm ? 
-                                        `<button class="btn btn-dark btn-rounded p-2 mr-2 my-0" onclick="EditCourseBatch(${row.id})">
-                                            <i class="fas fa-pencil-alt"></i>
+                                        `<button class="form-btn form-btn-warning ms-4 me-2" onclick="EditCourseBatch(${row.id})">
+                                            <i class="fa fa-pencil"></i>
                                         </button>` 
                                         : null}
                                         ${data.delete_perm ? 
                                         
                                         `<div class="ml-2">
-                                                    <button type=submit class="btn btn-danger btn-rounded p-2" onclick="deleteBatchConfirm(${row.id})">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button type=submit class="form-btn form-btn-danger ms-2" onclick="deleteBatchConfirm(${row.id})">
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
                                             </div>        
                                                 <form action='coursebatch/delete/${row.id}' id='delete_form_${row.id}' method="post" class="d-none">
                                                     @csrf
                                                 </form>
                                         `: null}
-                                        </div>`
+                                    </div>
+                                </div>`
                     },name:'action'}
                 ]
             });
@@ -366,7 +335,7 @@
                 errorClass: "text-danger pt-1",
                 errorPlacement: function(error, element) {
                     if (element.attr("name") == "start_date" ) {
-                        error.insertAfter($("#datepicker-popup"));
+                        error.insertAfter(element.parent());
                     }
                     else if (element.attr("name") == "end_date"){
                         error.insertAfter(element.parent());
@@ -384,9 +353,7 @@
                         required:true,
                     },
                     start_date: {
-                        required: true,                    
-                    required: true,                    
-                        required: true,                    
+                        required: true,                   
                     },
 
                     end_date: {

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\DocumentList\Entities\DocumentList;
+use Yajra\DataTables\DataTables;
 
 class DocumentListController extends Controller
 {
@@ -20,8 +21,33 @@ class DocumentListController extends Controller
 
     public function index()
     {
-        $documents = DocumentList::all();
-        return view('documentlist::index',compact(['documents']));
+        return view('documentlist::index');
+    }
+
+    function DocumentListData(){
+        $documents = DocumentList::orderby('id','DESC')->get();
+        
+        return DataTables::of($documents)
+                ->addIndexColumn()
+                ->addColumn('perm',function($document){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.documents')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.documents')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                })
+                ->make();
     }
 
     /**

@@ -117,9 +117,9 @@ class AttendanceController extends Controller
             //start importing excel file first
             foreach($dumpdata as $datakey => $data){
                     $attendance_date = substr($data->Date,0,10);
-                    $roll_number = '';
-                    $temp_roll_no = explode(' ',$data->EmployeeCode);
-                    $roll_number = $temp_roll_no[1] . "-" . $temp_roll_no[0];
+                    $roll_number = $data->EmployeeCode;
+                    //$temp_roll_no = explode(' ',$data->EmployeeCode);
+                    //$roll_number = $temp_roll_no[1] . "-" . $temp_roll_no[0];
                 
                     $admission = Admission::where('roll_no',$roll_number)->first();
                     if($admission != null){
@@ -134,7 +134,7 @@ class AttendanceController extends Controller
                                 'import_summary_id' => $createdImportSummaryId,
                                 'roll_no' => $data->EmployeeCode,
                                 'name' => $data->EmployeeName,
-                                'reason' => "Attendance Already Exists in the system",
+                                'reason' => "Attendance already exists in the system.",
                                 'date' => $data->Date
                             ]);
 
@@ -191,7 +191,7 @@ class AttendanceController extends Controller
                             'import_summary_id' => $createdImportSummaryId,
                             'roll_no' => $data->EmployeeCode,
                             'name' => $data->EmployeeName,
-                            'reason' => "roll number not found check roll number field again in biometric",
+                            'reason' => "Roll number not found, please verify the roll number.",
                             'date' => $data->Date
                         ]);
 
@@ -457,7 +457,7 @@ class AttendanceController extends Controller
                 $nestedData['original_file'] = $import_summary->original_file;
                 $nestedData['failed_transaction_file'] = $import_summary->failed_transaction_file;
                 $nestedData['success_transaction_file'] = $import_summary->success_transaction_file;
-                $nestedData['created_at'] = date("d, M Y | h : i : s A", strtotime($import_summary->created_at));
+                $nestedData['created_at'] = date("d, M Y", strtotime($import_summary->created_at));
                 $data[] = $nestedData;
             }
         }
@@ -511,7 +511,7 @@ class AttendanceController extends Controller
                 $nestedData['roll_no'] = $log_data->roll_no;
                 $nestedData['name'] = $log_data->name;
                 $nestedData['reason'] = $log_data->reason;
-                $nestedData['attendance_date'] = date("d, M Y | h : i : s A", strtotime($log_data->date));
+                $nestedData['attendance_date'] = date("d, M Y", strtotime($log_data->date));
                 $data[] = $nestedData;
             }
         }

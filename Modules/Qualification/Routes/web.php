@@ -18,4 +18,7 @@ Route::prefix('qualification')->middleware(['auth'])->group(function() {
     Route::get('/edit/{id}','QualificationController@edit');
     Route::post('/edit/{id}','QualificationController@update');
     Route::post('/delete/{id}','QualificationController@destroy');
+
+    Route::get('/data','QualificationController@QualificationData')->name('qualification_data');
+
 });

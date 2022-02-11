@@ -1,82 +1,81 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Attendance
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Attendance</h3>
+		@endslot
             <li class="breadcrumb-item active" aria-current="page">Attendance</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div id="admissions-by-batches-loader" class="d-none">
-            <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                <div class="bar-loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>    
-            </div>
-        </div>
-        @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
-            <div class="d-flex p-1 m-0 border header-buttons">
-                <div>
-                    <a href="{{route('attendance_import')}}">
-                        <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
-                            <i class="fas fa-user-plus btn-icon-prepend"></i>
-                            Import New
-                        </button>
-                    </a>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
+                    <div id="admissions-by-batches-loader" class="d-none">
+                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>   
+                        </div>
+                    </div>
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
+                        <div class="d-flex p-1 m-0 border header-buttons">
+                            <div>
+                                <a href="{{route('attendance_import')}}">
+                                    <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
+                                        <i class="fa fa-plus btn-icon-prepend"></i>
+                                        Import New
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <select class="form-control" id="change_admission_by_batch">
+                                    @foreach ($courses as $course)
+                                        <option value="{{$course->id}}">{{$course->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <select class="form-control" id="course_batch">
+                                    @foreach ($firstbatches as $item)
+                                        <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <select class="form-control" id="course_slot">
+                                    @foreach ($firstslots as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="display datatables" id="attendance_table">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <tr>
+                                            <th>Roll no</th>
+                                            <th>Name</th>
+                                            <th>Absent</th>
+                                            <th>Present</th>
+                                            <th>Weekly Off</th>
+                                            <th>Holiday</th>
+                                            <th>Total days</th>
+                                            <th>Attendance</th>
+                                        </tr>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        @endif
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-4">
-                    <select class="form-control" id="change_admission_by_batch">
-                        @foreach ($courses as $course)
-                            <option value="{{$course->id}}">{{$course->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-4">
-                    <select class="form-control" id="course_batch">
-                        @foreach ($firstbatches as $item)
-                            <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-4">
-                    <select class="form-control" id="course_slot">
-                        @foreach ($firstslots as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover" id="attendance_table">
-                    <thead>
-                        <tr>
-                            <tr>
-                                <th>Roll no</th>
-                                <th>Name</th>
-                                <th>Absent</th>
-                                <th>Present</th>
-                                <th>Weekly Off</th>
-                                <th>Holiday</th>
-                                <th>Total days</th>
-                                <th>Attendance</th>
-                            </tr>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -85,25 +84,39 @@
 @section('jcontent')
     <script>
         getAttendanceRecords();
+        function Notify(title,msg,status){
+            $.notify({
+                    title:title,
+                    message:msg
+                },
+                {
+                    type:status,
+                    allow_dismiss:true,
+                    newest_on_top:false ,
+                    mouse_over:true,
+                    showProgressbar:false,
+                    spacing:10,
+                    timer:2000,
+                    placement:{
+                        from:'top',
+                        align:'center'
+                    },
+                    offset:{
+                        x:30,
+                        y:30
+                    },
+                    delay:1000 ,
+                    z_index:10000,
+                    animate:{
+                        enter:'animated pulse',
+                        exit:'animated bounce'
+                    }
+            });
+        }
         @if(\Illuminate\ Support\ Facades\ Session::has('published'))
-            $.toast({
-                heading: 'Publish',
-                text: 'Attendance was successfully published',
-                position: 'top-right',
-                icon: 'success',
-                loader: true, // Change it to false to disable loader
-                loaderBg: '#9EC600' // To change the background
-            })
-
+            Notify('Publish','Attendance was successfully published','success')
         @elseif(\Illuminate\ Support\ Facades\ Session::has('error'))
-            $.toast({
-                heading: 'Danger',
-                text: 'Something Went Wrong ',
-                position: 'top-right',
-                icon: 'danger',
-                loader: true, // Change it to false to disable loader
-                loaderBg: '#9EC600' // To change the background
-            })
+            Notify('Danger','Something Went Wrong ','danger')
         @endif
 
         $('#change_admission_by_batch').on('change',function(){
@@ -179,7 +192,8 @@
             processing: true,
             serverSide: true,
             searching:false,
-            "pageLength": 30,
+            orderable:false,
+            "pageLength": 50,
             "bDestroy": true,
             ajax: {
                 "url":`{{url("attendance/get-all-attendance/".'${courseid}'."/".'${courseslotid}'."/".'${coursebatchid}')}}`,

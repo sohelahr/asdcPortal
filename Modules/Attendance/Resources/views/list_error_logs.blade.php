@@ -1,55 +1,43 @@
 @extends('layouts.admin.app')
-
 @section('content')
-    <div class="page-header">
-        <h3 class="page-title">
-            Import Error Logs
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Error Logs</h3>
+		@endslot
             <li class="breadcrumb-item" aria-current="page"><a href="{{url('attendance')}}">Attendance</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="{{url('attendance/import_summaries')}}">Import Summaries</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Import Error Logs</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div id="admissions-by-batches-loader" class="d-none">
-            <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                <div class="bar-loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>    
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="import_logs_table" class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Roll No</th>
-                        <th>Name</th>
-                        <th>Message</th>
-                        <th>Date of Attendance</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>Roll No</th>
-                        <th>Name</th>
-                        <th>Message</th>
-                        <th>Date of Attendance</th>
-                    </tr>
-                    </tfoot>
-                </table>
+            <li class="breadcrumb-item active" aria-current="page">Error Logs</li>   
+    @endcomponent
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="import_logs_table" class="display datatables">
+                            <thead class="bg-primary">
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Error Message</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tfoot class="bg-primary">
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Error Message</th>
+                                <th>Date</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 @section('jcontent')
     <script>
@@ -66,6 +54,7 @@
             "autoWidth": false,
             "responsive": true,
             'searching':false,
+            "pageLength": 50,
             //bStateSave: true,
             ajax: {
                 "url": '{{url("attendance/import_summaries/logs/$id/data")}}',

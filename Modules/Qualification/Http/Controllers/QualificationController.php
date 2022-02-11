@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Qualification\Entities\Qualification;
+use Yajra\DataTables\DataTables;
 
 class QualificationController extends Controller
 {
@@ -20,9 +21,35 @@ class QualificationController extends Controller
 
     public function index()
     {
-        $qualifications = Qualification::all();
-        return view('qualification::index',compact(['qualifications']));
+        return view('qualification::index');
     }
+
+    function QualificationData(){
+        $documents = Qualification::orderby('id','DESC')->get();
+        
+        return DataTables::of($documents)
+                ->addIndexColumn()
+                ->addColumn('perm',function($document){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.qualifications')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.qualifications')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                })
+                ->make();
+    }
+
 
     /**
      * Show the form for creating a new resource.

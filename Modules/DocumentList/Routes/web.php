@@ -18,4 +18,7 @@ Route::prefix('documentlist')->middleware(['auth'])->group(function() {
     Route::get('/edit/{id}','DocumentListController@edit');
     Route::post('/edit/{id}','DocumentListController@update');
     Route::post('/delete/{id}','DocumentListController@destroy');
+
+    Route::get('/data','DocumentListController@DocumentListData')->name('document_list_data');
+
 });

@@ -57,7 +57,7 @@ class UserProfileController extends Controller
                                 
         }
         $filteredRegistrationCount = $userprofiles->count();
-        $userprofiles = $userprofiles->orderBy('id','DESC')->skip($start)->limit($limit)->get();
+        $userprofiles = $userprofiles->where('is_profile_completed','1')->orderBy('id','DESC')->skip($start)->limit($limit)->get();
         //dd($userprofiles);
 
         if(isset($search))
@@ -126,13 +126,21 @@ class UserProfileController extends Controller
     {
 
         $profile = Auth::user()->UserProfile;
+        $state_name = "";
+        $city_name = "";
             if($profile->is_profile_completed){
-                $state_name = "";
-                $city_name = "";
                 if(is_numeric($profile->state)){
                     $state_name = GetLocation::getOneState($profile->state)[0]->name;
-                    if($profile->city != "undefined")
-                        $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;   
+                    if($profile->city != "undefined"){
+                        //dd($profile->city);
+                        try{
+                            $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;
+                        }
+                        catch(\Exception $e){
+                            $city_name = $profile->city;
+                        }
+                    }
+
                 }
                 return view('userprofile::user_profile',compact('profile','state_name','city_name'));
             }
@@ -145,21 +153,24 @@ class UserProfileController extends Controller
         $state_name = "";
         $city_name = "";
         //dd($profile->state);
-        if(is_numeric($profile->state)){
-            $state_name = GetLocation::getOneState($profile->state)[0]->name;
-            if($profile->city != "undefined"){
-                //dd($profile->city);
-                try{
-                    $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;
+        if($profile->is_profile_completed){
+            if(is_numeric($profile->state)){
+                $state_name = GetLocation::getOneState($profile->state)[0]->name;
+                if($profile->city != "undefined"){
+                    //dd($profile->city);
+                    try{
+                        $city_name = GetLocation::getOneCity($profile->city)[0]->city_name;
+                    }
+                    catch(\Exception $e){
+                        $city_name = $profile->city;
+                    }
                 }
-                catch(\Exception $e){
-                    $city_name = $profile->city;
-                }
-            }
 
+            }
+            $admissions = Admission::where('student_id',$profile->user_id)->get();
+            return view('userprofile::admin_user_profile',compact('state_name','city_name','profile','admissions'));
         }
-        $admissions = Admission::where('student_id',$profile->user_id)->get();
-        return view('userprofile::admin_user_profile',compact('state_name','city_name','profile','admissions'));
+        return redirect()->back()->with('not_completed', 'your message,here');  
     }
 
     /**
@@ -167,16 +178,58 @@ class UserProfileController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit()
+    public function edit($step)
     {
         $userprofile =  Auth::User()->UserProfile;
-        $occupations = Occupation::all();
-        $states = GetLocation::getStates(101);
-        $qualifications = Qualification::all();
         if($userprofile->is_profile_completed && Auth::user()->user_type == "3"){
             return redirect('/dashboard')->with('profile_complete','user profile already completed');
         }
-        return view('userprofile::edit',compact('states','userprofile','occupations','qualifications'));
+        if($step == "one"){
+            return view('userprofile::edit_step_one',compact('userprofile'));
+        }
+        elseif ($step == "two") {
+            if($userprofile->mobile == null){
+                return redirect()->route('profile_update',['one']);
+            }
+            $cities = null;
+            $states = GetLocation::getStates(101);
+            
+            if(!preg_match('/^[0-9]*$/',$userprofile->state)){
+                $cities = null;
+            }
+            else{
+                $cities = GetLocation::getCities($userprofile->state);
+            }
+            return view('userprofile::edit_step_two',compact('userprofile','states','cities'));
+        }
+        elseif($step == "three") {
+            if($userprofile->mobile == null){
+                return redirect()->route('profile_update',['one']);
+            } 
+            elseif($userprofile->state == null){
+                return redirect()->route('profile_update',['two']);
+            }
+            $qualifications = Qualification::all();
+            $occupations = Occupation::all();
+
+            return view('userprofile::edit_step_three',compact('userprofile','qualifications','occupations'));
+        }
+         elseif($step == "four") {
+            if($userprofile->mobile == null){
+                return redirect()->route('profile_update',['one']);
+            } 
+            elseif($userprofile->state == null){
+                return redirect()->route('profile_update',['two']);
+            }
+            
+            elseif($userprofile->qualification_id == null){
+                return redirect()->route('profile_update',['three']);
+            }
+            return view('userprofile::edit_step_four',compact('userprofile'));
+        }
+        else{
+            return redirect('/dashboard')->with('error','xyz');
+        }
     }
 
     /**
@@ -185,53 +238,117 @@ class UserProfileController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request)
+    public function update(Request $request,$step)
     {
-        $request->validate([
-            /* 'mobile' => ['required', 'max:10', 'unique:user_profiles'], */
-            'aadhaar' => ['required', 'unique:user_profiles'],            
-        ]);
+        
+        try{
 
-        $userprofile =  Auth::User()->UserProfile;
-        $userprofile->firstname = $request->firstname;
-        $userprofile->lastname = $request->lastname;
-        $userprofile->dob = date('y/m/d',strtotime($request->dob));
-        $userprofile->age = $request->age;
-        $userprofile->mobile = $request->mobile; 
-        $userprofile->occupation_id = $request->occupation_id; 
-        $userprofile->qualification_id = $request->qualification_id;
-        $userprofile->qualification_specilization = $request->qualification_specilization;
-        $userprofile->qualification_status = $request->qualification_status;
-        $userprofile->gender = $request->gender;
-        $userprofile->comments = $request->comments; 
-        $userprofile->house_details = $request->house_details;  
-        $userprofile->street = $request->street;
-        $userprofile->landmark = $request->landmark;
-        $userprofile->city = $request->city;
-        $userprofile->state = $request->state;
-        $userprofile->pincode = $request->pincode;
-        $userprofile->how_know_us = $request->how_know_us;
-        $userprofile->father_name = $request->father_name; 
-        $userprofile->father_occupation = $request->father_occupation;
-        $userprofile->fathers_income = $request->fathers_income; 
-        $userprofile->fathers_mobile = $request->fathers_mobile; 
-        $userprofile->school_name = $request->school_name;
+            $userprofile =  Auth::User()->UserProfile;
+
+            if($userprofile->is_profile_completed && Auth::user()->user_type == "3"){
+                return redirect('/dashboard')->with('profile_complete','user profile already completed');
+            }
+
+            if($step == "one"){
+
+                $addhaar_count = UserProfile::where('aadhaar',$request->aadhaar)->where('user_id','<>',Auth::user()->id)->count();
+
+                if($addhaar_count > 0){
+                    return back()->withErrors('The adhaar is already been taken')->withInput();
+                }
+
+                $userprofile->firstname = $request->firstname;
+                $userprofile->lastname = $request->lastname;
+                $userprofile->mobile = $request->mobile; 
+                $userprofile->gender = $request->gender;
+                $userprofile->dob = date('y/m/d',strtotime($request->dob));
+                $userprofile->age = $request->age;
+                $userprofile->aadhaar = $request->aadhaar;
+                $userprofile->blood_group = $request->blood_group; 
+                $userprofile->marital_status = $request->marital_status;
+                //saving files
+                if($request->file('photo')){
+                    $filename = 'profile-'.time().".".$request->file('photo')->getClientOriginalExtension();
+                    $path = $request->file('photo')->storeAs('/profile_photos/',$filename);
+                    $userprofile->photo = $filename;
+                }
+                if($request->file('change_photo')){
+                    Storage::delete('/profile_photos/'.$userprofile->photo);
+
+                    $filename = 'profile-'.time().".".$request->file('photo')->getClientOriginalExtension();
+                    $path = $request->file('photo')->storeAs('/profile_photos/',$filename);
+                    $userprofile->photo = $filename;
+                }
+                $userprofile->save();
+                return redirect()->route('profile_update',['two']);
+            }
+            elseif($step == "two"){
+                if($userprofile->mobile == null){
+                    return redirect()->route('profile_update',['one']);
+                } 
+
+                /* Address */
+                $userprofile->home_type = $request->home_type;
+                $userprofile->house_details = $request->house_details;  
+                $userprofile->street = $request->street;
+                $userprofile->landmark = $request->landmark;
+                $userprofile->pincode = $request->pincode;
+                $userprofile->state = $request->state;
+                $userprofile->city = $request->city;
+
+
+                $userprofile->save();
+                return redirect()->route('profile_update',['three']);
+
+            }
+            elseif($step == "three"){
+                if($userprofile->mobile == null){
+                    return redirect()->route('profile_update',['one']);
+                } 
+                elseif($userprofile->state == null){
+                    return redirect()->route('profile_update',['two']);
+                }
+
+                /* Education */
+                $userprofile->qualification_id = $request->qualification_id;
+                $userprofile->qualification_specilization = $request->qualification_specilization;
+                $userprofile->school_name = $request->school_name;
+                $userprofile->qualification_status = $request->qualification_status;
+                $userprofile->occupation_id = $request->occupation_id; 
+
+
+                $userprofile->save();
+                return redirect()->route('profile_update',['four']);
+
+            }
+            elseif($step == "four"){
+                
+                if($userprofile->mobile == null){
+                    return redirect()->route('profile_update',['one']);
+                } 
+                elseif($userprofile->qualification_id == null){
+                    return redirect()->route('profile_update',['two']);
+                }
+                $userprofile->comments = $request->comments; 
+                $userprofile->how_know_us = $request->how_know_us;
+                $userprofile->father_name = $request->father_name; 
+                $userprofile->father_occupation = $request->father_occupation;
+                $userprofile->fathers_income = $request->fathers_income; 
+                $userprofile->fathers_mobile = $request->fathers_mobile;
+
+                $userprofile->is_profile_completed = "1";
+                $userprofile->save();
+                return redirect('/dashboard')->with('profile_updated','xyz');
+
+            }
+            else{
+                return redirect('/dashboard')->with('error','xyz');
+            }
+        }
+        catch(\Exception $e){
+            return redirect('/dashboard')->with('error','xyz');    
+        }
         
-        $userprofile->blood_group = $request->blood_group; 
-        $userprofile->marital_status = $request->marital_status;
-        $userprofile->aadhaar = $request->aadhaar; 
-        $userprofile->home_type = $request->home_type;
-        
-        //saving files
-        if($request->file('photo')){
-            $filename = 'profile-'.time().".".$request->file('photo')->getClientOriginalExtension();
-            $path = $request->file('photo')->storeAs('/profile_photos/',$filename);
-            $userprofile->photo = $filename;
-        }/* 
-        if($request->is_profile_completed) */
-        $userprofile->is_profile_completed = "1";
-        $userprofile->save();
-        return redirect('/dashboard')->with('profile_updated','xyz');
     }
 
     public function AdminEdit(Request $request,$id){
@@ -239,6 +356,7 @@ class UserProfileController extends Controller
         $occupations = Occupation::all();
         $qualifications = Qualification::all();
         if($request->method() == "GET"){
+            $cities = null;
             $states = GetLocation::getStates(101);
             if(!preg_match('/^[0-9]*$/',$userprofile->state)){
                 $cities = null;
@@ -310,4 +428,10 @@ class UserProfileController extends Controller
     {
         //
     }
+
+    public function getSidebarData(){
+        $userprofile = UserProfile::select('id', 'firstname', 'lastname', 'photo')->where('user_id',Auth::user()->id)->first();
+        return response()->json($userprofile);
+    }
+
 }

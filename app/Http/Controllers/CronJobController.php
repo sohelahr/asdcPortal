@@ -104,4 +104,39 @@ class CronJobController extends Controller
         }
     }
 
+    public function MarkFeedbacks(){
+
+        $feedback_headers = DB::table('feedback_headers')->get();
+
+        foreach ($feedback_headers as $header) {
+            try{
+                //default active
+                $status = 1;
+                //if start date greater than today status initialized
+                if(strtotime($header->start_date) > time()){
+                    $status = '0';
+                }
+                //if expired date less than today mark expired
+                if(strtotime($header->end_date) < time())
+                {
+                    $status = '2';
+                }
+                
+                
+                $insert = DB::table('feedback_headers')
+                            ->where('id',$header->id)
+                            ->update([
+                                'status' => $status,
+                            ]);
+            }
+            catch(\Illuminate\Database\QueryException $exception){   
+                DB::table('cron_job_logger')->insert([
+                    'cron_type' =>  "Marking Feedbacks",
+                    'error' => json_encode($exception->errorInfo),
+                    'record_identifier' => $header->id,
+                ]);
+            }
+            
+        }
+    }
 }

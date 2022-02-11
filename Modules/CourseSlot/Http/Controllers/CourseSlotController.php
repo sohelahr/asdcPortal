@@ -9,6 +9,7 @@ use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\Course\Entities\Course;
 use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
+use Yajra\DataTables\DataTables;
 
 class CourseSlotController extends Controller
 {
@@ -24,8 +25,34 @@ class CourseSlotController extends Controller
     public function index($id)
     {
         $course = Course::find($id);
-        $courseslot = $course->courseSlots;
-        return view('courseslot::index',compact(['courseslot','course']));
+        return view('courseslot::index',compact(['course']));
+    }
+
+    function CourseSlotData($id){
+        $course = Course::find($id);
+        $courseslots = $course->courseSlots;
+        
+        return DataTables::of($courseslots)
+                ->addIndexColumn()
+                ->addColumn('perm',function($courseslot){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.coursesslot')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.coursesslot')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                })
+                ->make();
     }
 
     /**

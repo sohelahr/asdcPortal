@@ -21,4 +21,7 @@ Route::prefix('course')->middleware(['auth'])->group(function() {
     Route::post('/edit/{id}','CourseController@update');
     Route::post('/delete/{id}','CourseController@destroy');
     Route::get('/enrollment/data',[CourseController::class,'EnrollmentData'])->name('enrollmentData');
+
+    Route::get('/data','CourseController@CourseData')->name('course_data');
+
 });

@@ -25,6 +25,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::get('/get-course-wise-employments','AdminController@getCourseEmploymentGraphChart');
     Route::get('/get-user-reach','AdminController@getReachSourceGraphChart');
     Route::get('/get-registration-counts','AdminController@getRegistrationGraphChart');
+    Route::get('/get-top-courses','AdminController@getTopCourses');
+
 
     Route::get('/import-index','ImportController@index');
     Route::get('/import-users','ImportController@importUsers');

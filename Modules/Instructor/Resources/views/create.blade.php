@@ -1,116 +1,113 @@
 @extends('layouts.admin.app')
+
 @section('content')
-    
-    <div class="page-header">
-        <h3 class="page-title">
-            Instructor Create
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Dashboard</a></li>
+    @component('layouts.viho.components.breadcrumb')
+		@slot('breadcrumb_title')
+			<h3>Instructors</h3>
+		@endslot
+            <li class="breadcrumb-item"><a href="{{url('/instructor')}}">Instructors</a></li>
             <li class="breadcrumb-item active" aria-current="page">Instructor Create</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{route('create_instructor')}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-5 bg-white border-b border-gray-200">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">First Name <sup class="text-danger">*</sup></label>
+	@endcomponent
+    <div class="container-fluid">
+	    <div class="row">
+	        <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{route('create_instructor')}}" method="POST" enctype="multipart/form-data" id = "edit_profile">        
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">First Name <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="firstname"
-                                                >
+                                            <input required type="text" class="form-control" name="firstname"
+                                            >
 
-                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="lastname"
-                                                >
+                                            <input required type="text" class="form-control" name="lastname"
+                                            >
 
-                                            </div>
                                         </div>
-                                        
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile Number <sup class="text-danger">*</sup></label>
 
-                                                <input required type="text" class="form-control form-control-sm" name="mobile"
-                                                >
+                                            <input required type="text" class="form-control" name="mobile"
+                                            >
 
-                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Email <sup class="text-danger">*</sup></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Email <sup class="text-danger">*</sup></label>
 
-                                                        <input required type="email" class="form-control form-control-sm" name="email"
-                                                        >
+                                                    <input required type="email" class="form-control" name="email"
+                                                    >
 
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Designation <sup class="text-danger">*</sup></label>
-
-                                                        <input required type="text" class="form-control form-control-sm" name="designation"
-                                                        >
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label>Photo <sup class="text-danger"> *</sup></label>
-                                                        <input type="file" name="photo" class="form-control-file">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Course<sup class="text-danger">*</sup></label>
-                                                        <select class="form-control " name="course" id="course_id">
-                                                            <option value="">Choose Course</option>
-                                                            @foreach ($courses as $course)
-                                                            <option value="{{$course->id}}">{{$course->name}}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Address<sup class="text-danger">*</sup></label>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Designation <sup class="text-danger">*</sup></label>
 
-                                                <textarea required type="text" rows="10"
-                                                class="form-control form-control-sm" name="address"></textarea>
+                                                    <input required type="text" class="form-control" name="designation"
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Photo <sup class="text-danger"> *</sup></label>
+                                                    <input type="file" name="photo" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Course<sup class="text-danger">*</sup></label>
+                                                    <select class="form-control " name="course" id="course_id">
+                                                        <option value="">Choose Course</option>
+                                                        @foreach ($courses as $course)
+                                                        <option value="{{$course->id}}">{{$course->name}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button><a class="btn btn-light"
-                                    href="{{url('/instructor')}}">Cancel</a>
-                            
-                            </div>
-                        </div>
-            </form>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Address<sup class="text-danger">*</sup></label>
+
+                                            <textarea required type="text" rows="10"
+                                            class="form-control" name="address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <a class="btn btn-secondary"
+                                href="{{url('/instructor')}}">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
