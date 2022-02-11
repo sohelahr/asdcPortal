@@ -57,7 +57,7 @@ class AdminController extends Controller
         $labels = [];
         $colors = [];
         $color_stock = [
-            '#222222','#717171','#bf9168','#e4ca43','#1c4f46',
+            '#717171','#bf9168','#e4ca43','#1c4f46',
             '#d43545','#DBD5C3','#9C872C','#B36452','#5F388B',
             '#4A57BA','#A5494F','#00C4CB','#61606A','#eb20c7'
         ];
