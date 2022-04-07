@@ -37,7 +37,11 @@ class AdmissionController extends Controller
 
     public function index()
     {
-        return view('admission::index');
+        $courses = Course::all();
+        /* $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->orderBy('id','DESC')->get();
+        $firstslots = CourseSlot::where('course_id',$courses[0]->id)->get();
+         */
+        return view('admission::index',compact('courses'));
     }
 
     function UserAdmissionData(){
@@ -56,7 +60,7 @@ class AdmissionController extends Controller
             })
             ->make();
     }
-    function AlladmissionData(Request $request){
+    function AlladmissionData(Request $request) {
         $limit = $request->length;
         $start = $request->start;
         $search = $request->search['value'];
@@ -82,6 +86,68 @@ class AdmissionController extends Controller
         $filteredAdmissionCount = $admissions->count();
         $admissions = $admissions->orderBy('id','DESC')->skip($start)->limit($limit)->get();
         //dd($admissions);
+
+        if(isset($search))
+        {
+            $totalFiltered = $filteredAdmissionCount;
+        }
+        else
+        {
+            $totalFiltered = $totalAdmissionRecord;
+        }
+        return Datatables::of($admissions)
+            ->addColumn('student_name',function($admission){
+                return $admission->Student->name;
+            })
+            ->addColumn('perm',function($admission){
+                if(\App\Http\Helpers\CheckPermission::hasPermission('view.admissions')){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            })
+            ->addColumn('course_name',function($admission){
+                return $admission->Course->name;
+            })
+            ->addColumn('course_slot',function($admission){
+                return $admission->CourseSlot->name;
+            })
+            ->addColumn('date',function($admission){
+                $time = strtotime(($admission->created_at));
+                return date('d M Y',$time) ;
+            })
+            ->setTotalRecords($totalAdmissionRecord)
+            ->setOffset($start)
+            ->setFilteredRecords($totalFiltered)
+            ->toJson();
+    }
+
+    function AlladmissionbyBatchData($courseid,$slotid,$batchid,Request $request) {
+        $limit = $request->length;
+        $start = $request->start;
+        $search = $request->search['value'];
+
+        $admissions = Admission::query();
+        
+        $totalAdmissionRecord = $admissions->count();        
+        
+        
+        if(isset($search))
+        {
+            
+            $admissions = $admissions->where('roll_no','LIKE','%'.$search.'%')
+                                    ->OrWhereIn('course_id',function($query) use($search) {
+                                        $query->select('id')->from('courses')->where('name','LIKE','%'.$search.'%');
+                                    })
+                                    ->OrWhereIn('student_id',function($query) use($search) {
+                                        $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                    });
+        }
+        $admissions = $admissions->where('course_id',$courseid)->where('courseslot_id',$slotid)->where('coursebatch_id',$batchid);
+        $admissions = $admissions->orderBy('id','DESC')->skip($start)->limit($limit)->get();
+        //dd($admissions);
+        $filteredAdmissionCount = $admissions->count();
 
         if(isset($search))
         {
@@ -241,8 +307,8 @@ class AdmissionController extends Controller
 
                         /* $course_slot = CourseSlot::find($request->course_slot_id);
                         $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;
-                        $course_slot->save(); *//* 
-                        $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
+                        $course_slot->save(); */
+                       /*  $batch_slot_transaction = BatchSlotTransaction::where('batch_id',$admission->coursebatch_id)
                                                             ->where('slot_id',$admission->courseslot_id)->first(); */
                         if(isset($batch_slot_transaction)){
                             $batch_slot_transaction->current_capacity = $batch_slot_transaction->current_capacity - 1;

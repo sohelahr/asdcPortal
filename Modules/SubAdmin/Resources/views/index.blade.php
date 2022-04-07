@@ -26,21 +26,19 @@
         @endif
         <div class="card-body"> 
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="display datatables" id="staff">
                     <thead class="bg-primary">
                         <tr>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Designation-Role</th>
                             <th>Email</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {{-- <tbody>
                         @foreach ($subadmins as $subadmin)
                             <tr>
-                                <td>
-                                    {{$subadmin->name}}
-                                </td>
                                 <td>
                                     {{$subadmin->designation}}
                                 </td>
@@ -61,7 +59,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
         </div>
@@ -171,6 +169,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <a class="btn btn-secondary" onclick="closeModal()">Close</a>            
                         <input type="submit" value="Submit" class="btn btn-primary" >    
                     </div>
                 </form>
@@ -209,6 +208,25 @@
                         exit:'animated bounce'
                     }
             });
+        }
+        
+        function closeModal(){
+            $('#subadmin-edit').modal('hide');
+        }
+        function deleteStaffConfirm(id){
+            swal({
+                title: "Warning",
+                text: 'You sure want to delete',
+                icon:'warning',
+                buttons: ['Back','Yes I\'m Sure'],
+                dangerMode: true,
+                }).then((yes_delete) => {
+                    if (yes_delete) {
+                           $('#delete_form_'+id).submit();    
+                    }
+                    else
+                    return null;
+                });
         }
         @if(\Illuminate\Support\Facades\Session::has('created'))
             Notify('Created','Subadmin Was Successfully Created','success') 
@@ -322,6 +340,45 @@
 
                     } 
 
+            });
+            $('#staff').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{route('staff_data')}}",
+                pageLength:'12',
+                columnDefs: [{
+                    "defaultContent": "-",
+                    orderable:false,
+                    "targets": "_all"
+                }],
+                columns:[
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'name',name:"name"},
+                    {data:'designation',name:'designation'},
+                    {data:'email',name:'email'},
+                    {data: 'action',render:function(data,type,row){
+                        return `<div>
+                                    <div  class="d-flex p-0 m-0">
+                                        <a href="{{url('security/permissions/${row.id}')}}">
+                                            <button class="form-btn form-btn-success ms-4 me-4" > 
+                                                <i class="fa fa-lock"></i> 
+                                            </button>
+                                        </a>
+                                        <button class="form-btn form-btn-warning me-2" onclick="EditSubAdmin(${row.id})">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="ml-2">
+                                            <button type=submit class="form-btn form-btn-danger ms-2" onclick="deleteStaffConfirm(${row.id})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>        
+                                        <form action='{{url('subadmin/delete/${row.id}')}}' id='delete_form_${row.id}' method="post" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </div>`
+                    },name:'action'}
+                ]
             });
         });
         

@@ -77,10 +77,11 @@
                                                     
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <label class="form-label">Date of Birth <sup class="text-danger">*</sup></label>
+                                                                <label class="form-label">Date of Birth <sup class="text-danger">*</sup> <sub>(mm-dd-yyyy)</sub></label>
                                                                 <input class=" form-control" type="text" data-language="en" name="dob" readonly
-                                                                    value="{{$userprofile->dob ? date('d/m/Y',strtotime($userprofile->dob)) : ''}}" 
+                                                                    value="{{$userprofile->dob ? date('m-d-Y',strtotime($userprofile->dob)) : ''}}" 
                                                                     id="date_picker"/>
+                                                                
                                                             </div>
                                                         </div>
                                                         
@@ -425,7 +426,7 @@
     $('#date_picker').datepicker({
         autoclose: true,
         todayHighlight: true,
-        dateFormat: 'dd-mm-yyyy',
+        /* dateFormat: 'dd-mm-yyyy', */
         autoClose:true,
         onSelect: function(datesel) {
             let that_year = new Date(datesel);

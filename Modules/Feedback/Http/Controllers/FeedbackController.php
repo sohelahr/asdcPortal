@@ -3,6 +3,7 @@
 namespace Modules\Feedback\Http\Controllers;
 
 use App\Models\User;
+use Error;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -19,7 +20,12 @@ class FeedbackController extends Controller
     /**
      * Display a listing of the resource.
      * @return Renderable
-     */
+     */ 
+
+    function __construct()
+    {
+        $this->middleware('admin')->except('createLines','storeLines','allFeedbackHeadersPerAdmission','studentView');
+    }
 
      
     public function index()
@@ -134,7 +140,7 @@ class FeedbackController extends Controller
         $batch = CourseBatch::where('id',$feedback_header->course_batch_id)->first();
         $instructor = Instructor::where('id',$feedback_header->instructor_id)->first();
         $student_name = User::where('id',$feedback_line->student_id)->first()->name;
-//        dd(compact('course','batch','feedback_header','instructor'));
+        //        dd(compact('course','batch','feedback_header','instructor'));
         return view('feedback::lines.view',compact('course','batch','feedback_header','student_name','instructor','feedback_line'));
     }
 
@@ -381,9 +387,15 @@ class FeedbackController extends Controller
         $feedback_header_id = base64_decode($feedback_header_id);
         $data = [];
         $data['feedback_header_id'] = $feedback_header_id;
+        $data['admission_id'] = '';
+                
         $data['admission_id'] = Admission::where('course_id',$request->course_id)
                                             ->where('coursebatch_id',$request->coursebatch_id)
-                                            ->where('student_id',Auth::user()->id)->first()->id;
+                                            ->where('student_id',Auth::user()->id)->first();
+
+        if($data['admission_id']){
+            $data['admission_id'] = $data['admission_id']->id;
+        }
         $data['student_id'] = Auth::user()->id;
         if($step == 'one'){
             $data['qOne'] = $request->qOne;

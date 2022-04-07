@@ -17,18 +17,20 @@ $('#pwd_confirm_visibility').on('click',function(e){
     var target = e.currentTarget
     $(target).hasClass('show')?hidePassword($(target)):showPassword($(target))
 });
-
-$.ajax({
-    type: "get",
-    url: "/asdc_new/userprofile/get-sidebar-data/",
-    success: function (response) {
-        $('#sidebar-name').text(response.firstname +" " + response.lastname);
-        var asset_url = $('#sidebar-img').data('asset-url');
-        if(response.photo){
-            $('#sidebar-img').attr("src",asset_url+"/storage/app/profile_photos/"+response.photo);
-        }       
-    },
-    error:function (er){
-        console.error(er);
-    }
-});
+var domain = $('#sidebar-img').data('domain');
+if(domain){
+    $.ajax({
+        type: "get",
+        url: domain+"/userprofile/get-sidebar-data/",
+        success: function (response) {
+            $('#sidebar-name').text(response.firstname +" " + response.lastname);
+            var asset_url = $('#sidebar-img').data('asset-url');
+            if(response.photo){
+                $('#sidebar-img').attr("src",asset_url+"storage/app/profile_photos/"+response.photo);
+            }       
+        },
+        error:function (er){
+            console.error(er);
+        }
+    });
+}

@@ -303,7 +303,6 @@
                     $("#registrations").empty();
                     response = JSON.parse(response);
                     if(response.status == true){
-                        console.log(response);
                         $.each(response.data, function (index, element) { 
                             $('#registrations').append(`
                                     <li class="media">

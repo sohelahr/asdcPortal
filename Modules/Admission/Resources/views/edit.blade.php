@@ -4,7 +4,7 @@
 		@slot('breadcrumb_title')
 			<h3>Edit Admission</h3>
 		@endslot
-            <li class="breadcrumb-item"><a href="{{url('/registration')}}">Registrations</a></li>
+            <li class="breadcrumb-item"><a href="{{url('/admission')}}">Admissions</a></li>
             <li class="breadcrumb-item"><a href="{{url('/admission/view/'.$admission->id)}}">View Admission</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit Admission</li>
     @endcomponent

@@ -11,8 +11,41 @@
 	    <div class="row">
 	        <div class="col-sm-12">
                 <div class="card">
+                    <div id="admissions-by-batches-loader" class="d-none">
+                        <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                            <div> 
+                                <div class="loader-box">
+                                    <div class="loader-7"></div>
+                                </div>              
+                            </div>   
+                        </div>
+                    </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <select class="form-control" id="change_admission_by_batch">
+                                    <option class="">Select Course</option>
+                                    @foreach ($courses as $course)
+                                        <option value="{{$course->id}}">{{$course->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-control" id="course_batch">
+                                    <option value="">Select Batch</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-control" id="course_slot">
+                                   <option value="">Select Timing</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary" id="get-admission-btn"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-danger" id="reset-attendance-btn"><i class="icofont icofont-close"></i></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive mt-2">
                             <table class="display datatable" id="admissions">
                                 <thead class="bg-success">
                                     <tr>
@@ -23,7 +56,7 @@
                                         <th>Date</th>
                                         <th>Status</th>
                                         {{-- <th>Action</th> --}}
-                                    </tr>
+                                    </tr> 
                                 </thead>
                                 <tfoot class="bg-success">
                                     <tr>
@@ -46,6 +79,9 @@
 @endsection
 @section('jcontent')
 <script>  
+
+    getAdmissions("{{route('all_admissions')}}");
+
     function Notify(title,msg,status){
         $.notify({
                 title:title,
@@ -85,7 +121,81 @@
             Notify('Danger','Something Went Wrong','danger')        
         @endif
     
-    $(document).ready( function () {
+    $('#change_admission_by_batch').on('change',function(){
+        let id = $('#change_admission_by_batch').val();
+        $.ajax({
+            type: "get",
+            url: `{{url('attendance/getforminputs/${id}')}}`,
+            beforeSend: function (){
+                $('#admissions-by-batches-loader').removeClass('d-none');
+            },
+            success: function (response) {
+                
+                $("#course_slot").empty();
+                $("#course_batch").empty();
+
+                if(response.course_slots.length > 0){
+                    $("#course_slot").append(`
+                        <option value="">Select Timing</option>
+                    `);
+                    $.each(response.course_slots, function (index, element) { 
+                        $("#course_slot").append(`
+                            <option value="${element.id}">${element.name}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#course_slot").append(`
+                            <option value="">Not Found</option>
+                        `);
+                }
+                
+                if(response.course_batches.length > 0){
+                    $("#course_batch").append(`
+                        <option value="">Select Batch</option>
+                    `);
+                    $.each(response.course_batches, function (index, element) { 
+                        
+                        $("#course_batch").append(`
+                            <option value="${element.id}">${element.batch_number}</option>
+                        `);
+                    });
+                }
+                else
+                {
+                    $("#course_batch").append(`
+                            <option value="">Not Found</option>
+                        `);
+                }
+                
+            },
+            complete: function(){
+                $('#admissions-by-batches-loader').addClass('d-none');
+            }
+        });
+    });
+
+    $('#get-admission-btn').on('click',function(){
+        let courseid = $('#change_admission_by_batch').val();
+        let slotid = $('#course_slot').val();
+        let batchid = $('#course_batch').val();
+        if(slotid == "" || batchid == ""){
+            return null;
+        }
+        url = `{{url('admission/data/${courseid}/${slotid}/${batchid}')}}`;
+        getAdmissions(url);
+    });
+
+    
+    $('#reset-attendance-btn').on('click',function(){
+        $('#change_admission_by_batch').prop('selectedIndex',0);
+        $('#course_slot').prop('selectedIndex',0);
+        $('#course_batch').prop('selectedIndex',0);
+        getAdmissions("{{route('all_admissions')}}");
+    });
+
+    function getAdmissions(url){
         $('#admissions').DataTable({
             processing: true,
             serverSide: true,
@@ -93,8 +203,9 @@
             searching: true,
             "autoWidth": false,
             "responsive": true,
+            "bDestroy": true,
             ajax: {    
-                "url": "{{route('all_admissions')}}",
+                "url": url,
                 "dataType": "json",
                 "type": "POST",
                 "data":{ _token: "{{csrf_token()}}"}
@@ -141,6 +252,6 @@
                 },name:'action'}, */
             ]
         });
-} );
+    }
 </script>
 @endsection

@@ -79,6 +79,10 @@ class RegisteredUserController extends Controller
         $user = User::find(base64_decode($id));
         if(isset($user))
         {
+            if($user->is_verified)
+            {
+                return redirect()->route('login')->with('already_verfied','123');
+            }
             MailController::sendRegistrationEmail($user->email,$user->name,$user->id);
             return redirect()->back()->with('success','Email resent successfully.');
         }

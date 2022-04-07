@@ -39,4 +39,8 @@ Route::prefix('admission')->middleware(['auth'])->group(function() {
     Route::get('/certificate/{id}','AdmissionController@generateCertificate')->name('completion_certificate');
 
     Route::post('/store-grade/','AdmissionController@calculateGrade')->name('calculate_grade');
+
+    Route::post('/data/{courseid}/{slotid}/{batchid}','AdmissionController@AlladmissionbyBatchData')->name('all_admissions_by_batch');
+
+    
 });

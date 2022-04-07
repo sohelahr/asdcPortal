@@ -31,7 +31,7 @@ class AttendanceController extends Controller
 
     public function index(){
         $courses = Course::all();
-        $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->get();
+        $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->orderBy('id','DESC')->get();
         $firstslots = CourseSlot::where('course_id',$courses[0]->id)->get();
         return view('attendance::index',compact('courses','firstbatches','firstslots'));
     }

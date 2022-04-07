@@ -139,7 +139,7 @@
                             
                         </div>                                                         
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <a class="btn btn-light" href="{{url('admin/dashboard')}}">Cancel</a>
+                        <a class="btn btn-light" href="{{url('/registration')}}">Cancel</a>
                     </form>
                 </div>
             </div>

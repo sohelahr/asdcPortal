@@ -1,3 +1,17 @@
+@media screen and (min-width: 1200px) and (max-width: 1366px){
+    .crm-activity span {
+        display: initial!important;
+    }
+    .crm-activity {
+        height: auto!important;
+    }
+
+    .crm-activity .media .media-body .dates {
+        /* display: -webkit-box; */
+        /* display: -ms-flexbox; */
+        display: initial!important;
+    }
+}
 td {
     padding: 5px !important;
     vertical-align: middle !important;

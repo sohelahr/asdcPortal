@@ -1,7 +1,8 @@
 <header class="main-nav">
     <div class="sidebar-user text-center">
-        <img class="img-90 rounded-circle" data-asset-url="{{asset('/')}}" src="{{asset('/storage/app/profile_photos/blankimage.png')}}" id="sidebar-img" alt="" />
-        <a href="javascript:void(0);"> <h6 class="mt-3 f-14 f-w-600" id="sidebar-name" >-- -----</h6></a>
+        <img class="img-90 rounded-circle" data-asset-url="{{asset('/')}}" 
+            data-domain="{{url('/')}}" src="{{asset('/storage/app/profile_photos/blankimage.png')}}" id="sidebar-img" alt="" />
+        <a href="javascript:void(0);"> <h6 class="mt-3 f-14 f-w-600" id="sidebar-name" >---- -------</h6></a>
         
         <div class="setting-primary logout-primary ">
             <form method="POST" action="{{ route('logout') }}" id="loggingout">

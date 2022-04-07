@@ -962,7 +962,6 @@
             },
             success: function (response) {
                 let data = JSON.parse(response);
-                console.log(data);
                 
                 if(data.count.length){
                     $('#top-courses-table').html('');

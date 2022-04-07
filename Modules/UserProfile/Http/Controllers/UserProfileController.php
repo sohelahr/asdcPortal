@@ -48,11 +48,12 @@ class UserProfileController extends Controller
         if(isset($search))
         {
             $userprofiles = $userprofiles->where('mobile','LIKE','%'.$search.'%')
+                                //->orWhere('firstname','LIKE','%'.$search.'%')
                                 ->orWhereIn('user_id',function($query) use($search) {
-                                    $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
+                                    $query->select('id')->from('users')->where('name','LIKE', '%'.$search.'%');
                                 })
                                 ->orWhereIn('user_id',function($query) use($search) {
-                                    $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
+                                    $query->select('id')->from('users')->where('email','LIKE','%'.$search.'%');
                                 });
                                 
         }

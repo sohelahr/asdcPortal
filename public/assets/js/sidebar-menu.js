@@ -116,7 +116,7 @@ $toggle_nav_top.click(function() {
   $header.toggleClass('close_icon');
 });
 
-$( window ).resize(function() {
+/* $( window ).resize(function() {
   $nav = $('.main-nav');
   $header = $('.page-main-header');
   $toggle_nav_top = $('#sidebar-toggle');
@@ -126,7 +126,7 @@ $( window ).resize(function() {
     $nav.toggleClass('close_icon');
     $header.toggleClass('close_icon');
   });
-});
+}); */
 
 $body_part_side = $('.body-part');
 $body_part_side.click(function(){

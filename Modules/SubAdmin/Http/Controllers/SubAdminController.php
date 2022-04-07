@@ -19,6 +19,7 @@ use Modules\Qualification\Entities\Qualification;
 use Modules\Registration\Entities\Registration;
 use Modules\SerialNumberConfigurations\Http\Controllers\SerialNumberConfigurationsController;
 use Modules\UserProfile\Entities\UserProfile;
+use Yajra\Datatables\Datatables;
 
 class SubAdminController extends Controller
 {
@@ -31,6 +32,41 @@ class SubAdminController extends Controller
         $subadmins= User::where('user_type','2')->get();
         return view('subadmin::index',compact('subadmins'));
     }
+ 
+    function StaffData(){
+        $documents = User::where('user_type','2')->orderby('id','DESC')->get();
+        
+        return DataTables::of($documents)
+                ->addIndexColumn()
+                /* ->addColumn('coursetiming_perm',function($document){
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('view_courses_slots.courses')){
+                        return true; 
+                    }
+                    else{
+                        return false;
+                    }
+                }) */
+                /* ->addColumn('perm',function($document){
+                    $perm = [];
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('update.courses')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    if(\App\Http\Helpers\CheckPermission::hasPermission('delete.courses')){
+                        array_push($perm,true);
+                    }
+                    else{
+                        array_push($perm,false);
+                    }
+
+                    return ['edit_perm' => $perm[0],'delete_perm' => $perm[1]];
+                }) */
+                ->make();
+    }
+
 
     public function createStudent()
     {

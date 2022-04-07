@@ -4,7 +4,7 @@
 		@slot('breadcrumb_title')
 			<h3>View Admission</h3>
 		@endslot
-            <li class="breadcrumb-item"><a href="{{url('/registration')}}">Registrations</a></li>
+            <li class="breadcrumb-item"><a href="{{url('/admission')}}">Admissions</a></li>
             <li class="breadcrumb-item active" aria-current="page">View Admission</li>
 	@endcomponent
 <div class="container-fluid">
@@ -228,7 +228,9 @@
                                     </div>
                                 </div> 
                             </div>
-                                
+                            <div class="col-3">
+                                <a class="btn btn-secondary" href="{{url('/admission')}}">Back</a>    
+                            </div>
                         </div>
                         <form method="GET" action='{{url('admission/readmit/'.$admission->id)}}' id="readmit_form" class="d-none">
                             <input type="submit" value="submit" >

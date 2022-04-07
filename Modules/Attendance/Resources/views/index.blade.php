@@ -41,19 +41,23 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 <select class="form-control" id="course_batch">
                                     @foreach ($firstbatches as $item)
                                         <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 <select class="form-control" id="course_slot">
                                     @foreach ($firstslots as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            
+                            <div class="col-2 text-center">
+                                <button class="btn btn-primary" id="get-attendance-btn">Submit</button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -176,7 +180,7 @@
             });
         });
 
-        $('#course_slot').on('change',function(){
+        $('#get-attendance-btn').on('click',function(){
             getAttendanceRecords();
         });
 
