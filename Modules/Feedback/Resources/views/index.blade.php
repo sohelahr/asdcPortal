@@ -316,5 +316,5 @@
                 } 
 
             });
-2    </script>
+    </script>
 @endsection

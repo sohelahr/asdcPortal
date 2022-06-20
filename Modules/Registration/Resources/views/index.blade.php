@@ -81,11 +81,20 @@
             {data: 'course_slot',name:"course_slot"},
             {data: 'date',name:"date"},
             {data:'action',render:function(data,type,row){
-                    if(data === true)
-                        return "<a class='text-success' href='admission/create/"+row.id+"'>Admit</a>"
-                    else
+                    if(data === true){
+                        if(row.status == 1){
+                            return "<a class='text-success' href='admission/create/"+row.id+"'>Admit</a>"
+                        }
+                        else if(row.status == 2){
+                            return "<span class='text-warning' href=''>Admitted</span>"
+                        }
+                        else{
+                            return "<span class='text-danger' href=''>Cancelled</span>"
+                        }
+                    }
+                    else{
                         return ;
-
+                    }
             },name:'action',orderable:false}
         ]
     });

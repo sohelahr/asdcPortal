@@ -344,11 +344,11 @@
                                 When I fail to understand the topic the trainer notices me and repeats the topic<sup class="text-danger">*</sup></label>
                                 <div class="checkboxes">
                                     <div class="rating-container">
-                                        <select class="u-rating-movie" name="qSixteen" autocomplete="off">
-                                            <option value="5" {{isset($feedback_line) ? ($feedback_line->qSixteen == "5" ? 'selected' : '' ) : '' }}>Never</option>
-                                            <option value="4" {{isset($feedback_line) ? ($feedback_line->qSixteen == "4" ? 'selected' : '' ) : '' }}>Sometimes</option>
-                                            <option value="3" {{isset($feedback_line) ? ($feedback_line->qSixteen == "3" ? 'selected' : '' ) : '' }}>Often</option>
-                                            <option value="2" {{isset($feedback_line) ? ($feedback_line->qSixteen == "2" ? 'selected' : '' ) : '' }}>Always</option>
+                                        <select class="u-rating-movie" name="qSeventeen" autocomplete="off">
+                                            <option value="5" {{isset($feedback_line) ? ($feedback_line->qSeventeen == "5" ? 'selected' : '' ) : '' }}>Never</option>
+                                            <option value="4" {{isset($feedback_line) ? ($feedback_line->qSeventeen == "4" ? 'selected' : '' ) : '' }}>Sometimes</option>
+                                            <option value="3" {{isset($feedback_line) ? ($feedback_line->qSeventeen == "3" ? 'selected' : '' ) : '' }}>Often</option>
+                                            <option value="2" {{isset($feedback_line) ? ($feedback_line->qSeventeen == "2" ? 'selected' : '' ) : '' }}>Always</option>
                                         </select>
                                     </div>
                                 </div>

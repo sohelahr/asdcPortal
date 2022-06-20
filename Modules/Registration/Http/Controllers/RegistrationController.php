@@ -79,7 +79,7 @@ class RegistrationController extends Controller
                                             })
                                             ->OrWhereIn('student_id',function($query) use($search) {
                                                 $query->select('id')->from('users')->where('name','LIKE','%'.$search.'%');
-                                            });
+                                            })->where('status','1');
         }
         $filteredRegistrationCount = $registrations->count();
         $registrations = $registrations->where('status','1')->orderBy('id','DESC')->skip($start)->limit($limit)->get();
