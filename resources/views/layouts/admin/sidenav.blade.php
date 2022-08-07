@@ -99,7 +99,7 @@
                         </a>
                     <ul class="nav-submenu menu-content">
                         <li> <a href="{{url('attendance/')}}">Attendance</a></li>
-                        <li> <a href="{{url('attendance/import_summaries')}}">Import Summaries</a></li>
+                        {{-- <li> <a href="{{url('attendance/import_summaries')}}">Import Summaries</a></li> --}}
                     </ul>
                   </li>
                   <li class="dropdown">

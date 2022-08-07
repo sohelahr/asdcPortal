@@ -16,7 +16,7 @@
                         @if($admission->status == '1')
                         <div>  
                             <a href="{{url('admission/edit/'.$admission->id)}}">
-                                <button class="btn bg-white" type="button">
+                                <button class="btn bg-white px-3" type="button">
                                 <i class="fa fa-edit btn-icon-prepend"></i>
                                     Edit
                                 </button>
@@ -27,14 +27,14 @@
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
                     <div>
                         @if ($admission->status == '4')
-                            <button class="btn bg-white " type="button" 
+                            <button class="btn bg-white px-3 " type="button" 
                                 onclick="changeStatusConfirm('Do you Really Want to ReAdmit? ','readmit');"
                             >
                             <i class="fa fa-refresh btn-icon-prepend"></i>
                                 Readmit
                             </button>
                         @else                    
-                            <button class="btn bg-white " type="button" @if($admission->status != '1') 
+                            <button class="btn bg-white px-3 " type="button" @if($admission->status != '1') 
                                 onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
                                 @else
                                     onclick="changeStatusConfirm('Do you Really Want to Cancel the Admission','cancel');"
@@ -48,7 +48,7 @@
                     @endif
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('create.student_employment'))
                         <div>
-                            <button class="btn bg-white" type="button" 
+                            <button class="btn bg-white px-3" type="button" 
                                 @if($admission->status > 2)
                                     onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
                                 @else
@@ -61,7 +61,7 @@
                     @endif
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
                     <div>
-                        <button class="btn bg-white" type="button" @if($admission->status != '1') 
+                        <button class="btn bg-white px-3" type="button" @if($admission->status != '1') 
                             onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
                             @else
                                 onclick="changeStatusConfirm('Do you Really Want to Terminate the Admission','terminate');"
@@ -71,9 +71,21 @@
                         </button>
                     </div>
                     @endif
+                    @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions'))
+                    <div>
+                        <button class="btn bg-white px-3" type="button" @if($admission->status != '1') 
+                            onclick="changeStatusWarning('Admission is already Cancelled/Terminated or Employed');"
+                            @else
+                                data-bs-toggle="modal" data-bs-target="#attendance-modal"
+                            @endif>
+                            <i class="fa fa-list btn-icon-prepend"></i>
+                            Mark Attendance
+                        </button>
+                    </div>
+                    @endif
                     <div>
                         <a href="{{route('print_admission_form',$admission->id)}}" target="_blank">
-                            <button class="btn bg-white">
+                            <button class="btn bg-white px-3">
                                 <i class="fa fa-print btn-icon-prepend"></i>
                                 Print
                             </button>
@@ -82,7 +94,7 @@
                     {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('delete.admissions')) --}}
                     <div>
                         <a type="button" target="_blank" href="{{url('admission/id-card/'.$admission->id)}}">
-                            <button class="btn bg-white" type="button" >
+                            <button class="btn bg-white px-3" type="button" >
                                     <i class="fa fa-id-card" style="font-size: 0.9rem;"></i> 
                                     Get ID-Card                         
                             </button>
@@ -90,7 +102,7 @@
                     </div>
                     <div>
                         <a type="button"  href="{{route('user_profile_admin_from_other',$admission->student_id)}}">
-                            <button class="btn bg-white" type="button" >
+                            <button class="btn bg-white px-3" type="button" >
                                     <i class="fa fa-user" style="font-size: 0.9rem;"></i> 
                                     View Profile                        
                             </button>
@@ -98,7 +110,7 @@
                     </div>
                     @if($admission->status == '1') 
                         <div>
-                            <button class="btn bg-white" type="button" @if ($grade == "") onclick="OpenGradesModal()" @else onclick="goToCertificate({{$admission->id}})" @endif>
+                            <button class="btn bg-white px-3" type="button" @if ($grade == "") onclick="OpenGradesModal()" @else onclick="goToCertificate({{$admission->id}})" @endif>
                                 @if ($grade == "") 
                                     <i class="fa fa-graduation-cap btn-icon-prepend"></i>
                                     Grade Student 
@@ -376,8 +388,55 @@
             </div>
         </div>
     </div>
+    <input type="hidden" value="{{$attendance_months}}" id="attendance_months" />
+    <div id="attendance-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="attendance" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action={{route('attendance_create')}} method="POST" id="attendance_form">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="employeed">Mark Attendance</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="courseslot_id" value="{{$admission->courseslot_id}}">
+                        <input type="hidden" name="coursebatch_id" value="{{$admission->coursebatch_id}}">
+                        <input type="hidden" name="course_id" value="{{$admission->course_id}}">
+                        <input type="hidden" name="user_id" value="{{$admission->student_id}}">
+                        <input type="hidden" name="admission_id" value="{{$admission->id}}">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="present_days">Present Days <sup class="text-danger">*</sup></label>
+                                <input id="present_days" class="form-control " type="number" name="present_days">
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="absent_days">Absent Days <sup class="text-danger">*</sup></label>
+                                <input id="absent_days" class="form-control " type="number" name="absent_days">
+                            </div>
+                            <div class="form-group col-4">
+                                <input type="hidden" value="{{$admission->CourseBatch->start_date}}" id="batchstartdate">
+                                <input type="hidden" value="{{$admission->CourseBatch->expiry_date}}" id="batchenddate">
+                                <label for="month_id">Month <sup class="text-danger">*</sup></label>
+                                <select class="form-control" name="month_id" id="month_id">{{-- {{$admission->CourseSlot->name}} --}}
+                                    <option value="">Select an option</option>        
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="remarks">Remarks</label>
+                                <textarea class="form-control" name="remarks" rows="7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Mark Attendance">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('jcontent')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js" ></script>
     <script>
         function Notify(title,msg,status){
             $.notify({
@@ -443,8 +502,30 @@
                 });
         }
         
+        function dateRange(d1, d2) {
+            var dateEnd
+            var dateStart
+            if(moment(d2,'DD-MM-YYYY').isValid()){                
+                dateStart = moment(d1,'DD-MM-YYYY');
+                dateEnd = moment(d2,'DD-MM-YYYY');
+            }
+            else{
+                dateStart = moment(d1,'MM/DD/YYYY') ;
+                dateEnd = moment(d2,'MM/DD/YYYY');
+            }
+            var dates = []; //Substract one month to exclude endDate itself
+
+            while (dateEnd > dateStart || dateStart.format('M') === dateEnd.format('M')) {
+                dates.push({value:dateStart.format('M'),label: dateStart.format('MMMM')});
+                dateStart.add(1,'month');
+            }
+            return dates;
+        }
+
         @if(\Illuminate\Support\Facades\Session::has('employement_created'))   
             Notify('Employement', 'Admission was marked Employed','success') 
+        @elseif(\Illuminate\Support\Facades\Session::has('attendance_created'))
+            Notify('Attendance', 'Attendance was marked','success') 
         @elseif(\Illuminate\Support\Facades\Session::has('created'))
             Notify('Created', 'Admission was created','success') 
         @elseif(\Illuminate\Support\Facades\Session::has('cancelled'))
@@ -459,6 +540,60 @@
             Notify('Danger', 'Something went wrong','danger') 
         @endif
         $(document).ready(function () { 
+            $('#attendance_form').validate({
+                errorClass: "text-danger pt-1",
+                rules: {
+                    present_days: {
+                        required: true,
+                        digits: true
+                    },
+                    absent_days:{
+                        required:true,
+                        digits: true
+                    },
+                    month_id: {
+                        required: true,                    
+                    }
+                },
+                messages:{   
+                    present_days: {
+                        required: 'present days is required',
+                        digits: 'enter only positive values'
+                    },
+                    absent_days:{
+                        required:'absent days is required',
+                        digits: 'enter only positive values'
+                    },
+                    month_id: {
+                        required: 'month is required',                    
+                    },
+                },
+                submitHandler: function(form,event) {
+                    event.preventDefault();
+                    let month_id = $('#month_id').val();
+                    let total_days = parseInt($('#present_days').val()) + parseInt($('#absent_days').val());
+
+                    if(month_id % 2 == 0 && month_id != 2 && month_id != 12 ){
+                        if(total_days > 30){
+                            Notify('Error','Total number of days should not be greater than 30','danger');
+                            return
+                        }    
+                    }
+                    else if((month_id % 2 !== 0 || month_id == 12) ){
+                        if(total_days > 31){
+                            Notify('Error','Total number of days should not be greater than 31','danger');
+                            return
+                        }
+                    }
+                    else if(month_id == 2 && total_days > 29 ){
+                        Notify('Error','Total number of days should not be greater than 29','danger');
+                        return
+                    }
+                   form.submit();
+                    
+                }
+            });
+            
             $('#employment_form').validate({
                 errorClass: "text-danger pt-1",
                 rules: {
@@ -502,7 +637,7 @@
                     },
                 }
             });
-            $('$grade_form').validate({
+            $('#grade_form').validate({
                 errorClass: "text-danger pt-1",
                 rules: {
                     cancellation_reason: {
@@ -528,6 +663,28 @@
                     },
                 }
             });
+
+            let start_date = $('#batchstartdate').val();
+            let end_date = $('#batchenddate').val();
+            let monthsmarked =  JSON.parse($('#attendance_months').val());
+            let months = dateRange(start_date,end_date)
+            if(months.length){
+                let leftmonths = months.filter((month) => {
+                                    let flag = false;
+                                    monthsmarked.forEach(element => {
+                                        if(element == month.value){
+                                           flag = true;
+                                        }
+                                    });   
+                                    return !flag                                 
+                                });
+                leftmonths.forEach(element => {
+                    $('#month_id').append(`
+                        <option value="${element.value}">${element.label}</option>
+                    `);
+                });
+            }
+
         });
 
         

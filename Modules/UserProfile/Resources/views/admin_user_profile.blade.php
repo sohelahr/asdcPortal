@@ -324,9 +324,12 @@
                                             <table class="display datatables" id="attendance_table">
                                                 <thead class="bg-primary">
                                                     <tr>
-                                                        <th>Date</th>
-                                                        <th>Status</th>
-                                                        <th>Punch Records</th>
+                                                        <th>Month</th>
+                                                        <th>Absent</th>
+                                                        <th>Present</th>
+                                                        <th>Total days</th>
+                                                        <th>Attendance</th>
+                                                        <th>Remarks</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -339,6 +342,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="remarksmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cancetile" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cancetile">Remark</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4 id="remark"></h4>                        
+                        </div>     
                     </div>
                 </div>
             </div>
@@ -426,33 +443,40 @@
             /* "columnDefs": [
                 {"className": "text-center", "targets": [1,2]}
             ], */
-            columns: [{
-                    data: 'date',
-                    name: "date",
-                    sortable:true,
+            columns: [
+                {
+                    data: 'month',
+                    name: "month",
                 },
                 {
-                    data: 'status',
-                    render: function (type, data, row) {
-                        if (row.status == "0")
-                            return "<label class='text-danger'>Absent</label>"
-                        else if (row.status == "1")
-                            return "<label class='text-warning'>No punch out</label>"
-                        else if (row.status == "2")
-                            return "<label class='text-success'>Present</label>"
-                        else if (row.status == "3")
-                            return "<label class='text-secondary'>Week Off</label>"
-                        else if (row.status == "4")
-                            return "<label class='text-primary'>Holiday</label>"
+                    data: 'absent',
+                    name: 'absent'
+                },
+                {
+                    data: 'present',
+                    name: 'present'
+                },
+                {
+                    data: 'total',
+                    name: 'total'
+                },
+                {
+                    data: 'attendance',
+                    name: 'attendance'
+                },
+                {
+                    data: 'remarks',
+                    render:function(data,type,row){
+                        return `<span style='cursor:pointer' data-src='' onclick='showRemarks(${JSON.stringify(data)})''>${data.substring(0,5)}...</span>`
                     },
-                    name: 'status'
-                },
-                {
-                    data: 'punch_records',
-                    name: 'punch_records'
+                    name: 'remarks'
                 },
             ]
         });
+    }
+    function showRemarks(remark){
+        $('#remark').text(remark);
+        $('#remarksmodal').modal('show');
     }
 </script>
 @endsection

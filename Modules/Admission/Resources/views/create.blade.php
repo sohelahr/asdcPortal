@@ -180,6 +180,8 @@
     }
     @if(\Illuminate\Support\Facades\Session::has('capacity_full'))   
         Notify('Capacity Full','Capacity for that batch and slot is full','warning') 
+    @elseif(\Illuminate\Support\Facades\Session::has('already'))   
+        Notify('Duplicate','Admission already exist for this student and course','warning') 
     @endif
     $('#wait-text').hide();  
     

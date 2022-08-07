@@ -12,26 +12,18 @@
 */
 
 Route::prefix('attendance')->middleware(['auth'])->group(function() {
-    Route::get('/', 'AttendanceController@index');
+    Route::get('/', 'AttendanceController@index');  
 
+    Route::post('create', 'AttendanceController@store')->name('attendance_create');
 
-    Route::get('/attendance-import-page', 'AttendanceController@newAttendance')->name('attendance_import');
-    Route::post('/attendance-dump-file', 'AttendanceController@dumpAttendance')->name('dump_attendance');
-    Route::post('/attendance-preview-file', 'AttendanceController@previewAttendance')->name('preview_attendance');
-    Route::post('/publish-dump-data', 'AttendanceController@publishAttendance')->name('publish_attendance');
-
-    Route::get('/abort-dump-data', 'AttendanceController@abortAttendance')->name('abort_attendance');
+    Route::post('/update/{id}','AttendanceController@update')->name('student_employment_update');
+    Route::get('/view/{id}','AttendanceController@show')->name('employment_view');
 
     Route::post('/get-admissionwise-attendance/{id}','AttendanceController@admissionwiseAttendance')->name('get_admissionwise_attendance');
 
-    Route::post('/get-all-attendance/{courseid}/{slotid}/{batchid}','AttendanceController@allAttendance')->name('get_all_attendance');
+    Route::post('/get-all-attendance/{courseid}/{slotid}/{batchid}/{monthid}','AttendanceController@allAttendance')->name('get_all_attendance');
 
     Route::get('/getforminputs/{id}','AttendanceController@getFormData')->name('attendance_input_select');
 
-    Route::get('/import_summaries','AttendanceController@importSummary');
-    Route::post('/import_summaries/data','AttendanceController@importSummaryData');
-	Route::get('/import_summaries/download/{file_name}/{flag}','AttendanceController@downloadImportSummary');
-    Route::post('/import_summaries/logs/{id}/data','AttendanceController@importLogsData');
-    Route::get('/import_summaries/logs/{id}','AttendanceController@importLogs');
 
 });

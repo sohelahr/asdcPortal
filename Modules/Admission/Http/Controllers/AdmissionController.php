@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Block\Document;
 use Modules\Admission\Entities\Admission;
 use Modules\Admission\Entities\Certificate;
+use Modules\Attendance\Entities\Attendance;
 use Modules\Course\Entities\Course;
 use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
@@ -264,10 +265,15 @@ class AdmissionController extends Controller
             $admission->is_course_changed = true;
         }
 
-        if((Admission::where('roll_no',$request->roll_no)
+
+        if(Admission::where('student_id',$request->student_id)->where('course_id',$request->course_id)->count() > 0){
+                return redirect('admission/create/'.$admission->registration_id)->with('already','123');
+        }
+        elseif((Admission::where('roll_no',$request->roll_no)
             ->where('admission_form_number', $request->admission_form_number)->count() > 0) 
             || 
-            (Admission::where('registration_id',$request->registration_id)->count() > 0) ){
+            (Admission::where('registration_id',$request->registration_id)->count() > 0)     
+          ){
                 
                 return redirect('/admission')->with('error','Something Went Wrong');
         }
@@ -340,7 +346,9 @@ class AdmissionController extends Controller
         $grade = "";
         if($admission->Certificate)
             $grade = $admission->Certificate->grade;
-        return view('admission::view',compact('admission','documents_submitted','documents','grade'));
+
+        $attendance_months = Attendance::where('admission_id',$id)->pluck('month_id');
+        return view('admission::view',compact('admission','documents_submitted','documents','grade','attendance_months'));
     }
     
     public function showfromReg($id)

@@ -20,28 +20,28 @@
                             </div>   
                         </div>
                     </div>
-                    @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
+                    {{-- @if(\App\Http\Helpers\CheckPermission::hasPermission('create.profiles'))
                         <div class="d-flex p-1 m-0 border header-buttons">
                             <div>
                                 <a href="{{route('attendance_import')}}">
                                     <button class="btn bg-white" type="button" data-toggle="modal" data-target="#employed-modal">
                                         <i class="fa fa-plus btn-icon-prepend"></i>
-                                        Import New
+                                        Add New
                                     </button>
                                 </a>
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <select class="form-control" id="change_admission_by_batch">
                                     @foreach ($courses as $course)
                                         <option value="{{$course->id}}">{{$course->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <select class="form-control" id="course_batch">
                                     @foreach ($firstbatches as $item)
                                         <option value="{{$item->id}}">{{$item->batch_identifier}}</option>
@@ -52,6 +52,13 @@
                                 <select class="form-control" id="course_slot">
                                     @foreach ($firstslots as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <select class="form-control" id="monthid">
+                                    @foreach ($firstmonths as $item)
+                                        <option value="{{$item['value']}}">{{$item['label']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -69,10 +76,11 @@
                                             <th>Name</th>
                                             <th>Absent</th>
                                             <th>Present</th>
-                                            <th>Weekly Off</th>
-                                            <th>Holiday</th>
+                                            {{-- <th>Weekly Off</th>
+                                            <th>Holiday</th> --}}
                                             <th>Total days</th>
                                             <th>Attendance</th>
+                                            <th>Remarks</th>
                                         </tr>
                                     </tr>
                                 </thead>
@@ -80,6 +88,20 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="remarksmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cancetile" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancetile">Remark</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="remark"></h4>                        
+                </div>     
             </div>
         </div>
     </div>
@@ -189,6 +211,8 @@
         let courseid = $('#change_admission_by_batch').val();
         let courseslotid = $('#course_slot').val();
         let coursebatchid = $('#course_batch').val();
+        let monthid = $('#monthid').val();
+
         if(courseslotid == "" || coursebatchid == ""){
             return null;
         }
@@ -200,7 +224,7 @@
             "pageLength": 50,
             "bDestroy": true,
             ajax: {
-                "url":`{{url("attendance/get-all-attendance/".'${courseid}'."/".'${courseslotid}'."/".'${coursebatchid}')}}`,
+                "url":`{{url("attendance/get-all-attendance/".'${courseid}'."/".'${courseslotid}'."/".'${coursebatchid}'."/".'${monthid}')}}`,
                 "dataType": "json",
                 "type": "POST",
                 "data":{ _token: "{{csrf_token()}}"}
@@ -227,24 +251,36 @@
                     data: 'present',
                     name: 'present'
                 },
-                {
+                /* {
                     data: 'weekly_off',
                     name: 'weekly_off'
                 },
                 {
                     data: 'holiday',
                     name: 'holiday'
-                },
+                }, */
                 {
                     data: 'total',
                     name: 'total'
-                },{
+                },
+                {
                     data: 'attendance',
                     name: 'attendance'
+                },
+                {
+                    data: 'remarks',
+                    render:function(data,type,row){
+                        return `<span style='cursor:pointer' data-src='' onclick='showRemarks(${JSON.stringify(data)})''>${data.substring(0,5)}...</span>`
+                    },
+                    name: 'remarks'
                 },
             ]
         });
     }
 
+    function showRemarks(remark){
+        $('#remark').text(remark);
+        $('#remarksmodal').modal('show');
+    }
     </script>
 @endsection
