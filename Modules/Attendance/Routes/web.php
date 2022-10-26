@@ -25,5 +25,7 @@ Route::prefix('attendance')->middleware(['auth'])->group(function() {
 
     Route::get('/getforminputs/{id}','AttendanceController@getFormData')->name('attendance_input_select');
 
+    Route::get('/getbatchmonths/{id}','AttendanceController@getBatchMonths')->name('attendance_input_months');
+
 
 });

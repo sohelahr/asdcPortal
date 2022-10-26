@@ -157,6 +157,7 @@
                     
                     $("#course_slot").empty();
                     $("#course_batch").empty();
+                    $("#monthid").empty();
 
                     if(response.course_slots.length > 0){
                         $("#course_slot").append(`
@@ -192,9 +193,63 @@
                                 <option value="">Not Found</option>
                             `);
                     }
-                    
+
+                    if(response.firstmonths.length > 0){
+                        $("#monthid").append(`
+                            <option value="">Select Month</option>
+                        `);
+                        $.each(response.firstmonths, function (index, element) { 
+                            
+                            $("#monthid").append(`
+                                <option value="${element.value}">${element.label}</option>
+                            `);
+                        });
+                    }
+                    else
+                    {
+                        $("#monthid").append(`
+                                <option value="">Not Found</option>
+                            `);
+                    }
+
+
                     /* 
                     generateDoughnutChartForBatchAdmissions(piedata); */
+                },
+                complete: function(){
+                    $('#admissions-by-batches-loader').addClass('d-none');
+                }
+            });
+        });
+
+        $('#course_batch').on('change',function(){
+            let id = $('#course_batch').val();
+            $.ajax({
+                type: "get",
+                url: `{{url('attendance/getbatchmonths/${id}')}}`,
+                beforeSend: function (){
+                    $('#admissions-by-batches-loader').removeClass('d-none');
+                },
+                success: function (response) {
+                    $("#monthid").empty();
+                    if(response.firstmonths.length > 0){
+                        $("#monthid").append(`
+                            <option value="">Select Month</option>
+                        `);
+                        $.each(response.firstmonths, function (index, element) { 
+                            
+                            $("#monthid").append(`
+                                <option value="${element.value}">${element.label}</option>
+                            `);
+                        });
+                    }
+                    else
+                    {
+                        $("#monthid").append(`
+                                <option value="">Not Found</option>
+                            `);
+                    }
+
                 },
                 complete: function(){
                     $('#admissions-by-batches-loader').addClass('d-none');
@@ -213,7 +268,7 @@
         let coursebatchid = $('#course_batch').val();
         let monthid = $('#monthid').val();
 
-        if(courseslotid == "" || coursebatchid == ""){
+        if(courseslotid == "" || coursebatchid == "" || monthid == ""){
             return null;
         }
         $('#attendance_table').DataTable({

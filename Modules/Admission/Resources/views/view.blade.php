@@ -525,7 +525,9 @@
         @if(\Illuminate\Support\Facades\Session::has('employement_created'))   
             Notify('Employement', 'Admission was marked Employed','success') 
         @elseif(\Illuminate\Support\Facades\Session::has('attendance_created'))
-            Notify('Attendance', 'Attendance was marked','success') 
+            Notify('Attendance', 'Attendance was marked','success')
+        @elseif(\Illuminate\Support\Facades\Session::has('attendance_already'))
+            Notify('Danger', 'Record already exists','danger') 
         @elseif(\Illuminate\Support\Facades\Session::has('created'))
             Notify('Created', 'Admission was created','success') 
         @elseif(\Illuminate\Support\Facades\Session::has('cancelled'))
@@ -574,20 +576,28 @@
                     let total_days = parseInt($('#present_days').val()) + parseInt($('#absent_days').val());
 
                     if(month_id % 2 == 0 && month_id != 2 && month_id != 12 ){
-                        if(total_days > 30){
-                            Notify('Error','Total number of days should not be greater than 30','danger');
+                        if(total_days != 30){
+                            Notify('Error','Total number of days should not be should be equal to 30','danger');
                             return
                         }    
                     }
                     else if((month_id % 2 !== 0 || month_id == 12) ){
-                        if(total_days > 31){
-                            Notify('Error','Total number of days should not be greater than 31','danger');
+                        if(total_days != 31){
+                            Notify('Error','Total number of days should be should be equal to 31','danger');
                             return
                         }
                     }
-                    else if(month_id == 2 && total_days > 29 ){
-                        Notify('Error','Total number of days should not be greater than 29','danger');
-                        return
+                    else if(month_id == 2){
+
+                        if(moment().isLeapYear()  && (total_days != 29) ){
+                            Notify('Error','Total number of days should be equal to 29','danger');
+                            return
+                        }
+                        else if(total_days != 28){
+                            Notify('Error','Total number of days should be equal to 28','danger');
+                            return
+                        }
+
                     }
                    form.submit();
                     

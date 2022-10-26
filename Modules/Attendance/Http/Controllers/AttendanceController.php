@@ -38,10 +38,20 @@ class AttendanceController extends Controller
         $course = Course::find($id);
         $course_slots = $course->CourseSlots;
         $course_batches = $course->CourseBatches;
+        $firstmonths = $this->getMonths($course_batches[0]->start_date,$course_batches[0]->expiry_date);
         return response()->json(['course_slots'=>$course_slots,
                                 'course_batches'=>$course_batches,
+                                'firstmonths' => $firstmonths
                                 ]);
     }
+
+    function getBatchMonths($id)
+    {
+        $course_batch = CourseBatch::find($id);
+        $firstmonths = $this->getMonths($course_batch->start_date,$course_batch->expiry_date);
+        return response()->json(['firstmonths' => $firstmonths]);
+    }
+
 
     public function getMonths($startdate,$enddate){
         $start    = (new DateTime($startdate))->modify('first day of this month');
@@ -78,6 +88,11 @@ class AttendanceController extends Controller
         $employement->total_days = $request->absent_days + $request->present_days;
 
         $employement->month_id = $request->month_id;
+
+        if(Attendance::where('admission_id',$request->admission_id)->where('month_id',$request->month_id)->count() > 0){
+            return redirect()->route('admission_show',[$request->admission_id])->with('attendance_already','123');
+        }
+        
         if($employement->save())
         {
             return redirect()->route('admission_show',[$request->admission_id])->with('attendance_created','created');
