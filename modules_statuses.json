@@ -20,5 +20,6 @@
     "StudentEmployment": true,
     "Attendance": true,
     "Instructor": true,
-    "Feedback": true
+    "Feedback": true,
+    "Assessment": true
 }

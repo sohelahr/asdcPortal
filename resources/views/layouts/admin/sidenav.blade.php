@@ -94,6 +94,17 @@
                   </li>
                   <li class="dropdown">
                         <a class="nav-link menu-title" href="javascript:void(0)">
+                            <i data-feather="percent"></i>
+                            <span>Assessments</span>
+                        </a>
+                    <ul class="nav-submenu menu-content">
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions'))
+                            <li> <a href="{{url('assessment/')}}">Assessments</a></li>
+                        @endif
+                    </ul>
+                  </li> 
+                  <li class="dropdown">
+                        <a class="nav-link menu-title" href="javascript:void(0)">
                             <i data-feather="list"></i>
                             <span>Attendance</span>
                         </a>

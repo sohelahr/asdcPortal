@@ -19,8 +19,8 @@
                                     </div>
                                 @else
                                     <p>
-                                        We have sent you a confirmation email, please check your mailbox / spam folder.<br><br>
-                                        If you have not received the email, please click below.
+                                        We have sent you a confirmation email for <br><b class="txt-primary">{{$user->email}}</b>,<br> please check your mailbox / spam folder.<br><br>
+                                        It can take upto 5 minutes for email to be recieved<br> <br>If you have still not received the email,<br><b>There is a high chance the email entered is wrong</b><br> please check your email or click below.
                                     </p>
                                     <div class="mt-2">
                                         <a href="{{url('/register/resend-verification-email/'.base64_encode($user->id))}}" 
@@ -53,7 +53,7 @@
                                     </div>
                                 @else
                                     <p>
-                                        We have sent you confirmation email, please check.
+                                        We have sent you confirmation email, please check. It can take upto 5 minutes for mail to be recieved in your inbox or junk folder
                                         If email not received click on resend email.
                                     </p>
                                     <div class="mt-2">
@@ -83,7 +83,7 @@
                     mouse_over:true,
                     showProgressbar:false,
                     spacing:10,
-                    timer:2000,
+                    timer:5000,
                     placement:{
                         from:'top',
                         align:'center'

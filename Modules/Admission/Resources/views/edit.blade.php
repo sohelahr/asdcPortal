@@ -136,6 +136,28 @@
                                     </div>
                                 </div> 
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Exempted Courses</label>
+                                    <div class="row ms-1">
+                                        @foreach ($courses as $course)
+                                            @if(($course->id == "8" || $course->id == "9") && ($course->id != $selected_course_id))
+                                                <div class="col-md-4 col-lg-4 col-12 p-0">
+                                                    <div class="form-group m-checkbox-inline mb-0">
+                                                        <div class="checkbox checkbox-primary">
+                                                            <input id="exempted-course-{{$course->id}}"
+                                                            @if(in_array($course->id,$exemptions)) checked  @endif
+                                                                name="exempted_course_{{$course->id}}"  value="{{$course->id}}"
+                                                            type="checkbox">
+                                                            <label for="exempted-course-{{$course->id}}">{{$course->name}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                             @if ($grade != "")
                                 <div class="col-6">
                                     <div class="form-group">

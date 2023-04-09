@@ -17,6 +17,7 @@ use Modules\CourseBatch\Entities\BatchSlotTransaction;
 use Modules\CourseBatch\Entities\CourseBatch;
 use Modules\CourseSlot\Entities\CourseSlot;
 use Modules\DocumentList\Entities\Admission_DocumentList;
+use Modules\Admission\Entities\Exemption;
 use Modules\DocumentList\Entities\AdmissionDocumentList;
 use Modules\DocumentList\Entities\DocumentList;
 use Modules\Registration\Entities\Registration;
@@ -307,6 +308,20 @@ class AdmissionController extends Controller
                             }
                         }
 
+
+                        //for exempted courses
+                        $courses = Course::all();
+                        foreach ($courses as $course) {
+                            $exempted_course_name = "exempted_course_".$course->id;
+                            if($request->$exempted_course_name){
+                                $exemption = new Exemption();
+                                $exemption->admission_id = $admission->id;
+                                $exemption->student_id = $admission->student_id;
+                                $exemption->exempted_course = $request->$exempted_course_name;
+                                $exemption->save();
+                            }
+                        }
+
                         $registration = Registration::find($request->registration_id);
                         $registration->status = "2";
                         $registration->save();
@@ -342,24 +357,28 @@ class AdmissionController extends Controller
     {
         $admission = Admission::find($id);
         $documents = DocumentList::all();
+        $courses = Course::all();
+        $exemptions = Exemption::where('admission_id',$admission->id)->pluck('exempted_course')->toArray();
         $documents_submitted =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
         $grade = "";
         if($admission->Certificate)
             $grade = $admission->Certificate->grade;
 
         $attendance_months = Attendance::where('admission_id',$id)->pluck('month_id');
-        return view('admission::view',compact('admission','documents_submitted','documents','grade','attendance_months'));
+        return view('admission::view',compact('admission','documents_submitted','documents','grade','attendance_months','courses','exemptions'));
     }
     
     public function showfromReg($id)
     {
         $admission = Admission::where('registration_id',$id)->first();
         $documents = DocumentList::all();
+        $courses = Course::all();
+        $exemptions = Exemption::where('admission_id',$admission->id)->pluck('exempted_course')->toArray();
         $documents_submitted =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
         $grade = "";
         if($admission->Certificate)
             $grade = $admission->Certificate->grade;
-        return view('admission::view',compact('admission','documents_submitted','documents','grade'));
+        return view('admission::view',compact('admission','documents_submitted','documents','grade','courses','exemptions'));
     }
     function getFormData($id)
     {
@@ -542,6 +561,7 @@ class AdmissionController extends Controller
         $selected_course_id = $admission->Registration->Course->id;
 
         $courses = Course::all();
+        $exemptions = Exemption::where('admission_id',$admission->id)->pluck('exempted_course')->toArray();
 
         $documents = DocumentList::all();
         $submitted_documents =  AdmissionDocumentList::where('admission_id',$admission->id)->pluck('document_id')->toArray();/* $admission->documents()->get(['pivot_document_id'])->toArray(); */
@@ -558,7 +578,7 @@ class AdmissionController extends Controller
         $transaction = BatchSlotTransaction::where('slot_id',$admission->courseslot_id)
                                     ->where('batch_id',$admission->coursebatch_id)->first();
         
-        return view('admission::edit',compact('grade','transaction','selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission'));
+        return view('admission::edit',compact('grade','transaction','selected_course_id','documents','submitted_documents','student','courses','initial_course_slots','initial_course_batches','admission','exemptions'));
     }
 
     /**
@@ -646,6 +666,25 @@ class AdmissionController extends Controller
                     $admission->documents()->attach([$request->$document_input_name => ['student_id' => $request->student_id ] ]);
                 }
             }
+
+            //update exemptions
+
+            //first delete all previous created records
+            $exemptions = Exemption::where('admission_id',$admission->id)->delete();
+
+            //create the records
+            $courses = Course::all();
+            foreach ($courses as $course) {
+                $exempted_course_name = "exempted_course_".$course->id;
+                if($request->$exempted_course_name){
+                    $exemption = new Exemption();
+                    $exemption->admission_id = $admission->id;
+                    $exemption->student_id = $admission->student_id;
+                    $exemption->exempted_course = $request->$exempted_course_name;
+                    $exemption->save();
+                }
+            }
+
 
             /* $course_slot = CourseSlot::find($request->course_slot_id);
             $course_slot->CurrentCapacity = $course_slot->CurrentCapacity - 1;

@@ -29,6 +29,11 @@
                                 Attendance
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-assessment-tab" data-bs-toggle="pill" href="#pills-assessment" role="tab" aria-controls="pills-assessment" aria-selected="false">
+                                Assessment
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -342,6 +347,39 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="pills-assessment" role="tabpanel" aria-labelledby="pills-assessment-tab">
+                            <div class="mb-0 m-t-30">
+                                <div class="card-body">
+                                    @if(count($admissions))
+                                        <div class="form-group">
+                                            <label for="assessment-records">Select Admission</label>
+                                            <select id="assessment-records" class="form-control" name="admission">
+                                                
+                                                @foreach ($admissions as $admission)
+                                                    <option value="{{$admission->id}}">{{$admission->roll_no}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="display datatables" id="assessment_table">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Theory Marks</th>
+                                                        <th>Practical Marks</th>
+                                                        <th>Total Marks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @else
+                                        <h3>No Admission found</h3>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -364,6 +402,7 @@
 <script>
     @if(count($admissions) > 0)
         getAttendanceRecords("{{$admissions[0]->id}}")
+        getAssessmentRecords("{{$admissions[0]->id}}")
     @endif
     $(document).ready(function () {
         $('#userregistration').DataTable({
@@ -427,6 +466,9 @@
         $('#attendance-records').on('change', function () {
             getAttendanceRecords(this.val());
         });
+        $('#assessment-records').on('change', function () {
+            getAssessmentRecords(this.val());
+        });
     });
     function getAttendanceRecords(admission_id){
         $('#attendance_table').DataTable({
@@ -477,6 +519,46 @@
     function showRemarks(remark){
         $('#remark').text(remark);
         $('#remarksmodal').modal('show');
+    }
+    function getAssessmentRecords(admission_id){
+        $('#assessment_table').DataTable({
+            processing: true,
+            serverSide: true,
+            searching:false,
+            "pageLength": 200,
+            "bDestroy": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "info": false,
+            "pageLength": 50,
+            ajax: {
+                "url":`{{url("assessment/get-admissionwise-assessment/".'${admission_id}')}}`,
+                "dataType": "json",
+                "type": "POST",
+                "data":{ _token: "{{csrf_token()}}"}
+            },
+            "columnDefs": [
+                {"className": "text-center", "targets": [1,2,3]}
+            ],
+            columns: [
+                {
+                    data: 'name',
+                    name: "name",
+                },
+                {
+                    data: 'theory',
+                    name: 'theory marks'
+                },
+                {
+                    data: 'practical',
+                    name: 'practical marks'
+                },
+                {
+                    data: 'total',
+                    name: 'total marks'
+                },
+            ]
+        });
     }
 </script>
 @endsection

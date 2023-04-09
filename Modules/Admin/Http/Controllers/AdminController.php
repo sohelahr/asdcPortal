@@ -183,8 +183,9 @@ class AdminController extends Controller
     }
 
     public function getRegistrationGraphChart(){
-        $raw_count =  DB::table('registrations')->select(DB::raw('DATE_FORMAT(created_at,"%m")as month ,count(id) as count'))
+        $raw_count =  DB::table('registrations')->select(DB::raw('DATE_FORMAT(created_at,"%m")as month ,DATE_FORMAT(created_at,"%Y")as year,count(id) as count'))
                             ->orderBy('created_at')
+                            ->groupBy('year')
                             ->groupBy('month')
                             ->get();
 
@@ -193,7 +194,7 @@ class AdminController extends Controller
         $labels= [];
         $count = [];
         foreach($raw_count as $get_count){
-            array_push($labels,$labels_indexes[$get_count->month]);
+            array_push($labels,[$labels_indexes[$get_count->month],$get_count->year]);
             array_push($count,$get_count->count);
         }
         return json_encode(['labels'=>$labels,'count'=>$count]);
