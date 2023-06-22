@@ -63,22 +63,17 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="form-label">Course <sup class="text-danger">*</sup></label>
-
-                                    <select class="form-control" name="course_id" id="admission_course">
-                                        @foreach ($courses as $course)
-                                            <option value="{{$course->id}}" @if ($course->id == $admission->course_id)
-                                                selected
-                                            @endif>{{$course->name}}</option>
-                                        @endforeach
-                                    </select>
-
+                                    <label class="form-label">Course{{--  <sup class="text-danger">*</sup> --}}</label>
+                                     <input class="form-control" type="hidden" name="course_id" readonly id="admission_course" value='{{$admission->course_id}}' >
+                                    <input class="form-control" type="text" readonly  value="{{$admission->Course->name}}" >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">Course Batch <sup class="text-danger">*</sup></label>
-
+                                    {{-- <input class="form-control" type="hidden" name="coursebatch_id" readonly id="course_batch" value='{{$admission->coursebatch_id}}' >
+                                    <input class="form-control" type="text"  readonly  value='{{$admission->CourseBatch->batch_number}}' >
+                                 --}}
                                     <select class="form-control" name="coursebatch_id" id="course_batch">
                                         @if(count($initial_course_batches) > 0)
                                             @foreach ($initial_course_batches as $coursebatch)
@@ -96,7 +91,9 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
-
+{{--                                     <input class="form-control" type="" name="course_slot_id" readonly id="course_slot" value='{{$admission->courseslot_id}}' >
+                                    <input class="form-control" type="text" readonly value='{{$admission->CourseSlot->name}}' >
+                                 --}}
                                     <select class="form-control" name="course_slot_id" id="course_slot">
                                         @foreach ($initial_course_slots as $courseslot)
                                             <option value="{{$courseslot->id}}" @if ($courseslot->id == $admission->courseslot_id)

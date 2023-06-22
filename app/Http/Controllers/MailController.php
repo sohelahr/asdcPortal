@@ -31,8 +31,11 @@ class MailController extends Controller
                     'name' => $content,
                     'fail_step' => 'Laravel Mail Sender',
                     'error_message' => $exception->getMessage(),
-            ]);  
+            ]); 
+            return false; 
         }
+
+
          if (Mail::failures()) {
           // return failed mails
           foreach(Mail::failures() as $email_address) {
@@ -43,13 +46,16 @@ class MailController extends Controller
                     'error_message' => "Sending Registration Mail Failed for this user",
             ]);  
           }
+          return false;
         }
-        else{
-            $user = User::where("email",$data['email'])->first();
-            if($user){
-              $user->email_recieved = 1;
-              $user->save();
-            }
+
+
+        $user = User::where("email",$data['email'])->first();
+        if($user){
+          $user->email_recieved = 1;
+          $user->no_of_tries += 1;
+
+          $user->save();
         }
         return true;
     }

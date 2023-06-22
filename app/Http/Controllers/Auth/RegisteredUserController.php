@@ -83,6 +83,9 @@ class RegisteredUserController extends Controller
             {
                 return redirect()->route('login')->with('already_verfied','123');
             }
+            if($user->no_of_tries >= 2){
+                return redirect()->route('login')->with('error','123');
+            }
             MailController::sendRegistrationEmail($user->email,$user->name,$user->id);
             return redirect()->back()->with('success','Email resent successfully.');
         }

@@ -143,11 +143,12 @@
                             <div class="form-group">
                                 @if($userprofile->photo == null)
                                     <label class="form-label">Photo</label>
-                                    <input type="file" name="photo" class="form-control">
-                                    <sub>Please upload a passport size photo</sub>
+                                    <input type="file" name="photo" class="form-control" accept=".jpg,.jpeg,.png">
+                                    <sub>Please upload a <= 500kb passport size photo</sub>
                                 @else
                                     <label class="form-label">Change Photo</label>
-                                    <input type="file" name="update_photo" class="form-control">
+                                    <input type="file" name="update_photo" class="form-control" accept=".jpg,.jpeg,.png">
+                                    <sub>Please upload a <= 500kb passport size photo</sub>
                                 @endif
                             </div>
                         </div>
@@ -183,6 +184,10 @@
             }
         }
     });
+
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param)
+    }, 'File size must be less than 500kb');
 
         $('#edit_profile').validate({
             errorClass: "text-danger pt-1 fst-normal",
@@ -228,8 +233,14 @@
                 },
                 photo: {
                     required: true,
+                    filesize:500000,
+                    extension: "jpg,jpeg,png",
                 },
-
+                update_photo:{
+                    required:false,
+                    extension: "jpg,jpeg,png",
+                    filesize:500000
+                }
             },
 
             messages: {

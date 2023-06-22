@@ -9,7 +9,7 @@
 	@endcomponent
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 col-xl-6 xl-100">
+        <div class="col-sm-12 col-12 xl-100">
             <div class="card">
                 <div class="card-body">
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">

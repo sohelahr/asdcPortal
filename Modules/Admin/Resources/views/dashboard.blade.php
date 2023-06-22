@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 xl-100 box-col-12">
+            <div class="col-12 xl-100 box-col-12">
                 <div class="card">
                     <div id="get-top-courses-loader" class="d-none">
                         <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -80,7 +80,7 @@
                     </div>
                     <div class="cal-date-widget card-body">
                         <div class="row">
-                            <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
+                            <div class="col-12 col-xs-12 col-md-6 col-sm-6">
                                 <div class="cal-info text-center">
                                     <div>
                                         <h2>{{date('d',time())}}</h2>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
+                            <div class="col-12 col-xs-12 col-md-6 col-sm-6">
                                 <div class="cal-datepicker">
                                     <div class="custom-box p-4 float-sm-end" data-language="en">
                                         <div class="card-header p-0 pb-1">
@@ -307,7 +307,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-12">
                         <div class="card o-hidden custom-box">
                             <div id="course-wise-admissions-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -333,7 +333,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-12">
                         <div class="card o-hidden custom-box">
                             <div id="students-by-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -359,7 +359,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-12">
                         <div class="card o-hidden custom-box">
                             <div id="admissions-by-batches-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -402,7 +402,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-12">
                         <div class="card o-hidden custom-box">
                             <div id="feedback-by-status-loader" class="d-none">
                                     <div  class="d-flex justify-content-center align-items-center show-loader">                                 

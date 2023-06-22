@@ -60,7 +60,7 @@
                 <div id="course-create" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="course-create-title" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <form method="POST" action="#" {{-- action="{{url('course/create')}}" --}} id="course-form">
+                            <form method="POST" action="{{url('course/create')}}" id="course-form">
                                 @csrf
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="course-create-title">Create Course</h5>

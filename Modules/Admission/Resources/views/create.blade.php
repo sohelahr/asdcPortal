@@ -61,22 +61,27 @@
                             <div class="col-md-4">
 
                                 <div class="form-group">
-                                    <label class="form-label">Course <sup class="text-danger">*</sup></label>
+                                    <label class="form-label">Course {{-- <sup class="text-danger">*</sup> --}}</label>
                                     <input type="hidden" name="registered_course_id" value="{{$selected_course->id}}">
-                                    <select class="form-control" name="course_id" id="admission_course">
+                                    <input class="form-control" type="hidden" name="course_id" readonly id="admission_course" value='{{$selected_course->id}}' >
+                                    <input class="form-control" type="text" readonly  value='{{$selected_course->name}}' >
+
+                                    {{-- <select class="form-control readonly" readonly aria-readonly="true" name="course_id" id="admission_course">
                                         @foreach ($courses as $course)
                                             <option value="{{$course->id}}" @if ($course->id == $selected_course->id)
                                                 selected
                                             @endif>{{$course->name}}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
 
                                 </div>
                             </div>
                             
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Course Batch <sup class="text-danger">*</sup></label>
+                                    <label class="form-label">Course Batch {{-- <sup class="text-danger">*</sup> --}}</label>
+                                    {{-- <input class="form-control" type="hidden" name="coursebatch_id" readonly id="course_batch" value='{{$current_course_batch->id}}' >
+                                    <input class="form-control" type="text"  readonly  value='{{$current_course_batch->batch_number}}' > --}}
 
                                     <select class="form-control" name="coursebatch_id" id="course_batch">
                                         @if(count($initial_course_batches) > 0)
@@ -94,7 +99,9 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Course Timing <sup class="text-danger">*</sup></label>
+                                    <label class="form-label">Course Timing {{-- <sup class="text-danger">*</sup> --}}</label>
+                                    {{-- <input class="form-control" type="hidden" name="course_slot_id" readonly id="course_slot" value='{{$selected_course_slot->id}}' >
+                                    <input class="form-control" type="text" readonly value='{{$selected_course_slot->name}}' > --}}
 
                                     <select class="form-control" name="course_slot_id" id="course_slot">
                                         @if($selected_course_slot)

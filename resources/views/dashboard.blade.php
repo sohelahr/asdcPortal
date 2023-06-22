@@ -179,6 +179,56 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="withdraw-modal" tabindex="-1" data-backdrop="static" 
+        data-keyboard="false" aria-labelledby="my-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div id="admissions-by-batches-loader" class="d-none">
+                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
+                        <div> 
+                            <div class="loader-box">
+                                <div class="loader-7"></div>
+                            </div>              
+                        </div>    
+                    </div>
+                </div>
+                <div>
+                    @csrf
+                    <div class="modal-body ">
+                        <div class="text-center">
+                            <div class="swal-icon swal-icon--warning">
+                                <span class="swal-icon--warning__body">
+                                <span class="swal-icon--warning__dot"></span>
+                                </span>
+                            </div>
+                            <h5 class="modal-title" id="my-modal-title">Withdraw Application</h5>
+                            <p>Please tell us why you want to withdraw.</p>
+                        </div>
+                        <input type="hidden" value="" id="withdraw_reg_id"/>
+                        <div class="form-group m-t-15">
+                            <div class="radio radio-primary my-1">
+                                <input class="radio_animated" id="radioinline1" value="staff" type="radio" name="withdraw_reason" checked="">
+                                <label class="mb-0" for="radioinline1">Suggested By Staff</label>
+                            </div>
+                            <div class="radio radio-primary my-1">
+                                <input class="radio_animated" id="radioinline2" type="radio" name="withdraw_reason" value="other">
+                                <label class="mb-0" for="radioinline2">Other</label>
+                            </div>
+                        </div>
+                        <div class="form-group my-3 mx-2" id="other-reason" style="display:none;text-align:left!important">
+                            <label for="other-reason">Reason : </label>
+                            <textarea  class="form-control" id="other_text" name="other_reason" rows="3"></textarea>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" onclick="closeModal('withdraw')">Cancel</a>    
+                        <button type="submit" class="btn btn-danger mr-2" onclick="withdrawApplication()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection    
 @section('jcontent')
     <script>
@@ -196,6 +246,7 @@
         @endif
     
         var enroll_modal = new bootstrap.Modal($("#enroll-modal")[0]);
+        var withdraw_modal =  new bootstrap.Modal($(`#withdraw-modal`)[0]);
         
         @if($profile->status == "2")
             var myModal = new bootstrap.Modal($("#profile_suspended")[0],{
@@ -254,42 +305,93 @@
             @elseif(\Illuminate\Support\Facades\Session::has('error'))
                 Notify('Danger','Something went wrong ','danger')   
             @endif
+        
         function deleteRegistration(reg_id){
-            swal({
-                    title: "Withdraw Application",
-                    text: "Are you sure?",
-                    icon: "warning",
-                    buttons: ['Cancel','Yes'],
-                    dangerMode: true,
-                }).then((withdraw) => {
-                        if (withdraw) {
-                            $.ajax({
-                                type: "post",
-                                url: `{{url('registration/withdraw/${reg_id}')}}`,
-                                data: "data",
-                                dataType: "dataType",
-                                beforeSend:function(){
-                                    $('#overlay-loader').removeClass('d-none');
-                                    $('#overlay-loader').show();
-                                },
-                                statusCode: {
-                                    200: function (response) {
-                                            getRegistration();
-                                            swal("You have successfully withdrawn your application", {
-                                                icon: "success",
-                                            });
-                                            $('#overlay-loader').hide();
-                                        },
-                                    401: function () {
-                                        swal("Something went wrong", {
-                                                icon: "warning",
-                                            });
-                                        $('#overlay-loader').hide();    
-                                      }
-                                }
-                            });
-                        }
+            $('#withdraw_reg_id').val(reg_id)
+            withdraw_modal.show()
+            // swal({
+            //         title: "Withdraw Application",
+            //         text: "Are you sure?",
+            //         icon: "warning",
+            //         buttons: ['Cancel','Yes'],
+            //         dangerMode: true,
+            //     }).then((withdraw) => {
+            //             if (withdraw) {
+            //                 $.ajax({
+            //                     type: "post",
+            //                     url: `{{url('registration/withdraw/${reg_id}')}}`,
+            //                     data: "data",
+            //                     dataType: "dataType",
+            //                     beforeSend:function(){
+            //                         $('#overlay-loader').removeClass('d-none');
+            //                         $('#overlay-loader').show();
+            //                     },
+            //                     statusCode: {
+            //                         200: function (response) {
+            //                                 getRegistration();
+            //                                 swal("You have successfully withdrawn your application", {
+            //                                     icon: "success",
+            //                                 });
+            //                                 $('#overlay-loader').hide();
+            //                             },
+            //                         401: function () {
+            //                             swal("Something went wrong", {
+            //                                     icon: "warning",
+            //                                 });
+            //                             $('#overlay-loader').hide();    
+            //                           }
+            //                     }
+            //                 });
+            //             }
+            //         });
+        }
+
+        function withdrawApplication(){
+            let reg_id = $('#withdraw_reg_id').val()
+            let reason = $('input[name="withdraw_reason"]:checked').val();
+            let other_reason = $('#other_text').val();
+            if(reason == "other"){
+                if(!other_reason){
+                    swal("Please enter reason", {
+                        icon: "warning",
                     });
+                    return;
+                }
+                reason = other_reason
+            }else{
+                reason = "Suggested By Staff"
+            }
+            $.ajax({
+                type: "post",
+                url: `{{url('registration/withdraw/${reg_id}/')}}`,
+                data: {
+                    reason
+                },
+                dataType: "application/json",
+                beforeSend:function(){
+                    $('#overlay-loader').removeClass('d-none');
+                    $('#overlay-loader').show();
+                    closeModal('withdraw');
+                },
+                statusCode: {
+                    200: function (response) {
+                            getRegistration();
+                            
+                            swal("You have successfully withdrawn your application", {
+                                icon: "success",
+                            });
+                            $('#overlay-loader').hide();
+                        },
+                    401: function () {
+                            closeModal('withdraw');
+
+                        swal("Something went wrong", {
+                                icon: "warning",
+                            });
+                        $('#overlay-loader').hide();    
+                        }
+                }
+            });
         }
 
         function getRegistration() {
@@ -364,7 +466,14 @@
         
         $(document).ready(function () {
             getRegistration();
-
+            $('input[name="withdraw_reason"]').on('change',function(){
+                if($(this).val() == "other"){
+                    $("#other-reason").slideToggle();
+                }
+                else{
+                $("#other-reason").slideToggle();
+                }
+            });
             //for enrolling 
              $('#enrollment_form').validate({
                 errorClass: "text-danger pt-1",            
@@ -415,8 +524,12 @@
         }); 
 
         //for closing enroll modal
-        function closeModal(){
-            enroll_modal.hide()
+        function closeModal(which = "enroll"){
+            if(which == "enroll")
+                enroll_modal.hide()
+            else{
+               withdraw_modal.hide()
+            }
         }
         
         //for getting timings

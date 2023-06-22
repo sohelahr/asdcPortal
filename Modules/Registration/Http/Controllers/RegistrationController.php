@@ -256,12 +256,13 @@ class RegistrationController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         //
         $registration = Registration::find($id);
         if($registration->student_id == Auth::user()->id){
            $registration->status = '3';
+            $registration->cancel_reason = $request->reason;
            $registration->save();
             return json_encode(array('data'=>'success'));
         }
