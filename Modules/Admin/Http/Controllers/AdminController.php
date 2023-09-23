@@ -47,7 +47,10 @@ class AdminController extends Controller
         $data['total_cancellations'] = Admission::where('status','4')->count();
         $data['total_employments'] = Admission::where('status','3')->count();
         $user_stats = $this->getUsersStats();
-        $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->get();
+        $firstbatches = [];
+        if(Course::count()){
+            $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->get();
+        }
         return view('admin::dashboard',compact('courses','user_stats','data','firstbatches'));
     }
 

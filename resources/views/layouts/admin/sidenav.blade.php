@@ -146,6 +146,17 @@
                         @endif
                     </ul>
                   </li> 
+                  <li class="dropdown">
+                        <a class="nav-link menu-title" href="javascript:void(0)">
+                            <i data-feather="file-text"></i>
+                            <span>Reports</span>
+                        </a>
+                    <ul class="nav-submenu menu-content">
+                        @if(\App\Http\Helpers\CheckPermission::hasPermission('list.admissions'))
+                            <li> <a href="{{url('report/')}}">Reports</a></li>
+                        @endif
+                    </ul>
+                  </li>
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

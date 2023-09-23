@@ -286,25 +286,25 @@
             });
         }
         @if(\Illuminate\Support\Facades\Session::has('profile_complete')) 
-                Notify('Profile Complete','Please Contact admin to make changes to your profile','danger')   
-            @elseif(\Illuminate\Support\Facades\Session::has('profile_not_complete'))
-                Notify('Danger','First Update Your Profile','danger')   
-            @elseif(\Illuminate\Support\Facades\Session::has('profile_updated'))
-                Notify('success','Profile was successfully updated','success')   
-            @elseif(\Illuminate\Support\Facades\Session::has('registered'))
-                Notify('Registered','You have successfully registered For a course','success')   
-                
-            @elseif(\Illuminate\Support\Facades\Session::has('already_registered'))
-                Notify('Warning','You have already registered for two courses please visit the center before applying for more','warning')   
+            Notify('Profile Complete','Please Contact admin to make changes to your profile','danger')   
+        @elseif(\Illuminate\Support\Facades\Session::has('profile_not_complete'))
+            Notify('Danger','First Update Your Profile','danger')   
+        @elseif(\Illuminate\Support\Facades\Session::has('profile_updated'))
+            Notify('success','Profile was successfully updated','success')   
+        @elseif(\Illuminate\Support\Facades\Session::has('registered'))
+            Notify('Registered','You have successfully registered For a course','success')   
+            
+        @elseif(\Illuminate\Support\Facades\Session::has('already_registered'))
+            Notify('Warning','You have already registered for five courses please visit the center before applying for more','warning')   
 
-             @elseif(\Illuminate\Support\Facades\Session::has('unauthorized'))
-                Notify('Unauthorized','Aha! being sneeky af','danger')   
-            @elseif(\Illuminate\Support\Facades\Session::has('feedback_created'))
-                Notify('Success','Feedback was successfully recorded','success')   
+            @elseif(\Illuminate\Support\Facades\Session::has('unauthorized'))
+            Notify('Unauthorized','Aha! being sneeky af','danger')   
+        @elseif(\Illuminate\Support\Facades\Session::has('feedback_created'))
+            Notify('Success','Feedback was successfully recorded','success')   
 
-            @elseif(\Illuminate\Support\Facades\Session::has('error'))
-                Notify('Danger','Something went wrong ','danger')   
-            @endif
+        @elseif(\Illuminate\Support\Facades\Session::has('error'))
+            Notify('Danger','Something went wrong ','danger')   
+        @endif
         
         function deleteRegistration(reg_id){
             $('#withdraw_reg_id').val(reg_id)

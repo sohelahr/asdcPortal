@@ -307,7 +307,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-6">
                         <div class="card o-hidden custom-box">
                             <div id="course-wise-admissions-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -333,7 +333,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-6">
                         <div class="card o-hidden custom-box">
                             <div id="students-by-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -359,7 +359,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-6">
                         <div class="card o-hidden custom-box">
                             <div id="admissions-by-batches-loader" class="d-none">
                                 <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -402,7 +402,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-6">
                         <div class="card o-hidden custom-box">
                             <div id="feedback-by-status-loader" class="d-none">
                                     <div  class="d-flex justify-content-center align-items-center show-loader">                                 
@@ -559,7 +559,7 @@
                 $('#registrations-loader').addClass('d-none');
             }
         });
-        let firstbatch = '{{$firstbatches[0]->id}}';
+        let firstbatch = '{{count($firstbatches) ? $firstbatches[0]->id : 0}}';
         //initial batch wise admission
         $.ajax({
             type: "get",

@@ -378,7 +378,8 @@ class AdmissionController extends Controller
         $grade = "";
         if($admission->Certificate)
             $grade = $admission->Certificate->grade;
-        return view('admission::view',compact('admission','documents_submitted','documents','grade','courses','exemptions'));
+        $attendance_months = Attendance::where('admission_id',$id)->pluck('month_id');
+        return view('admission::view',compact('admission','documents_submitted','documents','grade','attendance_months','courses','exemptions'));
     }
     function getFormData($id)
     {

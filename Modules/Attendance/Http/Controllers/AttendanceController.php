@@ -69,9 +69,15 @@ class AttendanceController extends Controller
 
     public function index(){
         $courses = Course::all();
-        $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->orderBy('id','DESC')->get();
-        $firstslots = CourseSlot::where('course_id',$courses[0]->id)->get();
-        $firstmonths = $this->getMonths($firstbatches[0]->start_date,$firstbatches[0]->expiry_date);
+        $firstbatches = [];
+        $firstslots = [];
+        $firstmonths = [];
+        if(Course::count()){
+            $firstbatches = CourseBatch::where('course_id',$courses[0]->id)->orderBy('id','DESC')->get();
+            $firstslots = CourseSlot::where('course_id',$courses[0]->id)->get();
+            $firstmonths = $this->getMonths($firstbatches[0]->start_date,$firstbatches[0]->expiry_date);
+        }
+            
         return view('attendance::index',compact('courses','firstbatches','firstslots','firstmonths'));
     }
 

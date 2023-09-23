@@ -11,6 +11,11 @@
 |
 */
 
-Route::prefix('report')->group(function() {
-    Route::get('/', 'ReportController@index');
+Route::prefix('report')->middleware(['auth'])->group(function() {
+    Route::get('/','ReportController@index');
+    Route::get('/get/columns/{table_name}','ReportController@fetchColumns');
+    Route::post('/fetch/data','ReportController@fetchData');
+    Route::post("/export",'ReportController@exportReport');
+    Route::get('/dev/reporting','ReportController@devReporting');
+    
 });

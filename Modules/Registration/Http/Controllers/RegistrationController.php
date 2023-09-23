@@ -17,6 +17,11 @@ use Modules\UserProfile\Entities\UserProfile;
 use Yajra\Datatables\Datatables;
 class RegistrationController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('admin')->except('create','store','UserRegistrationData','getRegFormData','destroy');
+    }
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -138,7 +143,7 @@ class RegistrationController extends Controller
         if(Auth::user()->UserProfile->is_profile_completed){
             
             $count_registrations = Auth::user()->Registrations->count();
-            if($count_registrations >= 2)
+            if($count_registrations >= 5)
                 return redirect('/dashboard')->with('already_registered','not complete');
             else{
                 $courses = Course::all();
@@ -187,7 +192,7 @@ class RegistrationController extends Controller
                                         ->where('status','!=','3')
                                         ->pluck(['course_id'])->toArray();
         
-        if(count($all_registration_course_id) < 2){
+        if(count($all_registration_course_id) < 5){
 
             if(in_array($registration->course_id,$all_registration_course_id)){
                 return response()->json(['status' => 'restricted','msg' => 'You cant register for the same course twice please choose another one',]);
@@ -210,7 +215,7 @@ class RegistrationController extends Controller
         }
         else
         {    
-            return response()->json(['status' => 'restricted','msg' => 'You cant register for more than two courses',]);
+            return response()->json(['status' => 'restricted','msg' => 'You cant register for more than five courses',]);
         }
     }
 
