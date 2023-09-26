@@ -223,7 +223,7 @@
 
         $('#export_report').click(function() {
             $.ajax({
-                url: site_path+'/report/export',
+                url: site_path+'/export',
                 type: 'POST',
                 //dataType: 'JSON',
                 xhrFields: {
