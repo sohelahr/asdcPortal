@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-md-3 operational_div">
                                 <div class="form-group">
-                                    <label>Value<sup class="text-danger">*</sup></label>
+                                    <label>Value<sup class="text-danger">*</sup> (For Dates use YYYY-MM-DD format</label>
                                     <input type="text" class="form-control value" name="value_0" id="value_0"> 
                                 </div>
                             </div>
