@@ -16,6 +16,7 @@ class DropColumnsInAdmissionsTable extends Migration
         Schema::table('admission__documentlists', function (Blueprint $table) {
             $table->string('student_id');
             $table->timestamps();
+        });
     }
 
     /**
