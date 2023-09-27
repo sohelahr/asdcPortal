@@ -11,15 +11,6 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div id="admissions-by-batches-loader" class="d-none">
-                    <div  class="d-flex justify-content-center align-items-center show-loader">                                 
-                        <div> 
-                            <div class="loader-box">
-                                <div class="loader-7"></div>
-                            </div>              
-                        </div>   
-                    </div>
-                </div>
                 <div class="d-flex p-1 m-0 border header-buttons">
                     @if(\App\Http\Helpers\CheckPermission::hasPermission('update.admissions'))
                         @if($admission->status == '1')
@@ -130,6 +121,7 @@
                             </button>
                         </div>
                     @endif
+                    {{-- @endif --}}
                 </div>
                 <div class="card-body">
                         <div class="row">
@@ -270,6 +262,7 @@
                                     </div>
                                 </div> 
                             </div>
+
                             <div class="col-3">
                                 <a class="btn btn-secondary" href="{{url('/admission')}}">Back</a>    
                             </div>
@@ -290,21 +283,23 @@
                 <form action="{{route('calculate_grade')}}" method="POST" id="grade_form">
                     @csrf
                     <div class="modal-header">
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         <h5 class="modal-title" id="cancetile">Grade</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <label>The grade has been calculated according to :</label>
-                        <div id="grade-description" class="px-2 pb-2">
-                            
+                        <div class="form-group">
+                            <label for="my-input">Enter Grade</label>
+                            <input type="hidden" name="admission_id" value="{{$admission->id}}">
+                            <select name="grade" id="select_grade" class="form-control">
+                                <option value="">Select an option</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
                         </div>
-                        <h5 style="font-size: 14px;font-weight:700">Note : </h5> <p class="text-danger">The grade has been calculated , it cant be changed to prevent inconsistency.
-                            Please double check the marks entered before submitting the grade</p>
-                        <input type="hidden" name="admission_id" value="{{$admission->id}}">
-                        <input  type="hidden" name="grade" id="select_grade" value="">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-secondary" onclick="closeModal()">Close</a> 
                         <input type="submit" class="btn btn-primary" value="Grade Admission">
                     </div>
                 </form>        
@@ -495,8 +490,8 @@
                     }
             });
         }
-        function closeModal(){
-            $('#store_grade').modal('hide');
+        function OpenGradesModal(){
+            $('#store_grade').modal('show');
         }
         function goToCertificate(id){
             window.open(`{{url('admission/certificate/${id}')}}`, '_blank');
@@ -702,7 +697,6 @@
                 }
             });
 
-            //months filter for dates
             let start_date = $('#batchstartdate').val();
             let end_date = $('#batchenddate').val();
             let monthsmarked =  JSON.parse($('#attendance_months').val());
@@ -726,110 +720,6 @@
 
         });
 
-        function OpenGradesModal(){
-            let start_date = $('#batchstartdate').val();
-            let end_date = $('#batchenddate').val();
-            let months = dateRange(start_date,end_date)
-            
-            $.ajax({
-                type: "post",
-                url: `{{url('assessment/calculate-grade')}}`,
-                data:{
-                    _token: "{{csrf_token()}}",
-                    admission_id: "{{$admission->id}}",
-                    attendance_months_count: months.length 
-                },
-                beforeSend: function () {
-                    $('#admissions-by-batches-loader').removeClass('d-none');
-                    $('#admissions-by-batches-loader').show();
-                },
-                success: function (response) {
-                    res = JSON.parse(response);
-                    if(res.status){
-                        let marks_desc = `
-                                        <table class="table table-bordered text-center my-2">
-                                        <tr>
-                                            <th>Assessment Name</th>
-                                            <th>Theory</th>
-                                            <th>Practical</th>
-                                            <th>Total</th>
-                                        </tr>
-                                        `;
-
-                        res.data.description.forEach(el=>{
-                            marks_desc += `
-                                        <tr>
-                                            <td>${el.name}</td>
-                                            <td>${el.theory}</td>
-                                            <td>${el.practical}</td>
-                                            <td>${el.total}</td>
-                                        </tr>`
-                        });
-
-                        marks_desc += '</table>';
-
-                        let total_marks_data = res.data.marks;
-                        let total_marks_desc = `
-                                    <table class="table table-bordered text-center my-2">
-                                        <tr>
-                                            <th>Recieved Marks</th>
-                                            <th>Total Marks</th>
-                                            <th>Average %</th>
-                                        </tr>
-                                        <tr>
-                                            <td>${total_marks_data.total_marks_recieved}</td>
-                                            <td>${total_marks_data.total_marks_assessed}</td>
-                                            <td>${total_marks_data.average_percentage}%</td>
-                                        </tr>
-                                    </table>`;
-
-                        let att_data = res.data.attendance;
-                        let attendance_desc = `
-                                    <table class="table table-bordered text-center my-2">
-                                        <tr>
-                                            <th>Present days</th>
-                                            <th>Total days</th>
-                                            <th>Average %</th>
-                                        </tr>
-                                        <tr>
-                                            <td>${att_data.total_present_days}</td>
-                                            <td>${att_data.total_days}%</td>
-                                            <td>${att_data.average_total_attendance}%</td>
-                                        </tr>
-                                    </table>`;
-
-                        let grade_data = res.data.grade;
-                        let grade_desc = `
-                                    <table class="table table-bordered text-center my-2">
-                                        <tr>
-                                            <th>Grade Recieved</th>
-                                            <th>Percentage</th>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="text-${
-                                                grade_data.grade == 'A' ? 'success' : 
-                                                    (grade_data.grade == 'B' ? 'primary' : 
-                                                    ( grade_data.grade == 'C' ? 'warning' : 'danger')  )  
-                                            } text-capitalize"><b>${grade_data.grade}</b><span></td>
-                                            <td>${grade_data.percent}%</td>
-                                        </tr>
-                                    </table>`;
-
-                        $('#grade-description').html(marks_desc + " " +total_marks_desc + " " + attendance_desc + " " + grade_desc)
-                        $('#select_grade').val(grade_data.grade)
-
-                        
-                        $('#store_grade').modal('show');
-                    }
-                    else{
-                        Notify('Error',res.data.error_message,'danger')
-                    }
-                },
-                complete: function () {
-                    $('#admissions-by-batches-loader').hide();
-                },
-            });
-
-        }
+        
     </script>
 @endsection
