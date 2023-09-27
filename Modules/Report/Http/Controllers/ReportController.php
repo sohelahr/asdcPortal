@@ -144,22 +144,27 @@ class ReportController extends Controller
 
         $keys = $this->getForeignAndUnneccessaryKeys();
 
-        for ($i = 0; $i < $records->count(); $i++) {
+        try {
+            for ($i = 0; $i < $records->count(); $i++) {
 
-            $row = json_decode(json_encode($records[$i]), true);
-            $row_keys = array_keys($row);
-            $table_col_count = count($row_keys);
-            for ($j = 0; $j < $table_col_count; $j++) {
+                $row = json_decode(json_encode($records[$i]), true);
+                $row_keys = array_keys($row);
+                $table_col_count = count($row_keys);
+                for ($j = 0; $j < $table_col_count; $j++) {
 
-                $col_name = $row_keys[$j];
-                $val = $row[$col_name];
+                    $col_name = $row_keys[$j];
+                    $val = $row[$col_name];
 
-                if (array_key_exists($col_name, $keys['foreign_keys'])) {
-                    $row[$col_name] = DB::table($keys['foreign_keys'][$col_name][0])->where("id", $val)->pluck($keys['foreign_keys'][$col_name][1])[0];
+                    if (array_key_exists($col_name, $keys['foreign_keys']) && $val !== null) {
+                        $row[$col_name] = DB::table($keys['foreign_keys'][$col_name][0])->where("id", $val)->pluck($keys['foreign_keys'][$col_name][1])[0];
+                    }
                 }
+                $records[$i] = $row;
             }
-            $records[$i] = $row;
+        } catch (\Throwable $th) {
+            return $th;
         }
+
         // dd($records);
 
         $json_data = array(
@@ -254,7 +259,7 @@ class ReportController extends Controller
                 $col_name = $row_keys[$j];
                 $val = $row[$col_name];
 
-                if (array_key_exists($col_name, $keys['foreign_keys'])) {
+                if (array_key_exists($col_name, $keys['foreign_keys']) && $val !== null) {
                     $row[$col_name] = DB::table($keys['foreign_keys'][$col_name][0])->where("id", $val)->pluck($keys['foreign_keys'][$col_name][1])[0];
                 }
             }
