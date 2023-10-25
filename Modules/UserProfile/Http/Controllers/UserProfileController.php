@@ -260,11 +260,11 @@ class UserProfileController extends Controller
                     $path = $request->file('photo')->storeAs('/profile_photos/', $filename);
                     $userprofile->photo = $filename;
                 }
-                if ($request->file('change_photo')) {
+                if ($request->file('update_photo')) {
                     Storage::delete('/profile_photos/' . $userprofile->photo);
 
                     $filename = 'profile-' . time() . "." . $request->file('update_photo')->getClientOriginalExtension();
-                    $path = $request->file('photo')->storeAs('/profile_photos/', $filename);
+                    $path = $request->file('update_photo')->storeAs('/profile_photos/', $filename);
                     $userprofile->photo = $filename;
                 }
                 $userprofile->save();
@@ -386,7 +386,7 @@ class UserProfileController extends Controller
                 $path = $request->file('photo')->storeAs('/profile_photos/', $filename);
                 $userprofile->photo = $filename;
             } /* 
-            if($request->is_profile_completed) */
+          if($request->is_profile_completed) */
             $userprofile->is_profile_completed = "1";
             $userprofile->save();
 
