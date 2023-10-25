@@ -143,11 +143,11 @@
                             <div class="form-group">
                                 @if($userprofile->photo == null)
                                     <label class="form-label">Photo</label>
-                                    <input type="file" name="photo" class="form-control" accept=".jpg,.jpeg,.png">
+                                    <input type="file" name="photo" class="form-control" >
                                     <sub>Please upload a <= 500kb passport size photo</sub>
                                 @else
                                     <label class="form-label">Change Photo</label>
-                                    <input type="file" name="update_photo" class="form-control" accept=".jpg,.jpeg,.png">
+                                    <input type="file" name="update_photo" class="form-control" >
                                     <sub>Please upload a <= 500kb passport size photo</sub>
                                 @endif
                             </div>
